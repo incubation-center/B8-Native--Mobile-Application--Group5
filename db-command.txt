@@ -1,0 +1,4 @@
+//Migration Proccess
+sequelize migration:create --name add_new_column_to_table
+sequelize db:migrate
+sequelize db:migrate:undo
