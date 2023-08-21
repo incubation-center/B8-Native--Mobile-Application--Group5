@@ -9,9 +9,12 @@ const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD || 'password';
 
 export const sequelize = new Sequelize(DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD, {
   host: 'localhost',
-  dialect: 'postgres',
+  dialect: 'mysql', //postgres
   logging: false,
 });
+import PropertyModel from '../app/property/models';
+import UserModel from '../app/user/models';
+import CategoryModel from '../app/category/models';
 
 export async function syncDatabase() {
     try {

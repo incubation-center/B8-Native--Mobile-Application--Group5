@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import userRoutes from './app/user/routes';
+import cateRoute from './app/category/routes';
+import propertyRoute from './app/property/routes';
 import { sequelize, syncDatabase } from './config/databaseConfigAsync';
 import logRequest from './config/apiLogConfig';
 dotenv.config();
@@ -11,7 +13,8 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.use(logRequest);
 app.use('/', userRoutes);
-
+app.use('/category', cateRoute);
+app.use('/property', propertyRoute);
 async function startServer() {
   try {
     await sequelize.authenticate();
