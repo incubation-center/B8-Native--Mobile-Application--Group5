@@ -17,26 +17,30 @@ class _CategoryState extends State<Category> {
           Container(
             height: 160,
             decoration: BoxDecoration(color: Color(0xFFAAC7D7)),
-            child: Row(
-              children: [
-                ElevatedButton(
-                  child: const Text(
-                      "+ Category",
-                      style: TextStyle(
-                        color: Color(0xFFAAC7D7),
-                      ),
-                  ),
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        )
-                      ),
+            child: Padding(
+              padding: EdgeInsets.only(left: 15, top: 60),
+              child: Row(
+                children: [
+                  ElevatedButton(
+                    child: const Text(
+                        "+ Category",
+                        style: TextStyle(
+                          color: Color(0xFFAAC7D7),
+                        ),
                     ),
-                    ),
-              ],
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        elevation: MaterialStateProperty.all(0),
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          )
+                        ),
+                      ),
+                      ),
+                ],
+              ),
             ),
           ),
           Expanded(
