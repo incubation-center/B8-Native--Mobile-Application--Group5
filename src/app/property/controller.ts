@@ -3,6 +3,7 @@ import { JwtPayload } from 'jsonwebtoken';
 import UserModel from '../user/models';
 import PropertyModel from '../property/models';
 import CategoryModel from '../category/models';
+const { Op } = require('sequelize');
 
 interface AuthenticatedRequest extends Request {
     user?: JwtPayload;
@@ -14,7 +15,7 @@ export const createProperty = async (req: AuthenticatedRequest, res: Response) =
         const property = await PropertyModel.create({ name, price, expired_at, alert_at, categoryId, userId: req.user?.id });
         res.status(202).json(property);
     } catch (error) {
-        console.error('Error creating user:', error);
+        console.error('Error', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 }
@@ -26,7 +27,7 @@ export const getPropertyById = async (req: AuthenticatedRequest, res: Response) 
         if(!property) return res.status(404).json({error: 'Property not found'});
         res.status(200).json(property);
     }catch (error) {
-        console.error('Error creating user:', error);
+        console.error('Error', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 }
@@ -46,7 +47,7 @@ export const updatePropertyById = async (req: AuthenticatedRequest, res: Respons
         await property.save();
         res.status(200).json(property);
     }catch (error) {
-        console.error('Error creating user:', error);
+        console.error('Error', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 }
@@ -59,7 +60,7 @@ export const deletePropertyById = async (req: AuthenticatedRequest, res: Respons
         await property.destroy();
         res.status(200).json({message: 'Property deleted'});
     } catch (error) {
-        console.error('Error creating user:', error);
+        console.error('Error', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 }
@@ -73,7 +74,18 @@ export const getAllProperty = async (req: AuthenticatedRequest, res: Response) =
         }
         res.status(200).json(category);
     } catch (error) {
-        console.error('Error creating user:', error);
+        console.error('Error', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+export const getAllPropertyExpired = async (req: AuthenticatedRequest, res: Response) => {
+    try{
+        const currentDate = new Date();
+        const property = await PropertyModel.findAll({where: { userId: req.user?.id , expired_at: {[Op.lte]: currentDate} }});
+        res.status(200).json(property);
+    } catch (error) {
+        console.error('Error', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 }

@@ -8,10 +8,10 @@ class PropertyModel extends Model {
   public id!: string;
   public name!: string;
   public expired_at!: Date;
-  public alert_at!: Date;
+  public alert_at!: number;
   public image!: string;
   public price!: number;
-
+  public isDeleted!: boolean;
   public userId!: string;
   public categoryId!: string;
 }
@@ -32,8 +32,9 @@ PropertyModel.init(
       allowNull: true,
     },
     alert_at: {
-      type: DataTypes.DATE,
+      type: DataTypes.INTEGER,
       allowNull: true,
+      defaultValue: 0,
     },
     image: {
       type: DataTypes.STRING,
@@ -58,7 +59,12 @@ PropertyModel.init(
         model: CategoryModel,
         key: 'id',
       },
-    },
+    },    
+    isDeleted: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    }
   },
   {
     sequelize,

@@ -5,6 +5,7 @@ import cateRoute from './app/category/routes';
 import propertyRoute from './app/property/routes';
 import { sequelize, syncDatabase } from './config/databaseConfigAsync';
 import logRequest from './config/apiLogConfig';
+import './config/scheduler';
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;

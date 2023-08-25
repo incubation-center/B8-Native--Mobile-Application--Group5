@@ -11,6 +11,9 @@ interface AuthenticatedRequest extends Request {
 
 export const getUsers = async (req: AuthenticatedRequest, res: Response) => {
   try {
+    if (req.user?.role != 'ADMIN'){
+      return res.status(403).json({ error: 'Forbidden' });
+    }
     const users = await UserModel.findAll();
     res.json(users);
   } catch (error) {
@@ -153,3 +156,20 @@ export const changepassword = async (req: Request, res: Response) => {
     console.log(error);
   }
 };
+
+export const updateUserDeviceToken = async (req: Request, res: Response) => {
+  try {
+    const { userId, deviceToken } = req.body;
+    const user = await UserModel.findOne({ where: { id: userId } });
+    if (!user){
+      return res.status(400).json({ error: 'Invalid User' });
+    }
+    user.deviceToken = deviceToken;
+    await user.save();
+    res.status(200).json({ 'user': user, message: 'devicetoken updated successfully' });
+  } catch (error) {
+    console.error('Error updating deviceToken:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+
+}

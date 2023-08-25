@@ -10,6 +10,7 @@ class UserModel extends Model {
   public password!: string;
   public role!: string;
   public verify!: boolean;
+  public deviceToken!: string;
 }
 
 UserModel.init(
@@ -42,6 +43,10 @@ UserModel.init(
       allowNull: false,
       defaultValue: false,
     },
+    deviceToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    }
   },
   {
     sequelize,

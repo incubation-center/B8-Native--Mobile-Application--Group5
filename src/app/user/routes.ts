@@ -13,6 +13,6 @@ router.get('/user', authenticateToken, getUser);
 router.get('/user/:id', authenticateToken, getUserById);
 router.put('/user/:id', authenticateToken, updateUserById);
 router.get('/confirm/:id', verifyEmail);
-router.post('/user/forgotpassword', authenticateToken, forgotpassword);
+router.post('/user/forgotpassword', forgotpassword);
 router.post('/user/changepassword/:id', changepassword);
 export default router;
