@@ -1,7 +1,8 @@
 import 'package:go_router/go_router.dart';
-import 'package:tukdak/screens/addProperty.dart';
-import 'package:tukdak/screens/categoryScreen.dart';
 
+import '/screens/addCategory.dart';
+import '/screens/addProperty.dart';
+import '/screens/categoryScreen.dart';
 import '/screens/mainScreen.dart';
 import '/screens/signupScreen.dart';
 
@@ -23,6 +24,10 @@ GoRouter router = GoRouter(
     GoRoute(
       path: '/addproperty',
       builder: (context, state) => const AddProperty(),
+    ),
+    GoRoute(
+      path: '/addcategory',
+      builder: (context, state) => const addCategory(),
     ),
   ],
 );
