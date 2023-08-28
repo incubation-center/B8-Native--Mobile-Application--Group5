@@ -1,6 +1,6 @@
 # B8-Native--Mobile-Application--Group5
 <!-- To run the project -->
-step 1 : run
+step 1 : install package
 - npm install
 
 step 2 : create file ".env" in the level equal package.json with this code in side.
@@ -31,5 +31,7 @@ export const sequelize = new Sequelize(DATABASE_NAME, DATABASE_USERNAME, DATABAS
   logging: false,
 });
 
+step 4 : run project
+- npm start
 
-step 4 : give me money for help install backend >,< => ABA 002597984
+step 5 : give me money for help install backend >,< => ABA 002597984
