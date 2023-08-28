@@ -59,7 +59,10 @@ UserModel.beforeCreate(async (user: UserModel) => {
   user.password = await bcrypt.hash(user.password, saltRounds);
 });
 
-// Define the association
+UserModel.afterCreate(async (user : UserModel) => {
+  await CategoryModel.create({ name: 'Default', userId: user.id });
+});
+
 UserModel.hasMany(CategoryModel, {
   foreignKey: 'userId', 
   as: 'categories', 

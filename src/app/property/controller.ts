@@ -89,3 +89,18 @@ export const getAllPropertyExpired = async (req: AuthenticatedRequest, res: Resp
         res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+export const searchProperty = async (req: AuthenticatedRequest, res: Response) => {
+    try {
+        console.log(req)
+        const { name } = req.params;
+        const property = await PropertyModel.findAll({
+            where: { name: { [Op.like]: `%${name}%` }, userId: req.user?.id },
+            limit: 10
+        });
+        res.status(200).json(property);
+    } catch (error) {
+        console.error('Error', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
