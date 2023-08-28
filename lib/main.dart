@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:tukdak/screens/addCategory.dart';
+import 'package:tukdak/screens/homePage.dart';
+import 'package:tukdak/screens/mainScreen.dart';
 import '/config/routes.dart';
 
 void main() {
@@ -8,8 +12,11 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: router,
+    return const GetMaterialApp(
+          home: MainScreen(),
     );
+    // return GetMaterialApp(
+    //   home: addCategory(),
+    // );
   }
 }

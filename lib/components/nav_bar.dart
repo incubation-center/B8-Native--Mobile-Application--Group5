@@ -4,7 +4,7 @@ import 'package:tukdak/screens/homePage.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/default_transitions.dart';
-import 'package:tukdak/controller/controller.dart';
+import 'package:tukdak/controller/NavController.dart';
 import 'package:tukdak/screens/addProperty.dart';
 import 'package:tukdak/screens/categoryScreen.dart';
 import 'package:tukdak/screens/mainScreen.dart';
