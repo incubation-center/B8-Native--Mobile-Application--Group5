@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:tukdak/screens/homePage.dart';
 import 'package:tukdak/screens/mainScreen.dart';
+import 'package:tukdak/screens/productAchive.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -16,6 +17,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const MainScreen()),
+    );
+  }
+
+  void _navigateToAchiveproductScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ProductAchivescreen()),
     );
   }
 
@@ -100,7 +108,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 CustomList(
                     imagesPath: "assets/images/order_svg.png",
                     text: "All Product Expired",
-                    function: () {}),
+                    function: () {
+                      _navigateToAchiveproductScreen(context);
+                    }),
                 CustomList(
                     imagesPath: "assets/images/wishlist_svg.png",
                     text: "Wishlist",
