@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tukdak/screens/authscreen/forgotpassword.dart';
 import 'package:tukdak/screens/authscreen/signupScreen.dart';
+import 'package:tukdak/screens/homePage.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,6 +18,13 @@ class _LoginscreenState extends State<LoginScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const Signup()),
+    );
+  }
+
+  void _navigateToHomeScreen(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const HomePage()),
     );
   }
 
@@ -128,7 +136,7 @@ class _LoginscreenState extends State<LoginScreen> {
                   ),
                   minimumSize: const Size(300, 50)),
               onPressed: () {
-                _navigateToSignupScreen(context);
+                _navigateToHomeScreen(context);
               },
               icon: const Icon(
                 Icons.login,
@@ -155,7 +163,7 @@ class _LoginscreenState extends State<LoginScreen> {
                   style: TextStyle(
                     color: Colors.blueGrey,
                     fontWeight: FontWeight.bold,
-                   
+
                   ),
                 ),
               ),

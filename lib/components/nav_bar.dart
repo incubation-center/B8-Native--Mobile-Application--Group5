@@ -21,7 +21,7 @@ class NavBar extends StatelessWidget {
         child: PageView(
           onPageChanged: controller.animateToTab,
           controller: controller.pageController,
-          physics: const BouncingScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           children: [
             HomePage(),
             Category(),

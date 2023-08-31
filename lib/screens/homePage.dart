@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tukdak/components/profilebar.dart';
 
 class SlideData {
   final String section;
@@ -39,8 +40,10 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Screen'),
-        backgroundColor: Color(0xFFAAC7D7),
+        // backgroundColor: const Color(0xFFAAC7D7),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        elevation: 0,
+        title: const Profilebar(),
       ),
       body: Column(
         children: [

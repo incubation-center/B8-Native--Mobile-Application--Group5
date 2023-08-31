@@ -16,10 +16,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const GetMaterialApp(
-          home: MainScreen(),
-          // home: Signup(),
-          // home: LoginScreen(),
-          // home: ProfileScreen(),
+      // home: LoginScreen(),
+      home: MainScreen(),
+      // home: LoginScreen(),
+      // home: ProfileScreen(),
     );
     // return GetMaterialApp(
     //   home: addCategory(),
