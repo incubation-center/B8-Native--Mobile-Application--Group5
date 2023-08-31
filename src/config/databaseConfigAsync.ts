@@ -3,15 +3,18 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const DATABASE_NAME = process.env.DATABASE_NAME || 'database_name';
-const DATABASE_USERNAME = process.env.DATABASE_USER || 'username';
-const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD || 'password';
+const DATABASE_NAME = process.env.DATABASE_NAME || 'property';
+const DATABASE_USERNAME = process.env.DATABASE_USER || 'long hakly';
+const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD || 'A45698700a';
 
 export const sequelize = new Sequelize(DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD, {
   host: 'localhost',
-  dialect: 'postgres',
+  dialect: 'mysql', //postgres
   logging: false,
 });
+import PropertyModel from '../app/property/models';
+import UserModel from '../app/user/models';
+import CategoryModel from '../app/category/models';
 
 export async function syncDatabase() {
     try {

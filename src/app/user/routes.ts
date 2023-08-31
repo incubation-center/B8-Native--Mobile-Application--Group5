@@ -1,5 +1,5 @@
 import express from 'express';
-import { getUsers, createUser, loginUser, getUserById, updateUserById, getUser } from './controllers';
+import { getUsers, createUser, loginUser, getUserById, updateUserById, getUser, verifyEmail, forgotpassword, changepassword } from './controllers';
 import { authenticateToken } from '../../helper/authenticationToken';
 const router = express.Router();
 
@@ -12,4 +12,8 @@ router.post('/user', createUser);
 router.get('/user', authenticateToken, getUser);
 router.get('/user/:id', authenticateToken, getUserById);
 router.put('/user/:id', authenticateToken, updateUserById);
+router.get('/confirm/:id', verifyEmail);
+router.post('/user/forgotpassword', forgotpassword);
+router.put('/user/changepassword/:id', changepassword);
+
 export default router;

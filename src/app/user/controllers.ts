@@ -2,7 +2,8 @@ import { Request, Response } from 'express';
 import UserModel from './models';
 import bcrypt from 'bcrypt';
 import { generateAccessToken } from '../../helper/generateAccessToken';
-import { JwtPayload } from 'jsonwebtoken';
+import { JwtPayload, decode } from 'jsonwebtoken';
+import { sendConfirmationEmail, sendForgotPasswordEmail } from '../../config/sendEmailConfig';
 
 interface AuthenticatedRequest extends Request {
   user?: JwtPayload;
@@ -10,6 +11,9 @@ interface AuthenticatedRequest extends Request {
 
 export const getUsers = async (req: AuthenticatedRequest, res: Response) => {
   try {
+    if (req.user?.role != 'ADMIN'){
+      return res.status(403).json({ error: 'Forbidden' });
+    }
     const users = await UserModel.findAll();
     res.json(users);
   } catch (error) {
@@ -66,10 +70,14 @@ export const updateUserById = async (req: Request, res: Response) => {
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-    const { username, email, password } = req.body;
-    if (!username || !email || !password) 
+    const { username, email, password1, password2 } = req.body;
+    if (!username || !email || !password1 || !password2) 
       return res.status(400).json({ error: 'Please provide username, email, and password' });
-    const newUser = await UserModel.create({username, email, password});
+    if (password1 !== password2)
+      return res.status(400).json({ error: 'Passwords do not match' });
+    const newUser = await UserModel.create({username, email, password : password1});
+
+    sendConfirmationEmail(newUser)
     res.json(newUser);
   } catch (error) {
     console.error('Error creating user:', error);
@@ -86,7 +94,9 @@ export const loginUser = async (req: Request, res: Response) => {
     const user = await UserModel.findOne({ where: { email } });
     if (!user) 
       return res.status(400).json({ error: 'No user found with that email' });
-    
+    if (user.verify != true){
+      return res.status(400).json({ error: 'Please your email to verify your account' });
+    }
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) 
       return res.status(400).json({ error: 'Invalid password' });
@@ -96,3 +106,70 @@ export const loginUser = async (req: Request, res: Response) => {
     console.log(error);
   }
 };
+
+export const forgotpassword = async (req: Request, res: Response) => {
+  try{
+    const { email } = req.body;
+    if (!email) 
+      return res.status(400).json({ error: 'Please provide email' });
+    const user = await UserModel.findOne({ where: { email } });
+    if (!user) 
+      return res.status(400).json({ error: 'No user found with that email' });
+    sendForgotPasswordEmail(user);
+    res.status(200).json({ message: 'Email sent' });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const verifyEmail = async (req: Request, res: Response) => {
+  try{
+    const { id } = req.params;
+    const user = await UserModel.findOne({ where: { id } });
+    if (!user){
+      return res.status(400).json({ error: 'Invalid Token' });
+    }
+    user.verify = true;
+    await user.save();
+    res.status(200).json({ message: 'Email verified' });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const changepassword = async (req: Request, res: Response) => {
+  try{
+    const { id } = req.params;
+    const { password1, password2 } = req.body;
+    const user = await UserModel.findOne({ where: { id } });
+    if (!user)
+      return res.status(400).json({ error: 'Invalid Token' });
+    if (!password1 || !password2) 
+      return res.status(400).json({ error: 'Please provide password' });
+    if (password1 !== password2)
+      return res.status(400).json({ error: 'Passwords do not match' });
+    const saltRounds = await bcrypt.genSalt();
+    user.password = await bcrypt.hash(password1, saltRounds);
+    await user.save();
+    res.status(200).json({ message: 'Password changed' });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateUserDeviceToken = async (req: Request, res: Response) => {
+  try {
+    const { userId, deviceToken } = req.body;
+    const user = await UserModel.findOne({ where: { id: userId } });
+    if (!user){
+      return res.status(400).json({ error: 'Invalid User' });
+    }
+    user.deviceToken = deviceToken;
+    await user.save();
+    res.status(200).json({ 'user': user, message: 'devicetoken updated successfully' });
+  } catch (error) {
+    console.error('Error updating deviceToken:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+
+}
