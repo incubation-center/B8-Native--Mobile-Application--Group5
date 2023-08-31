@@ -30,6 +30,12 @@ class AddCategoryController extends GetxController {
     itemCount.value = category.value.length;
   }
 
+  editCategory(int index, String categoryName) {
+    if (index >= 0 && index < category.value.length) {
+      category.value[index].categoryName = categoryName;
+    }
+  }
+
   removeCategory(int index) {
     category.value.removeAt(index);
     itemCount.value = category.value.length;

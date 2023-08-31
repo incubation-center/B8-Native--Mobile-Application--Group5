@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CategoryModel {
-  final String? categoryName;
+  String categoryName;
 
     CategoryModel(
-      {@required this.categoryName});
+      {required this.categoryName});
 }

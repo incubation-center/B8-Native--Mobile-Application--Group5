@@ -18,19 +18,85 @@ class navBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: PageView(
-          onPageChanged: controller.animateToTab,
-          controller: controller.pageController,
-          physics: const BouncingScrollPhysics(),
-          children: const [
-            HomePage(),
-            Category(),
-            AddProperty(),
-            Search(),
-            NotifyAlert(),
-          ],
+        // child: WillPopScope(
+        // onWillPop: () {
+        //   return Future.value(false);
+        // },
+          child: PageView(
+            onPageChanged: controller.animateToTab,
+            controller: controller.pageController,
+            physics: const NeverScrollableScrollPhysics(),
+            children: [
+              HomePage(),
+              Category(),
+              AddProperty(),
+              Search(),
+              // NotifyAlert(notifications: [
+              //   NotificationModel(
+              //     icon: Icons.notification_important,
+              //     title: "Reminder",
+              //     body: "Hey, heads-up! Your Coca-Cola is nearing expiration. Savour it soon!",
+              //     time: "09:00 AM", // Replace with the actual time
+              //   ),
+              //
+              //   NotificationModel(
+              //     icon: Icons.notification_important,
+              //     title: "Friendly reminder",
+              //     body: "Your chicken's expiry date is coming up. Time for a tasty meal!",
+              //     time: "11:30 AM", // Replace with the actual time
+              //   ),
+              //
+              //   NotificationModel(
+              //     icon: Icons.notification_important,
+              //     title: "Reminder",
+              //     body: "Hey! Your veggies are almost expired. Perfect time for a healthy meal.",
+              //     time: "02:15 PM", // Replace with the actual time
+              //   ),
+              //   NotificationModel(
+              //     icon: Icons.notification_important,
+              //     title: "Reminder",
+              //     body: "Your chicken's expiry date is coming up. Time for a tasty meal!",
+              //     time: "02:15 PM",
+              //   ),
+              //   NotificationModel(
+              //     icon: Icons.notification_important,
+              //     title: "Password reset",
+              //     body: "Your password has been restored successfully.",
+              //     time: "02:15 PM",
+              //   ),
+              //   NotificationModel(
+              //     icon: Icons.notification_important,
+              //     title: "Hello",
+              //     body: "Hey! You have successfully logged into the property management. Please enjoy your experience with our app.",
+              //     time: "02:15 PM",
+              //   ),
+              //   NotificationModel(
+              //     icon: Icons.notification_important,
+              //     title: "Hello",
+              //     body: "You have successfully created an account with Property Management.",
+              //     time: "02:15 PM",
+              //   ),
+              // ]),
+            ],
+          // child: WillPopScope(
+          //   onWillPop: () {
+          //     return Future.value(false);
+          //   },
+          //   child: PageView(
+          //     onPageChanged: controller.animateToTab,
+          //     controller: controller.pageController,
+          //     physics: const NeverScrollableScrollPhysics(),
+          //     children: const [
+          //       HomePage(),
+          //       Category(),
+          //       AddProperty(),
+          //       Search(),
+          //       NotifyAlert(),
+          //     ],
+          //   ),
+          ),
         ),
-      ),
+      // ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.transparent,
         height: 80,

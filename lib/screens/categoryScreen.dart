@@ -22,14 +22,14 @@ class _CategoryState extends State<Category> {
         children: [
           Container(
             height: 160,
-            decoration: BoxDecoration(color: Color(0xFFAAC7D7)),
+            decoration: const BoxDecoration(color: Color(0xFFAAC7D7)),
             child: Padding(
-              padding: EdgeInsets.only(left: 15, top: 60),
+              padding: const EdgeInsets.only(left: 15, top: 60),
               child: Row(
                 children: [
                   ZoomTapAnimation(
                     child: ElevatedButton(
-                      child: const Text(
+                      child: Text(
                           "+ Category",
                           style: TextStyle(
                             color: Color(0xFFAAC7D7),
@@ -55,11 +55,11 @@ class _CategoryState extends State<Category> {
           ),
           Expanded(
             child: ClipRRect(
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(25)),
+                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(25)),
                     child: Container(
                       color: Colors.white,
                       child: Padding(
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(20),
                         child: Expanded(
                             child: Obx(() => ListView.builder(
                               itemCount: controller.itemCount.value,
@@ -67,18 +67,18 @@ class _CategoryState extends State<Category> {
                                 return Container(
                                   margin: new EdgeInsets.only(top: 10) ,
                                   decoration: BoxDecoration(
-                                    color: Color(0xFFDFEBF7),
+                                    // color: Color(0xFFDFEBF7),
                                     // border: Border.all(color: Colors.grey),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   child: ListTile(
-                                    contentPadding: EdgeInsets.fromLTRB(20, 10, 20, 10) ,
+                                    contentPadding: EdgeInsets.fromLTRB(20, 10, 10, 10) ,
                                     title: Row(
                                       children: [
                                         Expanded(
                                           child: Text(
                                               controller.category.value[index].categoryName!,
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: Color(0xFF768A95),
                                                 fontSize: 24,
                                               ),
@@ -86,19 +86,19 @@ class _CategoryState extends State<Category> {
                                         ),
                                         ZoomTapAnimation(
                                           child: GestureDetector(
-                                            child: Icon(
+                                            child: const Icon(
                                               Icons.edit_rounded,
                                               color: Color(0xFF768A95),
                                             ),
                                             onTap: () {
-                                              // Handle edit action here
+
                                             },
                                           ),
                                         ),
-                                        SizedBox(width: 16), // Add some spacing between icons
+                                        const SizedBox(width: 16), // Add some spacing between icons
                                         ZoomTapAnimation(
                                           child: GestureDetector(
-                                            child: Icon(
+                                            child: const Icon(
                                               Icons.delete_rounded,
                                               color: Color(0xFF768A95),
                                             ),
