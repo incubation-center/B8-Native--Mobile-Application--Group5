@@ -4,7 +4,7 @@ import '/screens/addCategory.dart';
 import '/screens/addProperty.dart';
 import '/screens/categoryScreen.dart';
 import '/screens/mainScreen.dart';
-import '/screens/signupScreen.dart';
+import '../screens/authscreen/signupScreen.dart';
 
 // GoRouter configuration
 GoRouter router = GoRouter(

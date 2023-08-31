@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tukdak/components/nav_bar.dart';
 import 'package:get/get.dart';
+import 'package:tukdak/components/profilebar.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -10,11 +11,9 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: navBar(),
       body: Stack(
         children: [
           const Column(
@@ -26,9 +25,9 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ],
           ),
-          // Positioned(
-          //   // child: NavB, // Placing the bottom navigation bar at the bottom
-          // ),
+          Positioned(
+            child: NavBar(), // Placing the bottom navigation bar at the bottom
+          ),
         ],
       ),
       // bottomNavigationBar: navBar(),

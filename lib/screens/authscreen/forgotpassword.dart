@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:tukdak/screens/authscreen/forgotpassword.dart';
-import 'package:tukdak/screens/authscreen/signupScreen.dart';
+import 'package:tukdak/screens/authscreen/loginscreen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class ForgotpasswordSreen extends StatefulWidget {
+  const ForgotpasswordSreen({super.key});
   @override
   // ignore: library_private_types_in_public_api
-  _LoginscreenState createState() => _LoginscreenState();
+  _ForgotpasswordSreenState createState() => _ForgotpasswordSreenState();
 }
 
-class _LoginscreenState extends State<LoginScreen> {
+class _ForgotpasswordSreenState extends State<ForgotpasswordSreen> {
   bool _rememberMe = false;
   bool _passwordVisible = false;
-
   void _navigateToSignupScreen(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const Signup()),
-    );
-  }
-
-  void _navigateToForgotpasswordScreen(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const ForgotpasswordSreen()),
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }
 
@@ -56,62 +47,22 @@ class _LoginscreenState extends State<LoginScreen> {
             children: [
               Center(
                 child: Text(
-                  "Welcome to, Name",
+                  "Sign Up",
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(14.0),
+          const Padding(
+            padding: EdgeInsets.all(14.0),
             child: Column(
               children: [
-                const TextField(
+                TextField(
                   decoration: InputDecoration(
-                    hintText: "Enter Username Here",
-                    labelText: "Username",
+                    hintText: "Email",
+                    labelText: "your email",
                     contentPadding: EdgeInsets.symmetric(vertical: 20),
                   ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  obscureText: !_passwordVisible,
-                  decoration: InputDecoration(
-                    hintText: "Enter password ",
-                    labelText: "Password",
-                    contentPadding: const EdgeInsets.symmetric(vertical: 20),
-                    suffixIcon: IconButton(
-                      iconSize: 20,
-                      icon: Icon(
-                        _passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _passwordVisible = !_passwordVisible;
-                        });
-                      },
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: _rememberMe,
-                      onChanged: (newValue) {
-                        setState(() {
-                          _rememberMe = newValue!;
-                        });
-                      },
-                    ),
-                    const Text("Remember Me"),
-                  ],
                 ),
               ],
             ),
@@ -131,48 +82,14 @@ class _LoginscreenState extends State<LoginScreen> {
                 _navigateToSignupScreen(context);
               },
               icon: const Icon(
-                Icons.login,
+                Icons.add_home_sharp,
                 color: Colors.white,
               ),
               label: const Text(
-                "Login",
+                "Submit",
                 style: TextStyle(color: Colors.white),
               ),
             ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  _navigateToForgotpasswordScreen(context); // Navigate to signup screen
-                },
-                child: const Text(
-                  "Forgot password",
-                  style: TextStyle(
-                    color: Colors.blueGrey,
-                    fontWeight: FontWeight.bold,
-
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          const Center(
-            child: Text(
-              "OR",
-              style: TextStyle(
-                  color: Colors.blueGrey, fontWeight: FontWeight.bold),
-            ),
-          ),
-          const SizedBox(
-            height: 5,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -195,20 +112,19 @@ class _LoginscreenState extends State<LoginScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text("Didn’t have an account ?"),
+              
               GestureDetector(
                 onTap: () {
                   _navigateToSignupScreen(context); // Navigate to signup screen
                 },
                 child: const Text(
-                  " Sign up",
+                  " Back to login",
                   style: TextStyle(
                     color: Colors.blueGrey,
                     fontWeight: FontWeight.bold,
                     decorationThickness: 2.0,
                     decoration: TextDecoration.underline,
                     decorationColor: Colors.blueGrey,
-                    decorationStyle: TextDecorationStyle.solid,
                   ),
                 ),
               ),
@@ -222,6 +138,6 @@ class _LoginscreenState extends State<LoginScreen> {
 
 void main() {
   runApp(const MaterialApp(
-    home: LoginScreen(),
+    home: ForgotpasswordSreen(),
   ));
 }
