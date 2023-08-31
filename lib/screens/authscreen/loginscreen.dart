@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tukdak/screens/authscreen/forgotpassword.dart';
 import 'package:tukdak/screens/authscreen/signupScreen.dart';
 import 'package:tukdak/screens/homePage.dart';
+import 'package:tukdak/screens/mainScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -24,7 +25,7 @@ class _LoginscreenState extends State<LoginScreen> {
   void _navigateToHomeScreen(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const HomePage()),
+      MaterialPageRoute(builder: (context) => const MainScreen()),
     );
   }
 
