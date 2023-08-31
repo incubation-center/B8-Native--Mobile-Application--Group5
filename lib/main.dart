@@ -16,8 +16,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const GetMaterialApp(
+      // home: LoginScreen(),
       home: MainScreen(),
-      // home: Signup(),
       // home: LoginScreen(),
       // home: ProfileScreen(),
     );
