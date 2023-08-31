@@ -32,7 +32,7 @@ class _MainScreenState extends State<MainScreen> {
             ],
           ),
           Positioned(
-            child: navBar(), // Placing the bottom navigation bar at the bottom
+            child: NavBar(), // Placing the bottom navigation bar at the bottom
           ),
         ],
       ),
