@@ -15,11 +15,28 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: NavBar(),
-      body: SafeArea(
-        child: Center(
-          child: const Text('Home'),
-        ),
+      body: Stack(
+        children: [
+          const Column(
+            children: [
+              Expanded(
+                child: Center(
+                  child: Text('Home'),
+                ),
+              ),
+            ],
+          ),
+          // Positioned(
+          //   // child: NavB, // Placing the bottom navigation bar at the bottom
+          // ),
+        ],
       ),
+      // bottomNavigationBar: navBar(),
+      // body: const SafeArea(
+      //   child: Center(
+      //     child: Text('Home'),
+      //   ),
+      // ),
     );
   }
 }
