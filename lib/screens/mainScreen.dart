@@ -14,7 +14,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: navBar(),
+      bottomNavigationBar: NavBar(),
       body: SafeArea(
         child: Center(
           child: const Text('Home'),
