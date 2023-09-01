@@ -1,30 +1,34 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import userRoutes from './app/user/routes';
-import cateRoute from './app/category/routes';
-import propertyRoute from './app/property/routes';
-import { sequelize, syncDatabase } from './config/databaseConfigAsync';
-import logRequest from './config/apiLogConfig';
-import './config/scheduler';
+import express from "express";
+import dotenv from "dotenv";
+import userRoutes from "./app/user/routes";
+import cateRoute from "./app/category/routes";
+import propertyRoute from "./app/property/routes";
+import { sequelize, syncDatabase } from "./config/databaseConfigAsync";
+import logRequest from "./config/apiLogConfig";
+import "./config/scheduler";
+
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
-console.log('PORT', PORT);
-app.use(express.json({ limit: '10mb' }));
+console.log("PORT", PORT);
+
+app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(logRequest);
-app.use('/', userRoutes);
-app.use('/category', cateRoute);
-app.use('/property', propertyRoute);
+app.use("/", userRoutes);
+app.use("/category", cateRoute);
+app.use("/property", propertyRoute);
+
 async function startServer() {
   try {
     await sequelize.authenticate();
     await syncDatabase();
     app.listen(PORT, () => {
-      console.log('Server is running on port 8000');
+      console.log("Server is running on port 8000");
     });
   } catch (error) {
-    console.error('Unable to connect to the database:', error);
+    console.error("Unable to connect to the database:", error);
   }
 }
+
 startServer();
