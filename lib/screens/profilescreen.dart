@@ -14,10 +14,12 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   void _navigateToMainScreen(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const MainScreen()),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const MainScreen()),
+    // );
+    Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+    // Navigator.of(context).pushReplacementNamed('/');
   }
 
   void _navigateToAchiveproductScreen(BuildContext context) {
@@ -33,7 +35,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight + 10.0),
         child: Container(
-          padding: const EdgeInsets.all(16.0), // Add padding to the Container
+          // color: Colors.black,
+          padding: const EdgeInsets.all(16.0),
           child: AppBar(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 0,
