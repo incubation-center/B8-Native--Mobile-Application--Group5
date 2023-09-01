@@ -15,9 +15,9 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: NavBar(),
-      body: Stack(
+      body: const Stack(
         children: [
-          const Column(
+          Column(
             children: [
               Expanded(
                 child: Center(

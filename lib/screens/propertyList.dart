@@ -13,20 +13,20 @@ class _PropertyListState extends State<PropertyList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFAAC7D7),
+      backgroundColor: const Color(0xFFAAC7D7),
       body: SafeArea(
         child: Column(
           children: [
             Container(
             height: 160,
-            decoration: BoxDecoration(color: Color(0xFFAAC7D7)),
-            child: Padding(
+            decoration: const BoxDecoration(color: Color(0xFFAAC7D7)),
+            child: const Padding(
                 padding: EdgeInsets.only(left: 15, top: 60)
             ),
             ),
             Expanded(
               child: ClipRRect(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(25)),
+                borderRadius: const BorderRadius.only(topLeft: Radius.circular(25)),
                 child: Container(
                   color: Colors.white,
                   child: Expanded(
@@ -34,7 +34,7 @@ class _PropertyListState extends State<PropertyList> {
                       // itemCount: controller.itemCount.value,
                       itemBuilder: ((context, index) {
                         return Container(
-                          margin: new EdgeInsets.only(top: 10) ,
+                          margin: const EdgeInsets.only(top: 10) ,
                           decoration: BoxDecoration(
                             // color: Color(0xFFDFEBF7),
                             // border: Border.all(color: Colors.grey),
@@ -44,7 +44,7 @@ class _PropertyListState extends State<PropertyList> {
                             contentPadding: EdgeInsets.fromLTRB(20, 10, 10, 10) ,
                             title: Row(
                               children: [
-                                Expanded(
+                                const Expanded(
                                   child: Text(
                                     'hello'
                                     // controller.category.value[index].categoryName!,

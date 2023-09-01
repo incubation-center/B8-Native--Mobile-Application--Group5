@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tukdak/components/profilebar.dart';
+import 'package:tukdak/screens/mainScreen.dart';
 
 class SlideData {
   final String section;
@@ -19,13 +20,22 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final PageController _pageController = PageController(initialPage: 0);
   final List<SlideData> userGuideSlides = [
-    SlideData("GET TO KNOW OUR GOAL", "Our primary goal is to effectively oversee the management of your property holdings. You can easily catalogue your assets according to their respective categories, and we also offer an alert feature designed to notify you as your items approach their expiration dates.!"),
-    SlideData("USE OF APPLICATION", "Use scanning to add products", Icons.camera_alt_sharp),
-    SlideData("USE OF APPLICATION", "After scanning, our app automatically identifies and displays product details, allowing for easy viewing and customizable updates."),
-    SlideData("USE OF APPLICATION", "Our application will send notifications as your product approaches expiration, ensuring you stay updated on your property status."),
+    SlideData("GET TO KNOW OUR GOAL",
+        "Our primary goal is to effectively oversee the management of your property holdings. You can easily catalogue your assets according to their respective categories, and we also offer an alert feature designed to notify you as your items approach their expiration dates.!"),
+    SlideData("USE OF APPLICATION", "Use scanning to add products",
+        Icons.camera_alt_sharp),
+    SlideData("USE OF APPLICATION",
+        "After scanning, our app automatically identifies and displays product details, allowing for easy viewing and customizable updates."),
+    SlideData("USE OF APPLICATION",
+        "Our application will send notifications as your product approaches expiration, ensuring you stay updated on your property status."),
   ];
   int _currentPage = 0;
-
+// void _navigateToMainScreen(BuildContext context) {
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(builder: (context) => const MainScreen()),
+//     );
+//   }
   @override
   void initState() {
     super.initState();
@@ -41,8 +51,20 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         // backgroundColor: const Color(0xFFAAC7D7),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 0,
+        // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        // elevation: 0,
+
+        // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        // elevation: 0,
+
+        // leading: IconButton(
+        //   onPressed: () {
+        //     _navigateToMainScreen(context);
+        //   },
+        //   icon: const Icon(Icons.arrow_back_ios),
+        //   color: Colors.black,
+        // ),
+
         title: const Profilebar(),
       ),
       body: Column(
@@ -61,7 +83,8 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(height: 16),
                     Text(
                       userGuideSlides[index].section,
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 20),
                     Text(
@@ -76,7 +99,8 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(height: 10), // Add spacing between content and indicators
           Padding(
-            padding: EdgeInsets.only(bottom: 100), // Adjust this value as needed
+            padding:
+                EdgeInsets.only(bottom: 100), // Adjust this value as needed
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(userGuideSlides.length, (index) {
