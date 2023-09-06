@@ -111,7 +111,7 @@ export const loginUser = async (req: Request, res: Response) => {
     if (user.verify != true) {
       return res
         .status(400)
-        .json({ error: "Please your email to verify your account" });
+        .json({ error: "Please check your email to verify your account" });
     }
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch)
