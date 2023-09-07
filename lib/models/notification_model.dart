@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 class NotificationModel {
-  final IconData icon;
   final String title;
   final String body;
-  final String time; // Add the time property
+  final IconData icon;
+  final DateTime time;
+  // bool isRead; // Add this property
 
   NotificationModel({
-    required this.icon,
     required this.title,
     required this.body,
-    required this.time, // Pass the time property through the constructor
+    required this.icon,
+    required this.time,
+    // this.isRead = false, // Default value is false, indicating not read
   });
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:tukdak/screens/homePage.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import 'package:get/get.dart';
 import 'package:tukdak/controller/NavController.dart';
+import 'package:tukdak/screens/notifyAlert.dart'; // Import the NotifyAlert class
 import 'package:tukdak/screens/Search.dart';
-import 'package:tukdak/screens/homePage.dart';
 import 'package:tukdak/screens/categoryScreen.dart';
 import 'package:tukdak/screens/addProperty.dart';
-import 'package:tukdak/screens/notifyAlert.dart';
 import 'package:tukdak/models/notification_model.dart'; // Import the NotificationModel class
 
 class NavBar extends StatelessWidget {
@@ -21,7 +21,7 @@ class NavBar extends StatelessWidget {
         child: PageView(
           onPageChanged: controller.animateToTab,
           controller: controller.pageController,
-          physics: const NeverScrollableScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           children: [
             HomePage(),
             Category(),
@@ -32,45 +32,45 @@ class NavBar extends StatelessWidget {
                 icon: Icons.notification_important,
                 title: "Reminder",
                 body: "Hey, heads-up! Your Coca-Cola is nearing expiration. Savour it soon!",
-                time: "09:00 AM", // Replace with the actual time
+                time: DateTime.parse("2023-09-01 09:00:00"), // Replace with the actual time
               ),
 
               NotificationModel(
                 icon: Icons.notification_important,
                 title: "Friendly reminder",
                 body: "Your chicken's expiry date is coming up. Time for a tasty meal!",
-                time: "11:30 AM", // Replace with the actual time
+                time: DateTime.parse("2023-09-01 11:30:00"), // Replace with the actual time
               ),
 
               NotificationModel(
                 icon: Icons.notification_important,
                 title: "Reminder",
                 body: "Hey! Your veggies are almost expired. Perfect time for a healthy meal.",
-                time: "02:15 PM", // Replace with the actual time
+                time: DateTime.parse("2023-09-01 11:30:00"), // Replace with the actual time
               ),
               NotificationModel(
                 icon: Icons.notification_important,
                 title: "Reminder",
                 body: "Your chicken's expiry date is coming up. Time for a tasty meal!",
-                time: "02:15 PM",
+                time: DateTime.parse("2023-09-01 11:30:00"),
               ),
               NotificationModel(
                 icon: Icons.notification_important,
                 title: "Password reset",
                 body: "Your password has been restored successfully.",
-                time: "02:15 PM",
+                time: DateTime.parse("2023-09-01 11:30:00"),
               ),
               NotificationModel(
                 icon: Icons.notification_important,
                 title: "Hello",
                 body: "Hey! You have successfully logged into the property management. Please enjoy your experience with our app.",
-                time: "02:15 PM",
+                time: DateTime.parse("2023-09-01 11:30:00"),
               ),
               NotificationModel(
                 icon: Icons.notification_important,
                 title: "Hello",
                 body: "You have successfully created an account with Property Management.",
-                time: "02:15 PM",
+                time: DateTime.parse("2023-09-01 11:30:00"),
               ),
             ]),
           ],
