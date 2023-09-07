@@ -9,7 +9,6 @@ import 'package:tukdak/screens/mainScreen.dart';
 import 'package:tukdak/screens/propertyInfo.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AddProperty extends StatefulWidget {
   const AddProperty({super.key});
