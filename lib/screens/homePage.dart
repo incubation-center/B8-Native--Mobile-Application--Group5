@@ -39,8 +39,22 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home Screen'),
-        backgroundColor: Color(0xFFAAC7D7),
+        backgroundColor: const Color(0xFFAAC7D7),
+        // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        // elevation: 0,
+
+        // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        // elevation: 0,
+
+        // leading: IconButton(
+        //   onPressed: () {
+        //     _navigateToMainScreen(context);
+        //   },
+        //   icon: const Icon(Icons.arrow_back_ios),
+        //   color: Colors.black,
+        // ),
+
+        title: const Profilebar(),
       ),
       body: Column(
         children: [

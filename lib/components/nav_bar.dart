@@ -26,7 +26,7 @@ class NavBar extends StatelessWidget {
             HomePage(),
             Category(),
             AddProperty(),
-            Search(),
+            SearchScreen(),
             NotifyAlert(notifications: [
               NotificationModel(
                 icon: Icons.notification_important,
