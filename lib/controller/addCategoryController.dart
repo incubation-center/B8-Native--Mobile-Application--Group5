@@ -9,9 +9,16 @@ class AddCategoryController extends GetxController {
 
   late CategoryModel categoryModel;
   var itemCount = 0.obs;
+  bool isEdit = false;
+
   @override
   void onInit() {
     super.onInit();
+    if(category != null) {
+      isEdit = true;
+      // categoryNameTextEditingController.text = category.value
+      // editCategory(index, categoryName);
+    }
   }
 
   @override
@@ -32,7 +39,9 @@ class AddCategoryController extends GetxController {
 
   editCategory(int index, String categoryName) {
     if (index >= 0 && index < category.value.length) {
+      isEdit = true;
       category.value[index].categoryName = categoryName;
+      // index = newIndex;
     }
   }
 

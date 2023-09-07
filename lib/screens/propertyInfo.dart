@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tukdak/controller/dateController.dart';
+import 'package:tukdak/controller/propertryController.dart';
+import 'package:tukdak/screens/addProperty.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+
 
 class PropertyInfo extends StatefulWidget {
   const PropertyInfo({super.key});
@@ -12,9 +15,14 @@ class PropertyInfo extends StatefulWidget {
   State<PropertyInfo> createState() => _PropertyInfoState();
 }
 
+
+
 class _PropertyInfoState extends State<PropertyInfo> {
+  final AddPropertyController controller = Get.put(AddPropertyController());
+  DateController dateController = Get.put(DateController());
   bool expire = false;
-  DateController controller = Get.put(DateController());
+  String selectedValue = "Foods";
+
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +30,15 @@ class _PropertyInfoState extends State<PropertyInfo> {
       backgroundColor: Color(0xFFAAC7D7),
       body: SafeArea(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
           children: [
             Container(
               height: 120,
               decoration: BoxDecoration(color: Color(0xFFAAC7D7)),
               child:
               Padding(
-                padding: EdgeInsets.only(left: 15, top: 20),
+                padding: EdgeInsets.only(left: 15),
                 child: Row(
                   children: [
                     IconButton(
@@ -49,6 +59,8 @@ class _PropertyInfoState extends State<PropertyInfo> {
                 child: Container(
                   color: Colors.white,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
@@ -59,12 +71,18 @@ class _PropertyInfoState extends State<PropertyInfo> {
                             width: 80 ,
                             height: 110,
                             decoration: BoxDecoration(
-                              color: Colors.cyanAccent,
+                              image: DecorationImage(
+                                image: FileImage(controller.imageFile!),
+                                fit: BoxFit.cover,
+                              ),
+                              // color: Colors.cyanAccent,
                               // border: Border.all(width: 1),
                               borderRadius: BorderRadius.circular(10)
                             ),
                         ),
                           Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.max,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
@@ -79,12 +97,12 @@ class _PropertyInfoState extends State<PropertyInfo> {
                                 ),
                               ),
                               Container(
-                                  width: 250,
+                                  width: 200,
                                   padding: const EdgeInsets.only(left:40),
                                   child:
-                                  const TextField(
-                                    // controller: controller.categoryNameTextEditingController,
-                                    decoration: InputDecoration(
+                                  TextField(
+                                    controller: controller.propertyNameTextEditingController,
+                                    decoration: const InputDecoration(
                                         focusColor: Color(0xFF768A95),
                                         hintText: 'Enter name',
                                         hintStyle: TextStyle(
@@ -110,21 +128,21 @@ class _PropertyInfoState extends State<PropertyInfo> {
                         ),
                       ),
                       Container(
-                          width: 350,
+                          width: 300,
                           padding: const EdgeInsets.only(left:40),
                           child:
-                          const TextField(
+                          DropdownButton(
                             // controller: controller.categoryNameTextEditingController,
-                            decoration: InputDecoration(
-                                focusColor: Color(0xFF768A95),
-                                hintText: 'Enter category name',
-                                hintStyle: TextStyle(
-                                    color: Color(0xFFC6D0D6)
-                                )
-                            ),
+                              value: selectedValue,
+                              onChanged: (String? newValue){
+                                setState(() {
+                                  selectedValue = newValue!;
+                                });
+                              },
+                              items: dropdownItems
                           ),
-                        ),
 
+                          ),
                       Container(
                         padding: const EdgeInsets.only(left:40,top: 20),
                         child: const Text(
@@ -137,7 +155,7 @@ class _PropertyInfoState extends State<PropertyInfo> {
                         ),
                       ),
                       Container(
-                        width: 350,
+                        width: 300,
                         padding: const EdgeInsets.only(left:40),
                         child:
                         const TextField(
@@ -185,17 +203,19 @@ class _PropertyInfoState extends State<PropertyInfo> {
                           ),
                     if(expire)
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            width: 350,
+                            width: 300,
                             padding: const EdgeInsets.only(left:40),
                             child: TextField(
                                 style: const TextStyle(
                                   fontSize: 16,
                                   // color: Color(0xFFC6D0D6)
                                 ),
-                                controller: controller.dateController,
+                                controller: dateController.dateController,
                                 decoration: const InputDecoration(//icon of text field
                                   hintText: "Enter Date" ,
                                   hintStyle: TextStyle(
@@ -229,7 +249,7 @@ class _PropertyInfoState extends State<PropertyInfo> {
                                     //You can format date as per your need
 
                                     setState(() {
-                                      controller.dateController.text = formattedDate; //set foratted date to TextField value.
+                                      dateController.dateController.text = formattedDate; //set foratted date to TextField value.
                                     });
                                   }else{
                                     print("Date is not selected");
@@ -252,7 +272,7 @@ class _PropertyInfoState extends State<PropertyInfo> {
                             // mainAxisSize: MainAxisSize.min,
                             children:[
                             Container(
-                              width: 240,
+                              width: 200,
                               padding: const EdgeInsets.only(left:40),
                                 child: TextField(
                                   keyboardType: TextInputType.number, // Set numeric keyboard
@@ -283,7 +303,7 @@ class _PropertyInfoState extends State<PropertyInfo> {
                       Center(
                         child: Container(
                           width: 320,
-                          padding: const EdgeInsets.only(top: 40),
+                          padding: const EdgeInsets.only(top: 20),
                           child:
                           ZoomTapAnimation(
                             child: ElevatedButton(
@@ -294,8 +314,15 @@ class _PropertyInfoState extends State<PropertyInfo> {
                                 ),
                               ),
                               onPressed: () =>  {
+                                controller.addProperty(controller.propertyNameTextEditingController.text,
+                                  'Skincare',
+                                  '#20',
+                                  true,
+                                  DateTime.now(),
+                                  0,            ),
+                                // Get.to(() => PropertyList()),
                                 // controller.addNewCategory(controller.categoryNameTextEditingController.text),
-                                // Get.back(),
+                                Get.back(),
                               },
                               style: ButtonStyle(
                                 elevation: MaterialStateProperty.all(0),
@@ -320,4 +347,13 @@ class _PropertyInfoState extends State<PropertyInfo> {
       ),
     );
   }
+}
+
+List<DropdownMenuItem<String>> get dropdownItems{
+  List<DropdownMenuItem<String>> menuItems = [
+    DropdownMenuItem(child: Text("Foods"),value: "Foods"),
+    DropdownMenuItem(child: Text("Utilities"),value: "Utilities"),
+    DropdownMenuItem(child: Text("Skincare"),value: "Skincare"),
+  ];
+  return menuItems;
 }

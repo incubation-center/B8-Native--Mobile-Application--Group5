@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:get/get.dart';
+import 'package:tukdak/controller/NavController.dart';
 import 'package:tukdak/screens/homePage.dart';
 import 'package:tukdak/screens/mainScreen.dart';
 import 'package:tukdak/screens/productAchive.dart';
+import 'package:get/get.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -13,14 +16,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  void _navigateToMainScreen(BuildContext context) {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const MainScreen()),
-    // );
-    Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
-    // Navigator.of(context).pushReplacementNamed('/');
-  }
+  final NavBarController controller = Get.put(NavBarController());
 
   void _navigateToAchiveproductScreen(BuildContext context) {
     Navigator.push(
@@ -42,7 +38,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             elevation: 0,
             leading: IconButton(
               onPressed: () {
-                _navigateToMainScreen(context);
+                // controller.homepage(0);
+                Get.back();
               },
               icon: const Icon(Icons.arrow_back_ios),
               color: Colors.black,

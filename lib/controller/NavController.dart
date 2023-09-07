@@ -12,6 +12,11 @@ class NavBarController extends GetxController {
     pageController.jumpToPage(page);
   }
 
+  void homepage(int page){
+    currentPage.value = page;
+    pageController.jumpToPage(0);
+  }
+
   void animateToTab(int page){
     currentPage.value = page;
     pageController.animateToPage(page,
@@ -23,6 +28,7 @@ class NavBarController extends GetxController {
   void onInit() {
     pageController = PageController(initialPage: 0);
     super.onInit();
+
   }
 
   @override

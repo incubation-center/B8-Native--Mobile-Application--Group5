@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../controller/addCategoryController.dart';
+import 'categoryScreen.dart';
 
 class addCategory extends StatefulWidget {
   const addCategory({super.key});
@@ -12,6 +13,7 @@ class addCategory extends StatefulWidget {
 class _addCategoryState extends State<addCategory> {
 
   final AddCategoryController controller = Get.put(AddCategoryController());
+  bool isEdit = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,8 +91,12 @@ class _addCategoryState extends State<addCategory> {
                                         ),
                                       ),
                                       onPressed: () =>  {
-                                        controller.addNewCategory(controller.categoryNameTextEditingController.text),
-                                        Get.back(),
+                                      // if (isEdit) {
+                                      //   controller.editCategory(index, controller.categoryNameTextEditingController.text)
+                                      // } else {
+                                      controller.addNewCategory(controller.categoryNameTextEditingController.text),
+                                      // },
+                                      Get.back(),
                                         },
                                       style: ButtonStyle(
                                         elevation: MaterialStateProperty.all(0),
