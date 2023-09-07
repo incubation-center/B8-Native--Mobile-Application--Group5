@@ -17,6 +17,10 @@ interface GoogleAuthenticatedRequest extends Request {
   user?: UserModel;
 }
 
+interface SessionRequest extends Request {
+  session?: any;
+}
+
 export const getUsers = async (req: AuthenticatedRequest, res: Response) => {
   try {
     if (req.user?.role != "ADMIN") {
@@ -77,22 +81,38 @@ export const updateUserById = async (req: Request, res: Response) => {
 export const createUser = async (req: Request, res: Response) => {
   try {
     const { username, email, password1, password2 } = req.body;
+
+    // check if user already exists
+    const user = await UserModel.findOne({ where: { email } });
+    if (user) return res.status(400).json({ error: "User already exists" });
+
+    // check if user has provided all the fields
     if (!username || !email || !password1 || !password2)
       return res
         .status(400)
         .json({ error: "Please provide username, email, and password" });
+
+    // check if email is valid
+    const emailRegex =
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    if (!emailRegex.test(email))
+      return res.status(400).json({ error: "Please provide a valid email" });
+
+    // check if passwords match
     if (password1 !== password2)
       return res.status(400).json({ error: "Passwords do not match" });
+
+    // create new user in the database
     const newUser = await UserModel.create({
       username,
       email,
       password: password1,
     });
 
+    // send confirmation email
     sendConfirmationEmail(newUser);
     res.json(newUser);
   } catch (error) {
-    console.error("Error creating user:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -111,7 +131,7 @@ export const loginUser = async (req: Request, res: Response) => {
     if (user.verify != true) {
       return res
         .status(400)
-        .json({ error: "Please your email to verify your account" });
+        .json({ error: "Please check your email to verify your account" });
     }
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch)
@@ -189,6 +209,36 @@ export const updateUserDeviceToken = async (req: Request, res: Response) => {
   }
 };
 
+// pass query string to passport middleware
+export const passQueryString = (
+  req: SessionRequest,
+  res: Response,
+  next: any
+) => {
+  // Extract the query string from the original URL
+  const query = req.query;
+  // Store the query parameters in the session
+  req.session.query = query;
+  // Continue to the authentication process
+  next();
+};
+
+// retrerive query string from session and store in request
+export const getQueryString = (
+  req: SessionRequest,
+  res: Response,
+  next: any
+) => {
+  // Retrieve the query parameters from the session
+  const query = req.session.query;
+  // Remove the query parameters from the session (optional)
+  delete req.session.query;
+  // Store the query parameters in the request for later use
+  req.query.redirect_uri = query.redirect_uri;
+  // Continue to the Passport.js authentication callback
+  next();
+};
+
 // auth with google using passport
 export const googleRedirect = async (
   req: GoogleAuthenticatedRequest,
@@ -196,7 +246,6 @@ export const googleRedirect = async (
 ) => {
   // get redirect uri of frontend from query string
   const redirectUri = req.query.redirect_uri;
-  console.log("redirectUri", redirectUri);
 
   if (redirectUri) {
     const authorizedRedirectUris =
