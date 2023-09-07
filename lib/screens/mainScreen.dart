@@ -14,12 +14,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // backgroundColor: const Color(0xFFAAC7D7),
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 0,
-        title: const Profilebar(),
-      ),
+    
       body: Stack(
         children: [
           const Column(

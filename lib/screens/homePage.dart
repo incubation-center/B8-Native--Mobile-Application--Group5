@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tukdak/components/profilebar.dart';
 
 class SlideData {
   final String section;
