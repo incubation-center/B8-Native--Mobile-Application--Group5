@@ -1,13 +1,13 @@
-import 'dart:ffi';
+// import 'dart:ffi';
 
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 
 class PropertyModel {
   String propertyName;
   String category;
   String value;
   bool expire;
-  DateTime datePicker;
+  DateTime pickedDate;
   int alert;
 
   PropertyModel(
@@ -16,6 +16,6 @@ class PropertyModel {
         required this.category,
         required this.value,
         required this.expire,
-        required this.datePicker,
+        required this.pickedDate,
         required this.alert,});
 }
