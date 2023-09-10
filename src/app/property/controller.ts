@@ -160,7 +160,7 @@ export const searchProperty = async (
 
 export const detectPropertyObject = async (req: Request, res: Response) => {
   if (!model) {
-    res.status(500).send("Model is not loaded yet!");
+    res.status(500).send({ error: "Model not loaded yet" });
     return;
   }
 
