@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:tukdak/screens/authscreen/forgotpassword.dart';
 import 'package:tukdak/screens/authscreen/signupScreen.dart';
 import 'package:tukdak/screens/homePage.dart';
 import 'package:tukdak/screens/mainScreen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,12 +19,93 @@ class LoginScreen extends StatefulWidget {
 class _LoginscreenState extends State<LoginScreen> {
   bool _rememberMe = false;
   bool _passwordVisible = false;
+  bool visible = false;
+  final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+  // Getting value from TextField widget.
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  void login(String email, password) async {
+    try {
+      // Log the input values
+      // ignore: avoid_print
+      print("Email: $email");
+      // ignore: avoid_print
+      print("Password: $password");
+      final response = await http.post(
+        // Uri.parse('http://127.0.0.1:8000/user'),
+        Uri.http("localhost:8000", '/login'),
+        headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          'Accept': '*/*'
+        },
+        body:
+            jsonEncode(<String, String>{"email": email, "password": password}),
+      );
+      // print(response.body);
+      if (response.statusCode == 200) {
+        // ignore: use_build_context_synchronously
+        final jsonResponse = json.decode(response.body);
+        final String token = jsonResponse['accessToken'];
+
+        // Store the token securely (e.g., using secure_storage)
+        await secureStorage.write(key: 'auth_token', value: token);
+
+        if (token != null) {
+          // Log the token
+          print("Token: $token");
+          // Store the token securely
+          await secureStorage.write(key: 'auth_token', value: token);
+          // ignore: use_build_context_synchronously
+          _navigateToHomeScreen(context);
+        } else {
+          // Handle the case where 'token' is null in the response
+          Get.snackbar(
+            'Error',
+            'Authentication failed. Please check your credentials.',
+            snackPosition: SnackPosition.BOTTOM,
+          );
+        }
+        // ignore: use_build_context_synchronously
+        _navigateToHomeScreen(context);
+      } else {
+        // Authentication failed
+        Get.snackbar(
+          'Error',
+          'Authentication failed. Please check your credentials.',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+        print("Sign ip has some mistake!!!");
+      }
+    } catch (e) {
+      // Error occurred during the API request
+      print('Error: $e');
+      Get.snackbar(
+        'Error',
+        'An error occurred while trying to log in. Please try again later.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    }
+  }
+
+  void onPressedLoginButton() {
+    final email = emailController.text;
+    final password = passwordController.text;
+
+    if (email.isNotEmpty && password.isNotEmpty) {
+      login(email, password);
+    } else {
+      // Show an error message or alert the user that fields are empty.
+    }
+  }
 
   void _navigateToSignupScreen(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const Signup()),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const Signup()),
+    // );
+    Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
   }
 
   void _navigateToHomeScreen(BuildContext context) {
@@ -27,6 +113,7 @@ class _LoginscreenState extends State<LoginScreen> {
       context,
       MaterialPageRoute(builder: (context) => const MainScreen()),
     );
+    // Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false); 
   }
 
   void _navigateToForgotpasswordScreen(BuildContext context) {
@@ -75,8 +162,9 @@ class _LoginscreenState extends State<LoginScreen> {
             padding: const EdgeInsets.all(14.0),
             child: Column(
               children: [
-                const TextField(
-                  decoration: InputDecoration(
+                TextFormField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
                     hintText: "Enter Username Here",
                     labelText: "Username",
                     contentPadding: EdgeInsets.symmetric(vertical: 20),
@@ -87,6 +175,7 @@ class _LoginscreenState extends State<LoginScreen> {
                 ),
                 TextFormField(
                   obscureText: !_passwordVisible,
+                  controller: passwordController,
                   decoration: InputDecoration(
                     hintText: "Enter password ",
                     labelText: "Password",
@@ -137,7 +226,8 @@ class _LoginscreenState extends State<LoginScreen> {
                   ),
                   minimumSize: const Size(300, 50)),
               onPressed: () {
-                _navigateToHomeScreen(context);
+                // login(emailController.text, passwordController.text);
+                onPressedLoginButton();
               },
               icon: const Icon(
                 Icons.login,
@@ -157,14 +247,14 @@ class _LoginscreenState extends State<LoginScreen> {
             children: [
               GestureDetector(
                 onTap: () {
-                  _navigateToForgotpasswordScreen(context); // Navigate to signup screen
+                  _navigateToForgotpasswordScreen(
+                      context); // Navigate to signup screen
                 },
                 child: const Text(
                   "Forgot password",
                   style: TextStyle(
                     color: Colors.blueGrey,
                     fontWeight: FontWeight.bold,
-
                   ),
                 ),
               ),

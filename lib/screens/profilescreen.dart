@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:get/get.dart';
-import 'package:tukdak/controller/NavController.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:tukdak/screens/authscreen/loginscreen.dart';
 import 'package:tukdak/screens/homePage.dart';
 import 'package:tukdak/screens/mainScreen.dart';
 import 'package:tukdak/screens/productAchive.dart';
@@ -16,7 +16,29 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final NavBarController controller = Get.put(NavBarController());
+  final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
+
+  void _navigateToMainScreen(BuildContext context) {
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const MainScreen()),
+    // );
+    Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+    // Navigator.of(context).pushReplacementNamed('/');
+  }
+
+  void logout() async {
+    // Clear the authentication token
+    await secureStorage.delete(key: 'auth_token');
+    // ignore: use_build_context_synchronously
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
+    // Navigate back to the login screen
+    // Navigator.of(context)
+    //     .pushReplacementNamed('/login'); // Replace with your login screen route
+  }
 
   void _navigateToAchiveproductScreen(BuildContext context) {
     Navigator.push(
@@ -145,7 +167,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   borderRadius: BorderRadius.circular(30.0),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                logout();
+              },
               icon: const Icon(
                 Icons.login,
                 color: Colors.white,

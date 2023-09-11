@@ -21,9 +21,9 @@ class MyApp extends StatelessWidget {
       home: LoginScreen(),
       // home: HomePage(),
       // home: MainScreen(),
-      // home: MainScreen(),
       // home: SearchScreen()
       // home: LoginScreen(),
+      // home: Signup(),
       // home: ProfileScreen(),
     );
     // return GetMaterialApp(
