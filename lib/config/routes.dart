@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import 'package:tukdak/screens/authscreen/forgotpassword.dart';
+import 'package:tukdak/screens/authscreen/loginscreen.dart';
 
 import '/screens/addCategory.dart';
 import '/screens/addProperty.dart';
@@ -16,6 +18,14 @@ GoRouter router = GoRouter(
     GoRoute(
       path: '/signup',
       builder: (context, state) => const Signup(),
+    ),
+    GoRoute(
+      path: '/login',
+      builder: (context, state) => const LoginScreen(),
+    ),
+    GoRoute(
+      path: '/forgetpassword',
+      builder: (context, state) => const ForgotpasswordSreen(),
     ),
     GoRoute(
       path: '/property',

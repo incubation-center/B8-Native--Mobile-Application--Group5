@@ -96,10 +96,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget buildProductCard(Map<String, dynamic> product) {
     return GestureDetector(
-      onTap: () {
-        _navigateToMainScreen(context);
-        // Add your logic r what should happen when a product is clicked.
-      },
       child: Container(
         color: Colors.white,
         child: IntrinsicWidth(

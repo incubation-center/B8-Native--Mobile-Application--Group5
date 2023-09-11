@@ -20,9 +20,10 @@ class MyApp extends StatelessWidget {
     return const GetMaterialApp(
       // home: LoginScreen(),
       // home: HomePage(),
-      home: MainScreen(),
+      // home: MainScreen(),
       // home: SearchScreen()
-      // home: LoginScreen(),
+      home: LoginScreen(),
+      // home: Signup(),
       // home: ProfileScreen(),
     );
     // return GetMaterialApp(

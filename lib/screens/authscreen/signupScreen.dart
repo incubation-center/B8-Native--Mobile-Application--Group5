@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tukdak/screens/authscreen/loginscreen.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:flutter/material.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -10,13 +14,80 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-  bool _passwordVisible = false;
+  bool _password1Visible = false;
+  bool _password2Visible = false;
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController password1Controller = TextEditingController();
+  TextEditingController password2Controller = TextEditingController();
+  // void _navigateToSignupScreen(BuildContext context) {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => const LoginScreen()),
+  //   );
+  // }
 
-  void _navigateToSignupScreen(BuildContext context) {
+  void _showSuccessAlert(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Signup Successful'),
+          content: const Text('Please verify your Email !!!'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the alert dialog
+                _navigateToLoginScreen(context); // Navigate to the login screen
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _navigateToLoginScreen(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
+  }
+
+  void signup(String name, String email, password1, password2) async {
+    try {
+      // Log the input values
+      print("Name: $name");
+      print("Email: $email");
+      print("Password1: $password1");
+      print("Password2: $password2");
+      final response = await http.post(
+        // Uri.parse('http://127.0.0.1:8000/user'),
+        Uri.http("localhost:8000", '/user'),
+        headers: <String, String>{
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json',
+          'Accept': '*/*'
+        },
+        body: jsonEncode(<String, String>{
+          "username": name,
+          "email": email,
+          "password1": password1,
+          "password2": password2
+        }),
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        // ignore: use_build_context_synchronously
+        // _navigateToLoginScreen(context);
+        _showSuccessAlert(context);
+      } else {
+        print("Sign up has some mistake!!!");
+      }
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -58,8 +129,9 @@ class _SignupState extends State<Signup> {
             padding: const EdgeInsets.all(14.0),
             child: Column(
               children: [
-                const TextField(
-                  decoration: InputDecoration(
+                TextFormField(
+                  controller: usernameController,
+                  decoration: const InputDecoration(
                     hintText: "Name",
                     labelText: "your name",
                     contentPadding: EdgeInsets.symmetric(vertical: 20),
@@ -68,8 +140,9 @@ class _SignupState extends State<Signup> {
                 const SizedBox(
                   height: 10,
                 ),
-                const TextField(
-                  decoration: InputDecoration(
+                TextFormField(
+                  controller: emailController,
+                  decoration: const InputDecoration(
                     hintText: "Email",
                     labelText: "your email",
                     contentPadding: EdgeInsets.symmetric(vertical: 20),
@@ -79,7 +152,8 @@ class _SignupState extends State<Signup> {
                   height: 10,
                 ),
                 TextFormField(
-                  obscureText: !_passwordVisible,
+                  controller: password1Controller,
+                  obscureText: !_password1Visible,
                   decoration: InputDecoration(
                     hintText: "Enter password ",
                     labelText: "Password",
@@ -87,13 +161,13 @@ class _SignupState extends State<Signup> {
                     suffixIcon: IconButton(
                       iconSize: 20,
                       icon: Icon(
-                        _passwordVisible
+                        _password1Visible
                             ? Icons.visibility
                             : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() {
-                          _passwordVisible = !_passwordVisible;
+                          _password1Visible = !_password1Visible;
                         });
                       },
                     ),
@@ -103,7 +177,8 @@ class _SignupState extends State<Signup> {
                   height: 10,
                 ),
                 TextFormField(
-                  obscureText: !_passwordVisible,
+                  controller: password2Controller,
+                  obscureText: !_password2Visible,
                   decoration: InputDecoration(
                     hintText: "Confirm Password ",
                     labelText: "Type your password again",
@@ -111,13 +186,13 @@ class _SignupState extends State<Signup> {
                     suffixIcon: IconButton(
                       iconSize: 20,
                       icon: Icon(
-                        _passwordVisible
+                        _password2Visible
                             ? Icons.visibility
                             : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() {
-                          _passwordVisible = !_passwordVisible;
+                          _password2Visible = !_password2Visible;
                         });
                       },
                     ),
@@ -141,7 +216,14 @@ class _SignupState extends State<Signup> {
                   ),
                   minimumSize: const Size(300, 50)),
               onPressed: () {
-                _navigateToSignupScreen(context);
+                // Retrieve values from the text controllers
+                String name = usernameController.text;
+                String email = emailController.text;
+                String password1 = password1Controller.text;
+                String password2 = password2Controller.text;
+
+                // Call the signup function with the retrieved values
+                signup(name, email, password1, password2);
               },
               icon: const Icon(
                 Icons.logout,
@@ -189,7 +271,7 @@ class _SignupState extends State<Signup> {
               const Text("Already have an account ?"),
               GestureDetector(
                 onTap: () {
-                  _navigateToSignupScreen(context); // Navigate to signup screen
+                  // _navigateToSignupScreen(context); // Navigate to signup screen
                 },
                 child: const Text(
                   " Sign in",
@@ -209,5 +291,3 @@ class _SignupState extends State<Signup> {
     );
   }
 }
-
-
