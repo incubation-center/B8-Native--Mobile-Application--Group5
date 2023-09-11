@@ -58,7 +58,7 @@ class _LoginscreenState extends State<LoginScreen> {
           // Store the token securely
           await secureStorage.write(key: 'auth_token', value: token);
           // ignore: use_build_context_synchronously
-          _navigateToHomeScreen(context);
+          _navigateToMainScreen(context);
         } else {
           // Handle the case where 'token' is null in the response
           Get.snackbar(
@@ -68,7 +68,7 @@ class _LoginscreenState extends State<LoginScreen> {
           );
         }
         // ignore: use_build_context_synchronously
-        _navigateToHomeScreen(context);
+        // _navigateToHomeScreen(context);
       } else {
         // Authentication failed
         Get.snackbar(
@@ -101,14 +101,14 @@ class _LoginscreenState extends State<LoginScreen> {
   }
 
   void _navigateToSignupScreen(BuildContext context) {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const Signup()),
-    // );
-    Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const Signup()),
+    );
+    // Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
   }
 
-  void _navigateToHomeScreen(BuildContext context) {
+  void _navigateToMainScreen(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const MainScreen()),
@@ -228,6 +228,7 @@ class _LoginscreenState extends State<LoginScreen> {
               onPressed: () {
                 // login(emailController.text, passwordController.text);
                 onPressedLoginButton();
+                // _navigateToHomeScreen(context);
               },
               icon: const Icon(
                 Icons.login,
