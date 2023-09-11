@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tukdak/controller/NavController.dart';
 
 import 'package:tukdak/screens/addCategory.dart';
 import 'package:tukdak/screens/authscreen/loginscreen.dart';
@@ -11,6 +12,7 @@ import 'package:tukdak/screens/Search.dart';
 import '/config/routes.dart';
 
 void main() {
+    Get.put(NavBarController());
   runApp(MyApp());
 }
 

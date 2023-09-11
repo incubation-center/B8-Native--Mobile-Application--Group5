@@ -271,7 +271,7 @@ class _SignupState extends State<Signup> {
               const Text("Already have an account ?"),
               GestureDetector(
                 onTap: () {
-                  // _navigateToSignupScreen(context); // Navigate to signup screen
+                  _navigateToLoginScreen(context); // Navigate to signup screen
                 },
                 child: const Text(
                   " Sign in",

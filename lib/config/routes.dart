@@ -1,7 +1,7 @@
 import 'package:go_router/go_router.dart';
-import 'package:tukdak/screens/homePage.dart';
 import 'package:tukdak/screens/authscreen/forgotpassword.dart';
 import 'package:tukdak/screens/authscreen/loginscreen.dart';
+import 'package:tukdak/screens/homePage.dart';
 
 import '/screens/addCategory.dart';
 import '/screens/addProperty.dart';
@@ -16,10 +16,10 @@ GoRouter router = GoRouter(
       path: '/',
       builder: (context, state) => const MainScreen(),
     ),
-    // GoRoute(
-    //   path: '/home',
-    //   builder: (context, state) => const HomePage(),
-    // ),
+    GoRoute(
+      path: '/home',
+      builder: (context, state) => const HomePage(),
+    ),
     GoRoute(
       path: '/signup',
       builder: (context, state) => const Signup(),
