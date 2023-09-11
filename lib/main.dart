@@ -18,11 +18,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const GetMaterialApp(
-      // home: LoginScreen(),
+      home: LoginScreen(),
       // home: HomePage(),
       // home: MainScreen(),
       // home: SearchScreen()
-      home: LoginScreen(),
+      // home: LoginScreen(),
       // home: Signup(),
       // home: ProfileScreen(),
     );

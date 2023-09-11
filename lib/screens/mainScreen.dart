@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tukdak/components/nav_bar.dart';
 import 'package:get/get.dart';
+import 'package:tukdak/controller/NavController.dart';
 import 'package:tukdak/components/profilebar.dart';
 
 class MainScreen extends StatefulWidget {
@@ -11,10 +12,13 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+
+  // final NavBarController navBarController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
+
       body: Stack(
         children: [
           const Column(

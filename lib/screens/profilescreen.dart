@@ -6,6 +6,7 @@ import 'package:tukdak/screens/authscreen/loginscreen.dart';
 import 'package:tukdak/screens/homePage.dart';
 import 'package:tukdak/screens/mainScreen.dart';
 import 'package:tukdak/screens/productAchive.dart';
+import 'package:get/get.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -59,7 +60,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             elevation: 0,
             leading: IconButton(
               onPressed: () {
-                _navigateToMainScreen(context);
+                // controller.homepage(0);
+                Get.back();
               },
               icon: const Icon(Icons.arrow_back_ios),
               color: Colors.black,
