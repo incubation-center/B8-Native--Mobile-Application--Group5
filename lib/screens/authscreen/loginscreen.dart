@@ -9,6 +9,7 @@ import 'package:tukdak/screens/mainScreen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:connectivity/connectivity.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,8 +26,17 @@ class _LoginscreenState extends State<LoginScreen> {
   // Getting value from TextField widget.
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
   void login(String email, password) async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      Get.snackbar(
+        'Error',
+        'No internet connection. Please check your network settings',
+        backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+      );
+      return;
+    }
+
     try {
       // Log the input values
       // ignore: avoid_print
@@ -65,7 +75,7 @@ class _LoginscreenState extends State<LoginScreen> {
           Get.snackbar(
             'Error',
             'Authentication failed. Please check your credentials.',
-            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: const Color.fromARGB(255, 170, 215, 206),
           );
         }
         // ignore: use_build_context_synchronously
@@ -75,7 +85,8 @@ class _LoginscreenState extends State<LoginScreen> {
         Get.snackbar(
           'Error',
           'Authentication failed. Please check your credentials.',
-          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+          // snackPosition: SnackPosition.BOTTOM,
         );
         print("Sign ip has some mistake!!!");
       }
@@ -85,7 +96,7 @@ class _LoginscreenState extends State<LoginScreen> {
       Get.snackbar(
         'Error',
         'An error occurred while trying to log in. Please try again later.',
-        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: const Color.fromARGB(255, 170, 215, 206),
       );
     }
   }
@@ -97,7 +108,14 @@ class _LoginscreenState extends State<LoginScreen> {
     if (email.isNotEmpty && password.isNotEmpty) {
       login(email, password);
     } else {
-      // Show an error message or alert the user that fields are empty.
+      if (email.isEmpty || password.isEmpty) {
+        Get.snackbar(
+          'Error',
+          'Both email and password are required',
+          backgroundColor: Color.fromARGB(255, 170, 215, 206),
+        );
+        return;
+      }
     }
   }
 

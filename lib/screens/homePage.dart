@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tukdak/components/profilebar.dart';
+import 'package:tukdak/config/services/category.dart';
 
 class SlideData {
   final String section;
@@ -19,10 +20,14 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final PageController _pageController = PageController(initialPage: 0);
   final List<SlideData> userGuideSlides = [
-    SlideData("GET TO KNOW OUR GOAL", "Our primary goal is to effectively oversee the management of your property holdings. You can easily catalogue your assets according to their respective categories, and we also offer an alert feature designed to notify you as your items approach their expiration dates.!"),
-    SlideData("USE OF APPLICATION", "Use scanning to add products", Icons.camera_alt_sharp),
-    SlideData("USE OF APPLICATION", "After scanning, our app automatically identifies and displays product details, allowing for easy viewing and customizable updates."),
-    SlideData("USE OF APPLICATION", "Our application will send notifications as your product approaches expiration, ensuring you stay updated on your property status."),
+    SlideData("GET TO KNOW OUR GOAL",
+        "Our primary goal is to effectively oversee the management of your property holdings. You can easily catalogue your assets according to their respective categories, and we also offer an alert feature designed to notify you as your items approach their expiration dates.!"),
+    SlideData("USE OF APPLICATION", "Use scanning to add products",
+        Icons.camera_alt_sharp),
+    SlideData("USE OF APPLICATION",
+        "After scanning, our app automatically identifies and displays product details, allowing for easy viewing and customizable updates."),
+    SlideData("USE OF APPLICATION",
+        "Our application will send notifications as your product approaches expiration, ensuring you stay updated on your property status."),
   ];
   int _currentPage = 0;
 
@@ -34,6 +39,18 @@ class _HomePageState extends State<HomePage> {
         _currentPage = _pageController.page!.round();
       });
     });
+  }
+
+  // Function to handle the API call
+  void _handleApiCall() async {
+    final responseData = await fetchDataWithToken();
+    if (responseData != null) {
+      // Handle the response data here.
+      print('Response data: $responseData');
+    } else {
+      // Handle the case where there was an error or no token available.
+      print('Error or no token available.');
+    }
   }
 
   @override
@@ -73,19 +90,37 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(height: 16),
                     Text(
                       userGuideSlides[index].section,
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
+                    // testing api call
+                    ButtonBar(
+                      alignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        TextButton(
+                            child: const Text('Testing api call'),
+                            onPressed: () {
+                              _handleApiCall();
+                            }),
+                      ],
+                    ),
+
+                    // testing api call
                     SizedBox(height: 20),
                     Center(
                       child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                        margin: EdgeInsets.symmetric(horizontal: 50), // Add margin for spacing around the background
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                        margin: EdgeInsets.symmetric(
+                            horizontal:
+                                50), // Add margin for spacing around the background
                         decoration: BoxDecoration(
                           color: Color(0xFFAAC7D7),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start, // Align text to the left
+                          crossAxisAlignment: CrossAxisAlignment
+                              .start, // Align text to the left
                           children: [
                             SizedBox(height: 10),
                             Text(
