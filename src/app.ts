@@ -1,6 +1,7 @@
 import express from "express";
 const session = require("express-session");
 const passport = require("passport");
+const cors = require("cors");
 import dotenv from "dotenv";
 import userRoutes from "./app/user/routes";
 import cateRoute from "./app/category/routes";
@@ -10,10 +11,22 @@ import logRequest from "./config/apiLogConfig";
 import "./config/scheduler";
 import "./config/passportConfig";
 
-dotenv.config();
+// Determine the environment from NODE_ENV
+const environment = process.env.NODE_ENV || "development";
+
+// Load the appropriate .env file
+dotenv.config({ path: `.env.${environment}` });
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 console.log("PORT", PORT);
+
+// Configure CORS
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 // Configure express-session middleware
 app.use(

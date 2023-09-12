@@ -11,6 +11,8 @@ import {
   changepassword,
   googleRedirect,
   updateUserDeviceToken,
+  passQueryString,
+  getQueryString,
 } from "./controllers";
 import { authenticateToken } from "../../helper/authenticationToken";
 const router = express.Router();
@@ -32,6 +34,7 @@ router.post("/user/update-device-token", authenticateToken, updateUserDeviceToke
 // auth with google
 router.get(
   "/auth/google",
+  passQueryString,
   passport.authenticate("google", {
     scope: ["profile", "email"],
   })
@@ -40,6 +43,7 @@ router.get(
 // hand control to passport to use code to grab profile info
 router.get(
   "/oauth2/redirect/google",
+  getQueryString,
   passport.authenticate("google"),
   googleRedirect
 );
