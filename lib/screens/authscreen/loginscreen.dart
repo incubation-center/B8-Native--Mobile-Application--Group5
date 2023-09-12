@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:tukdak/controller/NavController.dart';
 import 'package:tukdak/screens/authscreen/forgotpassword.dart';
 import 'package:tukdak/screens/authscreen/signupScreen.dart';
 import 'package:tukdak/screens/homePage.dart';
@@ -17,6 +18,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginscreenState extends State<LoginScreen> {
+  final NavBarController navControll = Get.put(NavBarController());
   bool _rememberMe = false;
   bool _passwordVisible = false;
   bool visible = false;
@@ -101,11 +103,11 @@ class _LoginscreenState extends State<LoginScreen> {
   }
 
   void _navigateToSignupScreen(BuildContext context) {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const Signup()),
-    // );
-    Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const Signup()),
+    );
+    // Navigator.of(context).pushNamedAndRemoveUntil('/signup', (route) => false);
   }
 
   void _navigateToHomeScreen(BuildContext context) {
@@ -113,7 +115,7 @@ class _LoginscreenState extends State<LoginScreen> {
       context,
       MaterialPageRoute(builder: (context) => const MainScreen()),
     );
-    // Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false); 
+    // Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
   }
 
   void _navigateToForgotpasswordScreen(BuildContext context) {

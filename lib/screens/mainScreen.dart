@@ -12,6 +12,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final NavBarController navControll = Get.put(NavBarController());
 
   // final NavBarController navBarController = Get.find();
 
