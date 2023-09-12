@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tukdak/models/notification_model.dart';
 import 'package:tukdak/screens/mainScreen.dart';
 
@@ -10,11 +11,13 @@ class NotifyAlert extends StatelessWidget {
   // Create a list of indices for notifications that should have a different background color
   List<int> coloredIndices = [0, 2, 4]; // Indices to have a different color
   void _navigateToMainScreen(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const MainScreen()),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const MainScreen()),
+    // );
     // Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => const MainScreen()));
   }
 
   @override

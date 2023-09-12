@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:tukdak/screens/mainScreen.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key});
@@ -90,87 +91,94 @@ class _SearchScreenState extends State<SearchScreen> {
     //   context,
     //   MaterialPageRoute(builder: (context) => const MainScreen()),
     // );
-    Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+    // Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
     // Navigator.of(context).pushReplacementNamed('/');
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainScreen()));
   }
 
   Widget buildProductCard(Map<String, dynamic> product) {
     return GestureDetector(
       child: Container(
         color: Colors.white,
-        child: IntrinsicWidth(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12.0),
-                child: FancyShimmerImage(
-                  imageUrl: product['url'],
-                  height: 100, // Adjust the height as needed
-                  width: 100, // Adjust the width as needed
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              IntrinsicWidth(
-                child: Column(
-                  children: [
-                    Row(
+        child: Padding(
+          padding: const EdgeInsets.all(28.0),
+          child: Expanded(
+            child: IntrinsicWidth(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ClipRRect(
+                    // borderRadius: BorderRadius.circular(12.0),
+                    child: FancyShimmerImage(
+                      imageUrl: product['url'],
+                      height: 90, // Adjust the height as needed
+                      width: 90, // Adjust the width as needed
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  IntrinsicWidth(
+                    child: Column(
                       children: [
-                        SizedBox(
-                          width: 200, // Adjust the width as needed
-                          child: Text(
-                            product['name'],
-                            style: const TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w700,
-                                color: Color.fromARGB(255, 81, 81, 81)),
-                            maxLines: 2,
-                          ),
-                        ),
-                        Column(
+                        Row(
                           children: [
-                            IconButton(
-                              onPressed: () {
-                                // Add your logic here for what should happen when the arrow button is clicked.
-                              },
-                              icon: const Icon(IconlyLight.arrowRight),
+                            SizedBox(
+                              // width: 200, // Adjust the width as needed
+                              child: Text(
+                                product['name'],
+                                style: const TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color.fromARGB(255, 81, 81, 81)),
+                                maxLines: 2,
+                              ),
+                            ),
+                            Column(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    // Add your logic here for what should happen when the arrow button is clicked.
+                                  },
+                                  icon: const Icon(IconlyLight.arrowRight),
+                                ),
+                              ],
                             ),
                           ],
                         ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        const Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Expired on",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 15,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "13/03/2024",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 15,
+                              ),
+                            ),
+                            Spacer(),
+                          ],
+                        )
                       ],
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Expired on",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 20,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "13/03/2024",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 20,
-                          ),
-                        ),
-                        Spacer(),
-                      ],
-                    )
-                  ],
-                ),
-              )
-            ],
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -190,72 +198,78 @@ class _SearchScreenState extends State<SearchScreen> {
         elevation: 0,
       ),
       body: Container(
-        color: const Color(0xFFAAC7D7),
-        child: Column(
-          children: [
-            Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(28.0),
-                    child: TextField(
-                      onChanged: _runFilter,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        labelText: 'Search',
-                        labelStyle: TextStyle(color: Colors.white),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 2.0, // Adjust the width as needed
-                            color: Colors.white,
-                            // Adjust the color as needed
-                          ),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 1.0, // Adjust the width as needed
-                            color:
-                                Colors.white, // Set the default color to white
+          color: const Color(0xFFAAC7D7),
+          child: Column(
+            children: [
+              Container(
+                color: const Color(0xFFAAC7D7),
+                child: Row(
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(28.0),
+                        child: TextField(
+                          onChanged: _runFilter,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Search',
+                            labelStyle: TextStyle(color: Colors.white),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 2.0, // Adjust the width as needed
+                                color: Colors.white,
+                                // Adjust the color as needed
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1.0, // Adjust the width as needed
+                                color: Colors
+                                    .white, // Set the default color to white
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
+                    IconButton(
+                      onPressed: () {
+                        // Add your search logic here.
+                      },
+                      icon: const Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
+                    )
+                  ],
                 ),
-                IconButton(
-                  onPressed: () {
-                    // Add your search logic here.
-                  },
-                  icon: const Icon(
-                    Icons.search,
-                    color: Colors.white,
-                  ),
-                )
-              ],
-            ),
-            _foundProducts.isEmpty
-                ? const Center(
-                    child: Padding(
+              ),
+              _foundProducts.isEmpty
+                  ? const Padding(
                       padding: EdgeInsets.symmetric(vertical: 20),
                       child: Text(
                         'No results found',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                          color: Colors.grey,
+                        ),
                       ),
-                    ),
-                  )
-                : Expanded(
-                    child: ListView.builder(
-                      itemCount: _foundProducts.length,
-                      itemBuilder: (context, index) {
-                        final product = _foundProducts[index];
-                        return buildProductCard(product);
-                      },
-                    ),
-                  ),
-          ],
-        ),
-      ),
+                    )
+                  : Expanded(
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(35)),
+                        child: ListView.builder(
+                          itemCount: _foundProducts.length,
+                          itemBuilder: (context, index) {
+                            final product = _foundProducts[index];
+                            return buildProductCard(product);
+                          },
+                        ),
+                      ),
+                    )
+            ],
+          )),
     );
   }
 }
