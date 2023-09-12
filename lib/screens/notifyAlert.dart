@@ -15,9 +15,11 @@ class NotifyAlert extends StatelessWidget {
     //   context,
     //   MaterialPageRoute(builder: (context) => const MainScreen()),
     // );
+    // print("Navigating to MainScreen from context: $context");
+
     // Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => const MainScreen()));
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainScreen()));
   }
 
   @override

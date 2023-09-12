@@ -67,7 +67,7 @@ class _addCategoryState extends State<addCategory> {
                                 child:
                                 TextField(
                                   controller: controller.categoryNameTextEditingController,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     focusColor: Color(0xFF768A95),
                                     hintText: 'Enter category name',
                                     hintStyle: TextStyle(
