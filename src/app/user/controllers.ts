@@ -171,10 +171,10 @@ export const changepassword = async (req: Request, res: Response) => {
   }
 };
 
-export const updateUserDeviceToken = async (req: Request, res: Response) => {
+export const updateUserDeviceToken = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const { userId, deviceToken } = req.body;
-    const user = await UserModel.findOne({ where: { id: userId } });
+    const { deviceToken } = req.body;
+    const user = await UserModel.findOne({ where: { id: req.user?.id } });
     if (!user) {
       return res.status(400).json({ error: "Invalid User" });
     }

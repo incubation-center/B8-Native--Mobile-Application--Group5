@@ -10,6 +10,7 @@ import {
   forgotpassword,
   changepassword,
   googleRedirect,
+  updateUserDeviceToken,
 } from "./controllers";
 import { authenticateToken } from "../../helper/authenticationToken";
 const router = express.Router();
@@ -27,6 +28,7 @@ router.put("/user/:id", authenticateToken, updateUserById);
 router.get("/confirm/:id", verifyEmail);
 router.post("/user/forgotpassword", forgotpassword);
 router.put("/user/changepassword/:id", changepassword);
+router.post("/user/update-device-token", authenticateToken, updateUserDeviceToken);
 // auth with google
 router.get(
   "/auth/google",
