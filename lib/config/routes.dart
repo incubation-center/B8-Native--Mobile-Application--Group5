@@ -11,9 +11,10 @@ import '../screens/authscreen/signupScreen.dart';
 
 // GoRouter configuration
 GoRouter router = GoRouter(
+  initialLocation: '/main',
   routes: [
     GoRoute(
-      path: '/',
+      path: '/main',
       builder: (context, state) => const MainScreen(),
     ),
     GoRoute(

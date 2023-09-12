@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:tukdak/config/routes.dart';
 import 'package:tukdak/screens/authscreen/forgotpassword.dart';
 import 'package:tukdak/screens/authscreen/signupScreen.dart';
 import 'package:tukdak/screens/homePage.dart';
@@ -109,11 +110,13 @@ class _LoginscreenState extends State<LoginScreen> {
   }
 
   void _navigateToMainScreen(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const MainScreen()),
-    );
-    // Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false); 
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const MainScreen()),
+    // );
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainScreen()));
+    // Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
   }
 
   void _navigateToForgotpasswordScreen(BuildContext context) {
@@ -228,7 +231,7 @@ class _LoginscreenState extends State<LoginScreen> {
               onPressed: () {
                 // login(emailController.text, passwordController.text);
                 onPressedLoginButton();
-                // _navigateToHomeScreen(context);
+                // _navigateToMainScreen(context);
               },
               icon: const Icon(
                 Icons.login,
