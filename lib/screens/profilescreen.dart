@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:tukdak/config/services/userprofile.dart';
 import 'package:tukdak/screens/authscreen/loginscreen.dart';
 import 'package:tukdak/screens/homePage.dart';
 import 'package:tukdak/screens/mainScreen.dart';
 import 'package:tukdak/screens/productAchive.dart';
 import 'package:get/get.dart';
+import 'package:tukdak/config/services/userprofile.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -110,17 +112,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text("Yin Chantha"),
-                          SizedBox(
-                            height: 6,
-                          ),
-                          Text("yinchantha@gmail.com")
-                        ],
-                      ),
+                    FutureBuilder<Map<String, dynamic>?>(
+                      future: getUserprofile(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data == null) {
+                          return const Text("User information not available");
+                        } else {
+                          final userData = snapshot.data!;
+                          final name =
+                              userData["username"] ?? "Name not available";
+                          final email =
+                              userData["email"] ?? "Email not available";
+                          return Column(
+                            children: [
+                              Text(
+                                name,
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 6,
+                              ),
+                              Text(
+                                email,
+                                style: const TextStyle(
+                                    fontSize: 20, color: Colors.grey),
+                              ),
+                            ],
+                          );
+                        }
+                      },
                     )
                   ],
                 ),
