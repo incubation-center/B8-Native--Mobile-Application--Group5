@@ -12,6 +12,7 @@ class PropertyModel extends Model {
   public image!: string;
   public price!: number;
   public isDeleted!: boolean;
+  public isExpired!: boolean;
   public userId!: string;
   public categoryId!: string;
 }
@@ -61,6 +62,11 @@ PropertyModel.init(
       },
     },    
     isDeleted: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    isExpired: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,

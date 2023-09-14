@@ -95,7 +95,8 @@ export const deletePropertyById = async (
       where: { id, userId: req.user?.id },
     });
     if (!property) return res.status(404).json({ error: "Property not found" });
-    await property.destroy();
+    property.isDeleted = true;
+    await property.save();
     res.status(200).json({ message: "Property deleted" });
   } catch (error) {
     console.error("Error", error);
@@ -113,8 +114,15 @@ export const getAllProperty = async (
     });
     for (const i in category) {
       const property = await PropertyModel.findAll({
-        where: { categoryId: category[i].id },
-      });
+        where: {
+          categoryId: category[i].id,
+          isDeleted: false,
+          [Op.or]: [
+            { expired_at: null },
+            { expired_at: { [Op.gte]: new Date() } }
+          ]
+        }
+      });      
       category[i].setDataValue("properties", property);
     }
     res.status(200).json(category);
@@ -131,8 +139,17 @@ export const getAllPropertyExpired = async (
   try {
     const currentDate = new Date();
     const property = await PropertyModel.findAll({
-      where: { userId: req.user?.id, expired_at: { [Op.lte]: currentDate } },
-    });
+      where: {
+        userId: req.user?.id,
+        isDeleted: false,
+        expired_at: { 
+          [Op.and]: [
+            { [Op.not]: null },
+            { [Op.lte]: currentDate }
+          ]
+        }
+      }
+    });    
     res.status(200).json(property);
   } catch (error) {
     console.error("Error", error);

@@ -14,14 +14,14 @@ cron.schedule('* 8 * * *', async () => {
                 expired_at: {
                     [Op.lte]: new Date()
                 },
-                isDeleted: false
+                isExpired: false
             }
         });
         for (const property of properties) {
             const user = await UserModel.findOne({ where: { id: property.userId } });
             if (user) {
                 sendNotification(user.deviceToken, 'Property Expired', `${property.name} has expired`);
-                property.isDeleted = true;
+                property.isExpired = true;
                 await  property.save();
             }
         }
@@ -36,7 +36,7 @@ cron.schedule('* 8 * * *', async () => {
                 expired_at: {
                     [Op.gt]: currentDate,
                 },
-                isDeleted: false
+                isExpired: false
             }
         });
         for (const property of properties) {
