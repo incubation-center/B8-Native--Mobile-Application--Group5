@@ -1,3 +1,4 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tukdak/screens/authscreen/loginscreen.dart';
@@ -56,6 +57,15 @@ class _SignupState extends State<Signup> {
   }
 
   void signup(String name, String email, password1, password2) async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      Get.snackbar(
+        'Error',
+        'No internet connection. Please check your network settings',
+        backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+      );
+      return;
+    }
     try {
       // Log the input values
       print("Name: $name");
@@ -82,11 +92,42 @@ class _SignupState extends State<Signup> {
         // ignore: use_build_context_synchronously
         // _navigateToLoginScreen(context);
         _showSuccessAlert(context);
-      } else {
-        print("Sign up has some mistake!!!");
       }
     } catch (e) {
-      print(e.toString());
+      print('Error: $e');
+      Get.snackbar(
+        'Error',
+        'An error occurred while trying to log in. Please try again later.',
+        backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+      );
+    }
+  }
+
+  void onPressedSignupButton() {
+    // final email = emailController.text;
+    // final password = passwordController.text;
+    final name = usernameController.text;
+    final email = emailController.text;
+    final password1 = password1Controller.text;
+    final password2 = password2Controller.text;
+
+    if (email.isNotEmpty &&
+        name.isNotEmpty &&
+        password1.isNotEmpty &&
+        password2.isNotEmpty) {
+      signup(name, email, password1, password2);
+    } else {
+      if (email.isEmpty ||
+          name.isEmpty ||
+          password1.isEmpty ||
+          password2.isEmpty) {
+        print("Sign up has some mistake!!!");
+        Get.snackbar(
+          'Error',
+          'Authentication failed. Please file all your credentials.',
+          backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+        );
+      }
     }
   }
 
@@ -217,13 +258,14 @@ class _SignupState extends State<Signup> {
                   minimumSize: const Size(300, 50)),
               onPressed: () {
                 // Retrieve values from the text controllers
-                String name = usernameController.text;
-                String email = emailController.text;
-                String password1 = password1Controller.text;
-                String password2 = password2Controller.text;
+                // String name = usernameController.text;
+                // String email = emailController.text;
+                // String password1 = password1Controller.text;
+                // String password2 = password2Controller.text;
 
                 // Call the signup function with the retrieved values
-                signup(name, email, password1, password2);
+                // signup(name, email, password1, password2);
+                onPressedSignupButton();
               },
               icon: const Icon(
                 Icons.logout,
@@ -271,7 +313,7 @@ class _SignupState extends State<Signup> {
               const Text("Already have an account ?"),
               GestureDetector(
                 onTap: () {
-                  // _navigateToSignupScreen(context); // Navigate to signup screen
+                  _navigateToLoginScreen(context); // Navigate to signup screen
                 },
                 child: const Text(
                   " Sign in",

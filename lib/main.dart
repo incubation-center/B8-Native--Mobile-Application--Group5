@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:tukdak/controller/NavController.dart';
 
 import 'package:tukdak/screens/addCategory.dart';
 import 'package:tukdak/screens/authscreen/loginscreen.dart';
@@ -11,10 +13,12 @@ import 'package:tukdak/screens/Search.dart';
 import '/config/routes.dart';
 
 void main() {
+  Get.put(NavBarController());
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
   @override
   Widget build(BuildContext context) {
     return const GetMaterialApp(

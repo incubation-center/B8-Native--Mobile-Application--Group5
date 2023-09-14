@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:tukdak/controller/NavController.dart';
+import 'package:tukdak/config/routes.dart';
 import 'package:tukdak/screens/authscreen/forgotpassword.dart';
 import 'package:tukdak/screens/authscreen/signupScreen.dart';
 import 'package:tukdak/screens/homePage.dart';
@@ -9,6 +9,7 @@ import 'package:tukdak/screens/mainScreen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:connectivity/connectivity.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,7 +19,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginscreenState extends State<LoginScreen> {
-  final NavBarController navControll = Get.put(NavBarController());
   bool _rememberMe = false;
   bool _passwordVisible = false;
   bool visible = false;
@@ -26,8 +26,17 @@ class _LoginscreenState extends State<LoginScreen> {
   // Getting value from TextField widget.
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
   void login(String email, password) async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      Get.snackbar(
+        'Error',
+        'No internet connection. Please check your network settings',
+        backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+      );
+      return;
+    }
+
     try {
       // Log the input values
       // ignore: avoid_print
@@ -43,7 +52,7 @@ class _LoginscreenState extends State<LoginScreen> {
           'Accept': '*/*'
         },
         body:
-            jsonEncode(<String, String>{"email": email, "password": password}),
+        jsonEncode(<String, String>{"email": email, "password": password}),
       );
       // print(response.body);
       if (response.statusCode == 200) {
@@ -60,23 +69,24 @@ class _LoginscreenState extends State<LoginScreen> {
           // Store the token securely
           await secureStorage.write(key: 'auth_token', value: token);
           // ignore: use_build_context_synchronously
-          _navigateToHomeScreen(context);
+          _navigateToMainScreen(context);
         } else {
           // Handle the case where 'token' is null in the response
           Get.snackbar(
             'Error',
             'Authentication failed. Please check your credentials.',
-            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: const Color.fromARGB(255, 170, 215, 206),
           );
         }
         // ignore: use_build_context_synchronously
-        _navigateToHomeScreen(context);
+        // _navigateToHomeScreen(context);
       } else {
         // Authentication failed
         Get.snackbar(
           'Error',
           'Authentication failed. Please check your credentials.',
-          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+          // snackPosition: SnackPosition.BOTTOM,
         );
         print("Sign ip has some mistake!!!");
       }
@@ -86,7 +96,7 @@ class _LoginscreenState extends State<LoginScreen> {
       Get.snackbar(
         'Error',
         'An error occurred while trying to log in. Please try again later.',
-        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: const Color.fromARGB(255, 170, 215, 206),
       );
     }
   }
@@ -98,7 +108,14 @@ class _LoginscreenState extends State<LoginScreen> {
     if (email.isNotEmpty && password.isNotEmpty) {
       login(email, password);
     } else {
-      // Show an error message or alert the user that fields are empty.
+      if (email.isEmpty || password.isEmpty) {
+        Get.snackbar(
+          'Error',
+          'Both email and password are required',
+          backgroundColor: Color.fromARGB(255, 170, 215, 206),
+        );
+        return;
+      }
     }
   }
 
@@ -107,14 +124,16 @@ class _LoginscreenState extends State<LoginScreen> {
       context,
       MaterialPageRoute(builder: (context) => const Signup()),
     );
-    // Navigator.of(context).pushNamedAndRemoveUntil('/signup', (route) => false);
+    // Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
   }
 
-  void _navigateToHomeScreen(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const MainScreen()),
-    );
+  void _navigateToMainScreen(BuildContext context) {
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const MainScreen()),
+    // );
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainScreen()));
     // Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
   }
 
@@ -230,6 +249,7 @@ class _LoginscreenState extends State<LoginScreen> {
               onPressed: () {
                 // login(emailController.text, passwordController.text);
                 onPressedLoginButton();
+                // _navigateToMainScreen(context);
               },
               icon: const Icon(
                 Icons.login,

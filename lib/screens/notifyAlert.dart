@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tukdak/models/notification_model.dart';
+import 'package:tukdak/screens/mainScreen.dart';
 
 class NotifyAlert extends StatelessWidget {
   final List<NotificationModel> notifications;
@@ -8,6 +10,17 @@ class NotifyAlert extends StatelessWidget {
 
   // Create a list of indices for notifications that should have a different background color
   List<int> coloredIndices = [0, 2, 4]; // Indices to have a different color
+  void _navigateToMainScreen(BuildContext context) {
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const MainScreen()),
+    // );
+    // print("Navigating to MainScreen from context: $context");
+
+    // Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainScreen()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +28,16 @@ class NotifyAlert extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white, // Set white background color
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black), // Arrow icon with black color
+          icon: const Icon(Icons.arrow_back,
+              color: Colors.black), // Arrow icon with black color
           onPressed: () {
             // Navigate to the homepage
-            Navigator.pushReplacementNamed(context, '/');
+            // Navigator.pushReplacementNamed(context, '/');
+            _navigateToMainScreen(context);
           },
         ),
-        title: Text('Notifications', style: TextStyle(color: Colors.black)), // Set title color to black
+        title: const Text('Notifications',
+            style: TextStyle(color: Colors.black)), // Set title color to black
       ),
       body: Column(
         children: [
@@ -50,17 +66,24 @@ class NotifyAlert extends StatelessWidget {
                     // notifications.removeAt(index);
                   },
                   child: Container(
-                    color: coloredIndices.contains(index) ? Color(0xFFF2F2F2) : Colors.white,
+                    color: coloredIndices.contains(index)
+                        ? Color(0xFFF2F2F2)
+                        : Colors.white,
                     child: ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 16, vertical: 15),
                       leading: Icon(notification.icon),
                       title: Padding(
                         padding: EdgeInsets.only(top: 4),
                         child: Text(
                           notification.title,
                           style: TextStyle(
-                            fontWeight: coloredIndices.contains(index) ? FontWeight.bold : FontWeight.normal,
-                            color: coloredIndices.contains(index) ? Colors.black : null,
+                            fontWeight: coloredIndices.contains(index)
+                                ? FontWeight.bold
+                                : FontWeight.normal,
+                            color: coloredIndices.contains(index)
+                                ? Colors.black
+                                : null,
                           ),
                         ),
                       ),
@@ -72,8 +95,12 @@ class NotifyAlert extends StatelessWidget {
                             child: Text(
                               notification.body,
                               style: TextStyle(
-                                fontWeight: coloredIndices.contains(index) ? FontWeight.bold : FontWeight.normal,
-                                color: coloredIndices.contains(index) ? Colors.black : null,
+                                fontWeight: coloredIndices.contains(index)
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                                color: coloredIndices.contains(index)
+                                    ? Colors.black
+                                    : null,
                               ),
                             ),
                           ),
@@ -83,9 +110,13 @@ class NotifyAlert extends StatelessWidget {
                             child: Text(
                               '${notification.time}',
                               style: TextStyle(
-                                color: coloredIndices.contains(index) ? Colors.black45 : null,
+                                color: coloredIndices.contains(index)
+                                    ? Colors.black45
+                                    : null,
                                 fontSize: 12,
-                                fontWeight: coloredIndices.contains(index) ? FontWeight.bold : FontWeight.normal,
+                                fontWeight: coloredIndices.contains(index)
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
                               ),
                             ),
                           ),
