@@ -9,8 +9,8 @@ dotenv.config({ path: `.env.${environment}` });
 
 const DATABASE_HOST = process.env.DATABASE_HOST || "localhost";
 const DATABASE_NAME = process.env.DATABASE_NAME || "property";
-const DATABASE_USERNAME = process.env.DATABASE_USER || "long hakly";
-const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD || "A45698700a";
+const DATABASE_USERNAME = process.env.DATABASE_USER || "postgres";
+const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD || "123456789";
 
 export const sequelize = new Sequelize(
   DATABASE_NAME,
