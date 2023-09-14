@@ -128,7 +128,11 @@ class _AddPropertyState extends State<AddProperty> {
                                   final XFile xFile = await cameraController.takePicture();
                                   final File file = File(xFile.path); // Convert XFile to File
                                   propController.setImageFile(file);
-                                  Get.to(() => PropertyInfo()); // Navigate to PropertyInfo
+                                  Get.to(() => PropertyInfo()); //
+                                  if (file != null){
+                                    print('object+++++++++++++++++++++++++');
+                                  }
+                                  // print('object+++++++++++++++++++++++++');// igate to PropertyInfo
                                 } catch (e) {
                                   print("Error taking picture: $e");
                                 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,13 +29,23 @@ class _PropertyInfoState extends State<PropertyInfo> {
   final TextEditingController propertyController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController alertController = TextEditingController();
+  final TextEditingController imageController = TextEditingController();
 
   List data = [];
   // int _value = 1;
-  String selectedValue = "Foods";
+  String selectedValue = "";
+  List categoryItemlist = [];
+  var dropdownvalue;
+  // String selectedValue = "Foods";
 
+  @override
+  void initState(){
+    super.initState();
+    dateController.text = "";
+    getData();
+  }
 
-  getData() async {
+  Future getData() async {
     final token = await secureStorage.read(key: 'auth_token');
     final url = Uri.parse('http://127.0.0.1:8000/category/all');
 
@@ -45,17 +56,25 @@ class _PropertyInfoState extends State<PropertyInfo> {
       },
     );
     data = jsonDecode(response.body);
-    setState(() {
-
-    });
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body) as List;
+      setState(() {
+        categoryItemlist = jsonData;
+      });
+    }
   }
 
+    void showSuccessMessage(String message) {
+      final snackBar = SnackBar(content: Text(message));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
 
-  @override
-  void initState(){
-    super.initState();
-    dateController.text = "";
-  }
+    void showErrorMessage(String message) {
+      final snackBar = SnackBar(content: Text(message));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
+
 
   void onSubmitData() async {
     // final data = await postCategoryDataWithToken();
@@ -63,13 +82,14 @@ class _PropertyInfoState extends State<PropertyInfo> {
     final price = priceController.text;
     final alert = alertController.text;
     final date = dateController.text;
+    final image = imageController.text;
     final body = {
       "name" : property,
       "price" : price,
-      "categoryId": "6dabd786-e486-40ff-96e5-3c17de501162",
+      "categoryId": dropdownvalue,
       "expired_at" : date,
       "alert_at" : alert,
-      "image" : ""
+      "image" : "",
     };
     try {
       final response = await postPropertyDataWithToken(body); // Call the post function with your data
@@ -86,15 +106,6 @@ class _PropertyInfoState extends State<PropertyInfo> {
     }
   }
 
-  void showSuccessMessage(String message) {
-    final snackBar = SnackBar(content: Text(message));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
-  void showErrorMessage(String message) {
-    final snackBar = SnackBar(content: Text(message));
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -146,11 +157,10 @@ class _PropertyInfoState extends State<PropertyInfo> {
                               height: 110,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
-                                  image: FileImage(controller.imageFile!),
+                                  // image: FileImage(controller.imageFile!),
+                                  image: FileImage(File(controller.imageFile!.path)),
                                   fit: BoxFit.cover,
                                 ),
-                                // color: Colors.cyanAccent,
-                                // border: Border.all(width: 1),
                                 borderRadius: BorderRadius.circular(10)
                               ),
                           ),
@@ -205,29 +215,19 @@ class _PropertyInfoState extends State<PropertyInfo> {
                         Container(
                             width: 300,
                             padding: const EdgeInsets.only(left:40),
-                            child:
-                            DropdownButton(
-                              // controller: controller.categoryNameTextEditingController,
-                              //   value: selectedValue,
-                                value: selectedValue,
-                              // items: data.map<DropdownMenuItem<String>>((e) {
-                              //   return DropdownMenuItem<String>(
-                              //       child: Text(
-                              //         e["categoryId"] ?? ""),
-                              //       value: e["id"] ?? "Default",);
-                              //   }).toList(),
-                              //   onChanged: (String? newValue){
-                              //     setState(() {
-                              //       selectedValue = newValue!;
-                              //     });
-                              //   },
-
-                                onChanged: (String? newValue){
-                                  setState(() {
-                                    selectedValue = newValue!;
-                                  });
-                                },
-                                items: dropdownItems
+                            child: DropdownButton(
+                              value: dropdownvalue,
+                              items: categoryItemlist.map((item) {
+                                return DropdownMenuItem(
+                                  value: item['id'].toString(),
+                                  child: Text(item['name'].toString()),
+                                );
+                              }).toList(),
+                              onChanged: ( newValue) {
+                                setState(() {
+                                  dropdownvalue = newValue!;
+                                });
+                              },
                             ),
 
                             ),
@@ -441,13 +441,15 @@ class _PropertyInfoState extends State<PropertyInfo> {
       ),
     );
   }
+
+
+// List<DropdownMenuItem<String>> get dropdownItems{
+//   List<DropdownMenuItem<String>> menuItems = [
+//     DropdownMenuItem(child: Text("Foods"),value: "Foods"),
+//     DropdownMenuItem(child: Text("Utilities"),value: "Utilities"),
+//     DropdownMenuItem(child: Text("Skincare"),value: "Skincare"),
+//   ];
+//   return menuItems;
+// }
 }
 
-List<DropdownMenuItem<String>> get dropdownItems{
-  List<DropdownMenuItem<String>> menuItems = [
-    DropdownMenuItem(child: Text("Foods"),value: "Foods"),
-    DropdownMenuItem(child: Text("Utilities"),value: "Utilities"),
-    DropdownMenuItem(child: Text("Skincare"),value: "Skincare"),
-  ];
-  return menuItems;
-}
