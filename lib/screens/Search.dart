@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:get/get.dart';
 import 'package:tukdak/screens/mainScreen.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -191,7 +192,8 @@ class _SearchScreenState extends State<SearchScreen> {
       appBar: AppBar(
         leading: GestureDetector(
             onTap: () {
-              _navigateToMainScreen(context);
+              Get.back();
+              // _navigateToMainScreen(context);
             },
             child: const Icon(IconlyLight.arrowLeft)),
         backgroundColor: const Color(0xFFAAC7D7),

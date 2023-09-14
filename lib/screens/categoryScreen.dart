@@ -16,9 +16,13 @@ class Category extends StatefulWidget {
 }
 
 class _CategoryState extends State<Category> {
+  GlobalKey<ScaffoldMessengerState> scaffoldKey = GlobalKey<ScaffoldMessengerState>();
   final AddCategoryController controller = Get.put(AddCategoryController());
   final NavBarController navControll = Get.put(NavBarController());
   final responseData = <Map<String, dynamic>>[].obs;
+  bool hasPropertiesInCategory(String categoryId, List<Map<String, dynamic>> properties) {
+    return properties.any((property) => property['categoryId'] == categoryId);
+  }
 
   @override
   void initState() {
@@ -45,9 +49,17 @@ class _CategoryState extends State<Category> {
     }
   }
 
-  void onDeleteButtonPressed(String itemIdToDelete) async {
-    await deleteById(itemIdToDelete);
-    fetchData();
+  void onDeleteButtonPressed(String id, String name, List<Map<String, dynamic>> properties) async {
+      // deleteById(name);
+      // fetchData();
+      // print("property is null");
+      Get.snackbar(
+        'Error',
+        'Category cannot be deleted',
+        backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+      );
+      print("Cannot delete category with associated properties.");
+
   }
 
   //navigate to add page
@@ -109,14 +121,16 @@ class _CategoryState extends State<Category> {
                                 color: Color(0xFFAAC7D7),
                               ),
                             ),
-                            onPressed: () async {
-                              // Get.to(() => addCategory());
-                              await Navigator.of(context)
-                                  .push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const addCategory()))
-                                  .then((_) {
-                                fetchData();
+                            onPressed: () {
+                              setState(() async {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(
+                                    builder: (context) =>
+                                    const addCategory()))
+                                    .then((_) {
+                                  fetchData();
+                                });
+                                // Get.to(() => addCategory());
                               });
                             },
                             style: ButtonStyle(
@@ -124,10 +138,10 @@ class _CategoryState extends State<Category> {
                               backgroundColor: MaterialStateProperty.all<Color>(
                                   Colors.white),
                               shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
-                              )),
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  )),
                             ),
                           ),
                         ),
@@ -141,20 +155,45 @@ class _CategoryState extends State<Category> {
           Expanded(
             child: ClipRRect(
               borderRadius:
-                  const BorderRadius.only(topLeft: Radius.circular(25)),
+              const BorderRadius.only(topLeft: Radius.circular(25)),
               child: Container(
                 color: Colors.white,
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Expanded(
                     child: Obx(() => ListView.builder(
-                          // itemCount: controller.itemCount.value,
-                          itemCount: responseData.length,
-                          itemBuilder: ((context, index) {
-                            // final category = controller.category.value[index];
-                            final name = responseData[index]['name'];
-                            final id = responseData[index]['id'] as String;
-                            return Container(
+                      // itemCount: controller.itemCount.value,
+                      itemCount: responseData.length,
+                      itemBuilder: ((context, index) {
+                        // final category = controller.category.value[index];
+                        // if (index >= 0 && index < responseData.length) {
+                          final name = responseData[index]['name'];
+                          final id = responseData[index]['id'];
+                          final propertiesRaw = responseData[index]['properties'];
+                          final properties = (propertiesRaw != null &&
+                              propertiesRaw is List)
+                              ? propertiesRaw.map((property) =>
+                          property as Map<String, dynamic>)
+                              .toList()
+                              : <Map<String, dynamic>>[];
+                          return Dismissible(
+                            key: Key(name),
+                            direction: DismissDirection.endToStart,
+                            onDismissed: (direction) {
+                              setState(() {
+                                  onDeleteButtonPressed(id, name, properties);
+                                  responseData.removeAt(index);
+                                  fetchData();
+                              });
+                            },
+                            background: Container(
+                              color: Colors.red,
+                              alignment: Alignment.centerRight,
+                              padding: EdgeInsets.symmetric(horizontal: 20),
+                              child: Icon(
+                                  Icons.delete, color: Colors.white),
+                            ),
+                            child: Container(
                               margin: new EdgeInsets.only(top: 10),
                               decoration: BoxDecoration(
                                 // color: Color(0xFFDFEBF7),
@@ -163,11 +202,11 @@ class _CategoryState extends State<Category> {
                               ),
                               child: GestureDetector(
                                 onTap: () {
-                                  Get.to(() => PropertyList());
+                                  Get.to(() => const PropertyList());
                                 },
                                 child: ListTile(
                                   contentPadding:
-                                      EdgeInsets.fromLTRB(20, 10, 10, 10),
+                                  EdgeInsets.fromLTRB(20, 10, 10, 10),
                                   title: Row(
                                     children: [
                                       Expanded(
@@ -175,7 +214,7 @@ class _CategoryState extends State<Category> {
                                           name,
                                           style: const TextStyle(
                                             color: Color(0xFF768A95),
-                                            fontSize: 24,
+                                            fontSize: 18,
                                           ),
                                         ),
                                       ),
@@ -184,37 +223,40 @@ class _CategoryState extends State<Category> {
                                           child: const Icon(
                                             Icons.edit_rounded,
                                             color: Color(0xFF768A95),
+                                            size: 20,
                                           ),
                                           onTap: () {
                                             navigateToEditPage(name);
-                                            print('hello');
                                             // Get.to(() => const addCategory());
                                           },
                                         ),
                                       ),
                                       const SizedBox(
                                           width:
-                                              16), // Add some spacing between icons
-                                      ZoomTapAnimation(
-                                        child: GestureDetector(
-                                          child: const Icon(
-                                            Icons.delete_rounded,
-                                            color: Color(0xFF768A95),
-                                          ),
-                                          onTap: () {
-                                            setState(() {
-                                              onDeleteButtonPressed(id);
-                                            });
-                                          },
-                                        ),
-                                      ),
+                                          12),
+                                      // Add some spacing between icons
+                                      // ZoomTapAnimation(
+                                      //   child: GestureDetector(
+                                      //     child: const Icon(
+                                      //       Icons.delete_rounded,
+                                      //       color: Color(0xFF768A95),
+                                      //       size: 20,
+                                      //     ),
+                                      //     onTap: () {
+                                      //       setState(() {
+                                      //         onDeleteButtonPressed(id);
+                                      //       });
+                                      //     },
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                 ),
                               ),
-                            );
-                          }),
-                        )),
+                            ),
+                          );
+                      }),
+                    )),
                   ),
                 ),
               ),
