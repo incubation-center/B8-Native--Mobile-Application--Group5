@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tukdak/controller/NavController.dart';
 import 'package:tukdak/models/notification_model.dart';
 import 'package:tukdak/screens/mainScreen.dart';
 
 class NotifyAlert extends StatelessWidget {
+  final NavBarController navControll = Get.put(NavBarController());
   final List<NotificationModel> notifications;
 
   NotifyAlert({required this.notifications});
@@ -31,8 +33,11 @@ class NotifyAlert extends StatelessWidget {
           icon: const Icon(Icons.arrow_back,
               color: Colors.black), // Arrow icon with black color
           onPressed: () {
+            navControll.goToTab(0);
+            // Get.back();
             // Navigate to the homepage
-            // Navigator.pushReplacementNamed(context, '/');
+            // // Navigator.pushReplacementNamed(context, '/');
+            // _navigateToMainScreen(context);
             _navigateToMainScreen(context);
           },
         ),

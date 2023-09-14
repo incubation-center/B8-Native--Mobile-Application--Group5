@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tukdak/config/routes.dart';
+import 'package:tukdak/config/services/category.dart';
 import 'package:tukdak/controller/NavController.dart';
 import 'package:tukdak/controller/addCategoryController.dart';
 import 'package:tukdak/screens/addCategory.dart';
+import 'package:tukdak/screens/propertyInfo.dart';
 import 'package:tukdak/screens/propertyList.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -17,7 +18,56 @@ class Category extends StatefulWidget {
 class _CategoryState extends State<Category> {
   final AddCategoryController controller = Get.put(AddCategoryController());
   final NavBarController navControll = Get.put(NavBarController());
-  bool isEdit = false;
+  final responseData = <Map<String, dynamic>>[].obs;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  void fetchData() async {
+    final data = await fetchDataWithToken(); // Fetch data from the backend
+    responseData.value = data!;
+    print(responseData);
+  }
+
+  Future<void> deleteById(String id) async {
+    try {
+      await deleteCategoryDataWithToken(id);
+      // Item successfully deleted, you can perform any necessary UI updates here.
+      // showSuccessMessage('Deletion Success');
+      print('Item with ID $id deleted successfully.');
+    } catch (e) {
+      // showErrorMessage('Deletion Failed');
+      // Handle any errors that may occur during the delete operation.
+      print('Error deleting item: $e');
+    }
+  }
+
+  void onDeleteButtonPressed(String itemIdToDelete) async {
+    await deleteById(itemIdToDelete);
+    fetchData();
+  }
+
+  //navigate to add page
+  void navigateToEditPage(Map name) {
+    final route = MaterialPageRoute(
+      builder: (context) => addCategory(category: name),
+    );
+    Navigator.push(context, route);
+  }
+
+  void onCategorySelected(String selectedCategoryId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PropertyInfo(),
+      ),
+    );
+    // fetchData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,8 +85,9 @@ class _CategoryState extends State<Category> {
                     children: [
                       IconButton(
                         onPressed: () {
-                          navControll.goToTab(0);
-                          // Get.back();
+                          // _handleApiCall();
+                          // navControll.goToTab(0);
+                          Get.back();
                         },
                         icon: Icon(
                           Icons.arrow_back_rounded,
@@ -58,10 +109,15 @@ class _CategoryState extends State<Category> {
                                 color: Color(0xFFAAC7D7),
                               ),
                             ),
-                            onPressed: () {
-                              Get.to(() => addCategory());
-                              controller
-                                  .categoryNameTextEditingController.text = '';
+                            onPressed: () async {
+                              // Get.to(() => addCategory());
+                              await Navigator.of(context)
+                                  .push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const addCategory()))
+                                  .then((_) {
+                                fetchData();
+                              });
                             },
                             style: ButtonStyle(
                               elevation: MaterialStateProperty.all(0),
@@ -92,8 +148,12 @@ class _CategoryState extends State<Category> {
                   padding: const EdgeInsets.all(20),
                   child: Expanded(
                     child: Obx(() => ListView.builder(
-                          itemCount: controller.itemCount.value,
+                          // itemCount: controller.itemCount.value,
+                          itemCount: responseData.length,
                           itemBuilder: ((context, index) {
+                            // final category = controller.category.value[index];
+                            final name = responseData[index]['name'];
+                            final id = responseData[index]['id'] as String;
                             return Container(
                               margin: new EdgeInsets.only(top: 10),
                               decoration: BoxDecoration(
@@ -112,8 +172,7 @@ class _CategoryState extends State<Category> {
                                     children: [
                                       Expanded(
                                         child: Text(
-                                          controller.category.value[index]
-                                              .categoryName!,
+                                          name,
                                           style: const TextStyle(
                                             color: Color(0xFF768A95),
                                             fontSize: 24,
@@ -127,14 +186,9 @@ class _CategoryState extends State<Category> {
                                             color: Color(0xFF768A95),
                                           ),
                                           onTap: () {
-                                            // int selectedIndex = index;
-                                            isEdit = true;
-                                            Get.to(() => const addCategory());
-                                            controller.editCategory(
-                                                index,
-                                                controller
-                                                    .categoryNameTextEditingController
-                                                    .text);
+                                            navigateToEditPage(name);
+                                            print('hello');
+                                            // Get.to(() => const addCategory());
                                           },
                                         ),
                                       ),
@@ -148,7 +202,9 @@ class _CategoryState extends State<Category> {
                                             color: Color(0xFF768A95),
                                           ),
                                           onTap: () {
-                                            controller.removeCategory(index);
+                                            setState(() {
+                                              onDeleteButtonPressed(id);
+                                            });
                                           },
                                         ),
                                       ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tukdak/components/profilebar.dart';
 import 'package:tukdak/config/services/category.dart';
-import 'package:tukdak/config/services/userprofile.dart';
 
 class SlideData {
   final String section;
@@ -44,8 +43,7 @@ class _HomePageState extends State<HomePage> {
 
   // Function to handle the API call
   void _handleApiCall() async {
-    // final responseData = await fetchDataWithToken();
-    final responseData = await getUserprofile();
+    final responseData = await fetchDataWithToken();
     if (responseData != null) {
       // Handle the response data here.
       print('Response data: $responseData');
