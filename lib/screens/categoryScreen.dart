@@ -202,7 +202,8 @@ class _CategoryState extends State<Category> {
                               ),
                               child: GestureDetector(
                                 onTap: () {
-                                  Get.to(() => const PropertyList());
+                                  final selectCategory = id;
+                                  Get.to(() => PropertyList(selectedCategory: selectCategory,));
                                 },
                                 child: ListTile(
                                   contentPadding:

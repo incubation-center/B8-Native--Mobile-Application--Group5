@@ -8,7 +8,11 @@ import 'package:tukdak/screens/propertyInfo.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 class PropertyList extends StatefulWidget {
-  const PropertyList({super.key});
+  final String selectedCategory;
+  const PropertyList({
+    super.key,
+    required this.selectedCategory,
+  });
 
   @override
   State<PropertyList> createState() => _PropertyListState();
@@ -22,14 +26,28 @@ class _PropertyListState extends State<PropertyList> {
   @override
   void initState() {
     super.initState();
+    print('Selected Category: ${widget.selectedCategory}');
     fetchData();
   }
 
   void fetchData() async {
-    final data =
-    await fetchPropertyDataWithToken(); // Fetch data from the backend
+    final data = await fetchPropertyDataWithToken(); // Fetch data from the backend
     responseData.value = data!;
     print(responseData);
+
+    // Filter the responseData based on the selected category
+    filterByCategory(widget.selectedCategory);
+  }
+
+  void filterByCategory(String category) {
+    if (category.isNotEmpty) {
+      responseData.value = responseData
+          .where((item) =>
+      item['name'] == category ||
+          item['properties']
+              .any((property) => property['categoryId'] == category))
+          .toList();
+    }
   }
 
   @override
@@ -69,23 +87,29 @@ class _PropertyListState extends State<PropertyList> {
                       final expire = responseData[index]['expired_at'];
                       final properties = responseData[index]['properties']
                       as List<dynamic>?;
-                      // final propertyNames = properties.map((property) => property['name'] as String).toList();
-                      return GestureDetector(
-                        onTap: () {
-                          Get.to(() => PropertyInfo());
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              '',
-                              style: TextStyle(
-                                color: Color(0xFF768A95),
-                                fontSize: 24,
+
+                      if (properties != null) {
+                        final filterdProperties = properties.where((property) =>
+                        property['categoryId'] == widget.selectedCategory)
+                            .toList();
+                        print('Selected Category: ${widget.selectedCategory}');
+                        print('Properties for this item: $filterdProperties');
+                        // final propertyNames = properties.map((property) => property['name'] as String).toList();
+                        return GestureDetector(
+                          onTap: () {
+                            Get.to(() => PropertyInfo());
+                          },
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                '',
+                                style: TextStyle(
+                                  color: Color(0xFF768A95),
+                                  fontSize: 24,
+                                ),
                               ),
-                            ),
-                            if (properties != null)
-                              for (var property in properties)
+                              for (var property in filterdProperties)
                                 ListTile(
                                   contentPadding:
                                   EdgeInsets.fromLTRB(20, 20, 40, 10),
@@ -100,11 +124,6 @@ class _PropertyListState extends State<PropertyList> {
                                             // border: Border.all(width: 1),
                                             borderRadius:
                                             BorderRadius.circular(10)),
-                                        // child: Image.asset(
-                                        //   'assets/your_image.png', // Replace with the path to your image asset
-                                        //   // Set the height as needed
-                                        //   // You can also use other Image constructors for network images, etc.
-                                        // ),
                                       ),
                                       SizedBox(width: 8),
                                       Expanded(
@@ -123,7 +142,11 @@ class _PropertyListState extends State<PropertyList> {
                                               ),
                                             ),
                                             Text(
-                                              "Expired At: " + DateFormat('yyyy-MM-dd').format(DateTime.parse(property['expired_at'])) as String? ?? 'No Expire',
+                                              "Expired At: " +
+                                                  DateFormat('yyyy-MM-dd')
+                                                      .format(DateTime.parse(
+                                                      property['expired_at'])) as String? ??
+                                                  'No Expire',
                                               // controller
                                               //     .property.value[index].category,
                                               // ,
@@ -140,20 +163,22 @@ class _PropertyListState extends State<PropertyList> {
                                           child: const Icon(
                                             Icons.edit_rounded,
                                             color: Color(0xFF768A95),
+                                            size: 20,
                                           ),
                                           onTap: () {
-                                            Get.to(() => PropertyList());
+                                            Get.to(() => PropertyInfo());
                                           },
                                         ),
                                       ),
                                       const SizedBox(
                                           width:
-                                          16), // Add some spacing between icons
+                                          12), // Add some spacing between icons
                                       ZoomTapAnimation(
                                         child: GestureDetector(
                                           child: const Icon(
                                             Icons.delete_rounded,
                                             color: Color(0xFF768A95),
+                                            size: 20,
                                           ),
                                           onTap: () {
                                             controller
@@ -164,9 +189,10 @@ class _PropertyListState extends State<PropertyList> {
                                     ],
                                   ),
                                 ),
-                          ],
-                        ),
-                      );
+                            ],
+                          ),
+                        );
+                      }
                     }),
                   )),
                 ),
