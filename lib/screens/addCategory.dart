@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 import 'package:tukdak/config/services/category.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
-import '../controller/addCategoryController.dart';
-
 class addCategory extends StatefulWidget {
-  final Map? category;
+  final String? category;
+  final String? id;
   const addCategory({
     super.key,
     this.category,
+    this.id,
   });
 
   @override
@@ -17,7 +17,6 @@ class addCategory extends StatefulWidget {
 }
 
 class _addCategoryState extends State<addCategory> {
-  final AddCategoryController controller = Get.put(AddCategoryController());
   final TextEditingController categoryController = TextEditingController();
   bool isEdit = false;
 
@@ -27,7 +26,7 @@ class _addCategoryState extends State<addCategory> {
     final category = widget.category;
     if (category != null) {
       isEdit = true;
-      final name = category['name'];
+      final name = category;
       categoryController.text = name;
     }
   }
@@ -64,7 +63,28 @@ class _addCategoryState extends State<addCategory> {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  void updateData() {}
+  void updateData() async {
+    final categoryData = widget.category;
+    final category = categoryController.text;
+    final id = widget.id;
+    print("id:------------------ $categoryData");
+    print("category data:------------------ $categoryData");
+    if(categoryData == null){
+      print('You can not call update without data');
+      return;
+    }
+    // final updateCategory = categoryData['id'];
+    final body = {
+      "name": category,
+    };
+    final response = await putCategoryDataWithToken(id!, body); // Call the post function with your data
+    if (response != null) {
+      // Handle the response from the server here
+      showSuccessMessage('Update Success');
+      print("Response from server: $response");
+    }
+    fetchDataWithToken();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +104,7 @@ class _addCategoryState extends State<addCategory> {
                       onPressed: () {
                         Get.back();
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.arrow_back_rounded,
                         size: 30,
                       ),
@@ -119,7 +139,6 @@ class _addCategoryState extends State<addCategory> {
                           padding: const EdgeInsets.only(top: 40),
                           child: TextField(
                             controller: categoryController,
-                            // controller: controller.categoryNameTextEditingController,
                             decoration: const InputDecoration(
                                 focusColor: Color(0xFF768A95),
                                 hintText: 'Enter category name',
@@ -135,10 +154,9 @@ class _addCategoryState extends State<addCategory> {
                             child: ElevatedButton(
                               onPressed: () => {
                                 setState(() {
-                                  isEdit ? updateData : submitData();
+                                  isEdit ? updateData() : submitData();
                                 }),
-                                // Get.back(),
-                                Navigator.pop(context),
+                                Navigator.pop(context, true),
                               },
                               style: ButtonStyle(
                                 elevation: MaterialStateProperty.all(0),

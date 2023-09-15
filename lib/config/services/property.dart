@@ -53,3 +53,28 @@ Future<Map<String, dynamic>?> postPropertyDataWithToken(Map<String, dynamic> dat
     return null; // Return null or some other appropriate value.
   }
 }
+
+//delete
+Future<Map<String, dynamic>?> deletePropertyDataWithToken(String id) async {
+  final token = await secureStorage.read(key: 'auth_token');
+  final url = Uri.parse(
+      'http://127.0.0.1:8000/property/$id'); // Use the provided ID in the URL.
+
+  final response = await http.delete(
+    url,
+    headers: {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json', // Adjust content type as needed.
+    },
+  );
+  print("------status code: ${response.statusCode}");
+  if (response.statusCode == 200) {
+    // If the server returns a 204 No Content response, it indicates a successful deletion.
+    return null; // No response body for a successful deletion.
+  } else {
+    print(
+        "Error sending delete request to server. Status code: ${response.statusCode}");
+    print("Response body: ${response.body}");
+    throw Exception('Failed to delete data from the backend');
+  }
+}
