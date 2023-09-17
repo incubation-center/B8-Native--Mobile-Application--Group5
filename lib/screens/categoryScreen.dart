@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tukdak/config/services/category.dart';
 import 'package:tukdak/controller/NavController.dart';
-import 'package:tukdak/controller/addCategoryController.dart';
 import 'package:tukdak/screens/addCategory.dart';
 import 'package:tukdak/screens/propertyInfo.dart';
 import 'package:tukdak/screens/propertyList.dart';
@@ -17,7 +16,6 @@ class Category extends StatefulWidget {
 
 class _CategoryState extends State<Category> {
   GlobalKey<ScaffoldMessengerState> scaffoldKey = GlobalKey<ScaffoldMessengerState>();
-  final AddCategoryController controller = Get.put(AddCategoryController());
   final NavBarController navControll = Get.put(NavBarController());
   final responseData = <Map<String, dynamic>>[].obs;
   bool hasPropertiesInCategory(String categoryId, List<Map<String, dynamic>> properties) {
@@ -50,9 +48,6 @@ class _CategoryState extends State<Category> {
   }
 
   void onDeleteButtonPressed(String id, String name, List<Map<String, dynamic>> properties) async {
-      // deleteById(name);
-      // fetchData();
-      // print("property is null");
       Get.snackbar(
         'Error',
         'Category cannot be deleted',
@@ -63,22 +58,18 @@ class _CategoryState extends State<Category> {
   }
 
   //navigate to add page
-  void navigateToEditPage(Map name) {
-    final route = MaterialPageRoute(
-      builder: (context) => addCategory(category: name),
-    );
-    Navigator.push(context, route);
+  void navigateToEditPage(String name, id) {
+    try {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => addCategory(category: name, id: id),
+        ),
+      );
+    } catch (e) {
+      print("Navigation error: $e");
+    }
   }
 
-  void onCategorySelected(String selectedCategoryId) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => PropertyInfo(),
-      ),
-    );
-    // fetchData();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,10 +89,10 @@ class _CategoryState extends State<Category> {
                       IconButton(
                         onPressed: () {
                           // _handleApiCall();
-                          // navControll.goToTab(0);
-                          Get.back();
+                          navControll.goToTab(0);
+                          // Get.back();
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.arrow_back_rounded,
                           size: 30,
                         ),
@@ -123,14 +114,13 @@ class _CategoryState extends State<Category> {
                             ),
                             onPressed: () {
                               setState(() async {
-                                Navigator.of(context)
+                                await Navigator.of(context)
                                     .push(MaterialPageRoute(
                                     builder: (context) =>
                                     const addCategory()))
                                     .then((_) {
                                   fetchData();
                                 });
-                                // Get.to(() => addCategory());
                               });
                             },
                             style: ButtonStyle(
@@ -162,11 +152,8 @@ class _CategoryState extends State<Category> {
                   padding: const EdgeInsets.all(20),
                   child: Expanded(
                     child: Obx(() => ListView.builder(
-                      // itemCount: controller.itemCount.value,
                       itemCount: responseData.length,
                       itemBuilder: ((context, index) {
-                        // final category = controller.category.value[index];
-                        // if (index >= 0 && index < responseData.length) {
                           final name = responseData[index]['name'];
                           final id = responseData[index]['id'];
                           final propertiesRaw = responseData[index]['properties'];
@@ -196,14 +183,11 @@ class _CategoryState extends State<Category> {
                             child: Container(
                               margin: new EdgeInsets.only(top: 10),
                               decoration: BoxDecoration(
-                                // color: Color(0xFFDFEBF7),
-                                // border: Border.all(color: Colors.grey),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: GestureDetector(
                                 onTap: () {
-                                  final selectCategory = id;
-                                  Get.to(() => PropertyList(selectedCategory: selectCategory,));
+                                  Get.to(() => PropertyList(selectedCategory: id));
                                 },
                                 child: ListTile(
                                   contentPadding:
@@ -221,35 +205,20 @@ class _CategoryState extends State<Category> {
                                       ),
                                       ZoomTapAnimation(
                                         child: GestureDetector(
+                                          onTap: () {
+                                              navigateToEditPage(name, id);
+                                              fetchData();
+                                          },
                                           child: const Icon(
                                             Icons.edit_rounded,
                                             color: Color(0xFF768A95),
                                             size: 20,
                                           ),
-                                          onTap: () {
-                                            navigateToEditPage(name);
-                                            // Get.to(() => const addCategory());
-                                          },
                                         ),
                                       ),
                                       const SizedBox(
                                           width:
                                           12),
-                                      // Add some spacing between icons
-                                      // ZoomTapAnimation(
-                                      //   child: GestureDetector(
-                                      //     child: const Icon(
-                                      //       Icons.delete_rounded,
-                                      //       color: Color(0xFF768A95),
-                                      //       size: 20,
-                                      //     ),
-                                      //     onTap: () {
-                                      //       setState(() {
-                                      //         onDeleteButtonPressed(id);
-                                      //       });
-                                      //     },
-                                      //   ),
-                                      // ),
                                     ],
                                   ),
                                 ),

@@ -66,7 +66,6 @@ class _LoginscreenState extends State<LoginScreen> {
           print("Token: $token");
           // Store the token securely
           await secureStorage.write(key: 'auth_token', value: token);
-          // ignore: use_build_context_synchronously
           _navigateToMainScreen(context);
         } else {
           // Handle the case where 'token' is null in the response
