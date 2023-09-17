@@ -2,6 +2,7 @@ import cron from 'node-cron'
 import { sendNotification } from '../helper/sendNotification';
 import PropertyModel from '../app/property/models';
 import UserModel from '../app/user/models';
+import NotificationModel from '../app/notification/model';
 const { Op } = require('sequelize');
 
 //run every 8AM
@@ -23,6 +24,7 @@ cron.schedule('* 8 * * *', async () => {
                 sendNotification(user.deviceToken, 'Property Expired', `${property.name} has expired`);
                 property.isExpired = true;
                 await  property.save();
+                await NotificationModel.create({ userId: user.id, propertyId: property , title: 'Property Expired', description: `${property.name} has expired` });
             }
         }
     } catch (error) {
@@ -52,6 +54,7 @@ cron.schedule('* 8 * * *', async () => {
                 if (user) {
                     const remaindingDays = Math.floor((property.expired_at.getTime() - currentDate.getTime()) / (1000 * 3600 * 24));
                     sendNotification(user.deviceToken, 'Property Expired Soon', `${property.name} will expire in ${remaindingDays} days`);
+                    await NotificationModel.create({ userId: user.id, propertyId: property , title: 'Property Expired Soon', description: `${property.name} will expire in ${remaindingDays} days` });
                 }
             }
         }

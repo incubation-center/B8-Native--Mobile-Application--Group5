@@ -5,6 +5,7 @@ const cors = require("cors");
 import dotenv from "dotenv";
 import userRoutes from "./app/user/routes";
 import cateRoute from "./app/category/routes";
+import notiRoute from "./app/notification/routes";
 import propertyRoute from "./app/property/routes";
 import { sequelize, syncDatabase } from "./config/databaseConfigAsync";
 import logRequest from "./config/apiLogConfig";
@@ -47,6 +48,7 @@ app.use(logRequest);
 app.use("/", userRoutes);
 app.use("/category", cateRoute);
 app.use("/property", propertyRoute);
+app.use("/notification", notiRoute);
 
 async function startServer() {
   try {
