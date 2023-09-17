@@ -112,7 +112,7 @@ class _PropertyListState extends State<PropertyList> {
                               for (var property in filterdProperties)
                                 ListTile(
                                   contentPadding:
-                                  EdgeInsets.fromLTRB(20, 20, 40, 10),
+                                  const EdgeInsets.fromLTRB(20, 20, 40, 10),
                                   title: Row(
                                     children: [
                                       Container(
@@ -123,9 +123,9 @@ class _PropertyListState extends State<PropertyList> {
                                             color: Colors.transparent,
                                             // border: Border.all(width: 1),
                                             borderRadius:
-                                            BorderRadius.circular(10)),
+                                             BorderRadius.circular(10)),
                                       ),
-                                      SizedBox(width: 8),
+                                      const SizedBox(width: 8),
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment:
