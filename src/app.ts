@@ -11,6 +11,7 @@ import { sequelize, syncDatabase } from "./config/databaseConfigAsync";
 import logRequest from "./config/apiLogConfig";
 import "./config/scheduler";
 import "./config/passportConfig";
+import "./config/s3UploadFileConfig";
 
 // Determine the environment from NODE_ENV
 const environment = process.env.NODE_ENV || "development";
