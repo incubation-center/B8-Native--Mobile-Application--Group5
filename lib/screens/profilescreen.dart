@@ -1,8 +1,13 @@
+// ignore_for_file: unused_element
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:tukdak/config/services/allproducexpired.dart';
 import 'package:tukdak/config/services/userprofile.dart';
+import 'package:tukdak/screens/addCategory.dart';
+
 import 'package:tukdak/screens/authscreen/loginscreen.dart';
 import 'package:tukdak/screens/homePage.dart';
 import 'package:tukdak/screens/mainScreen.dart';
@@ -29,6 +34,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // Navigator.of(context).pushReplacementNamed('/');
   }
 
+  void _navigateToaddCategory(BuildContext context) {
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const MainScreen()),
+    // // );
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const addCategory()));
+  }
+
   void logout() async {
     // Clear the authentication token
     await secureStorage.delete(key: 'auth_token');
@@ -45,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _navigateToAchiveproductScreen(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const ProductAchivescreen()),
+      MaterialPageRoute(builder: (context) =>  ProductAchivescreen()),
     );
   }
 
@@ -163,8 +177,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     }),
                 CustomList(
                     imagesPath: "assets/images/wishlist_svg.png",
-                    text: "Wishlist",
-                    function: () {}),
+                    text: "All products",
+                    function: () {
+                      _navigateToaddCategory(context);
+                    }),
                 const SizedBox(
                   height: 6,
                 ),

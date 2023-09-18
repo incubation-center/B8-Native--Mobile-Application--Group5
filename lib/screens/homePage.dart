@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tukdak/components/profilebar.dart';
+import 'package:tukdak/config/services/allproducexpired.dart';
 import 'package:tukdak/config/services/category.dart';
 
 class SlideData {
@@ -43,7 +44,8 @@ class _HomePageState extends State<HomePage> {
 
   // Function to handle the API call
   void _handleApiCall() async {
-    final responseData = await fetchDataWithToken();
+    // final responseData = await fetchDataWithToken();
+    final responseData = await getAllexpiredProducts();
     if (responseData != null) {
       // Handle the response data here.
       print('Response data: $responseData');
@@ -106,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                     ),
 
                     // testing api call
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Center(
                       child: Container(
                         padding:

@@ -157,6 +157,36 @@ class _PropertyListState extends State<PropertyList> {
                                 ),
                               ),
                               for (var property in filterdProperties)
+
+                                ListTile(
+                                  contentPadding:
+                                  const EdgeInsets.fromLTRB(20, 20, 40, 10),
+                                  title: Row(
+                                    children: [
+                                      Container(
+                                        width:
+                                        35, // Set the width as needed
+                                        height: 35,
+                                        decoration: BoxDecoration(
+                                            color: Colors.transparent,
+                                            // border: Border.all(width: 1),
+                                            borderRadius:
+                                             BorderRadius.circular(10)),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              property['name'] as String? ??
+                                                  'No name',
+                                              // controller.property.value[index]
+                                              //     .propertyName,
+                                              style: const TextStyle(
+                                                color: Color(0xFF768A95),
+                                                fontSize: 18,
                                 Dismissible(
                                   key: Key(property['id']),
                                   direction: DismissDirection.endToStart,
