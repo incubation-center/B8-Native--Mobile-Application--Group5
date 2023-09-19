@@ -24,81 +24,154 @@ class _LoginscreenState extends State<LoginScreen> {
   // Getting value from TextField widget.
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  void login(String email, password) async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) {
-      Get.snackbar(
-        'Error',
-        'No internet connection. Please check your network settings',
-        backgroundColor: const Color.fromARGB(255, 170, 215, 206),
-      );
-      return;
-    }
 
+  @override
+  void initState() {
+    super.initState();
+    checkTokenAndNavigate();
+  }
+
+  Future<void> checkTokenAndNavigate() async {
+    final String? token = await secureStorage.read(key: 'auth_token');
+    if (token != null) {
+      // ignore: use_build_context_synchronously
+      _navigateToMainScreen(context);
+    }
+  }
+
+  Future<void> login(String email, String password) async {
     try {
-      // Log the input values
-      // ignore: avoid_print
-      print("Email: $email");
-      // ignore: avoid_print
-      print("Password: $password");
       final response = await http.post(
-        // Uri.parse('http://127.0.0.1:8000/user'),
         Uri.http("localhost:8000", '/login'),
         headers: <String, String>{
           "Access-Control-Allow-Origin": "*",
           'Content-Type': 'application/json',
-          'Accept': '*/*'
+          'Accept': '*/*',
         },
-        body:
-            jsonEncode(<String, String>{"email": email, "password": password}),
+        body: jsonEncode({"email": email, "password": password}),
       );
-      // print(response.body);
+
       if (response.statusCode == 200) {
-        // ignore: use_build_context_synchronously
         final jsonResponse = json.decode(response.body);
         final String token = jsonResponse['accessToken'];
 
-        // Store the token securely (e.g., using secure_storage)
         await secureStorage.write(key: 'auth_token', value: token);
 
         if (token != null) {
-          // Log the token
-          print("Token: $token");
-          // Store the token securely
-          await secureStorage.write(key: 'auth_token', value: token);
-          // ignore: use_build_context_synchronously
           _navigateToMainScreen(context);
         } else {
-          // Handle the case where 'token' is null in the response
-          Get.snackbar(
-            'Error',
-            'Authentication failed. Please check your credentials.',
-            backgroundColor: const Color.fromARGB(255, 170, 215, 206),
-          );
+          showSnackbar('Authentication failed. Please check your credentials.');
         }
-        // ignore: use_build_context_synchronously
-        // _navigateToHomeScreen(context);
       } else {
-        // Authentication failed
-        Get.snackbar(
-          'Error',
-          'Authentication failed. Please check your credentials.',
-          backgroundColor: const Color.fromARGB(255, 170, 215, 206),
-          // snackPosition: SnackPosition.BOTTOM,
-        );
-        print("Sign ip has some mistake!!!");
+        showSnackbar('Authentication failed. Please check your credentials.');
       }
     } catch (e) {
-      // Error occurred during the API request
       print('Error: $e');
-      Get.snackbar(
-        'Error',
-        'An error occurred while trying to log in. Please try again later.',
-        backgroundColor: const Color.fromARGB(255, 170, 215, 206),
-      );
+      showSnackbar(
+          'An error occurred while trying to log in. Please try again later.');
     }
   }
 
+  void showSnackbar(String message) {
+    Get.snackbar(
+      'Error',
+      message,
+      backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+    );
+  }
+
+  // void login(String email, password) async {
+  //   var connectivityResult = await (Connectivity().checkConnectivity());
+  //   if (connectivityResult == ConnectivityResult.none) {
+  //     Get.snackbar(
+  //       'Error',
+  //       'No internet connection. Please check your network settings',
+  //       backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+  //     );
+  //     return;
+  //   }
+
+  //   try {
+  //     // Log the input values
+  //     // ignore: avoid_print
+  //     print("Email: $email");
+  //     // ignore: avoid_print
+  //     print("Password: $password");
+  //     final response = await http.post(
+  //       // Uri.parse('http://127.0.0.1:8000/user'),
+  //       Uri.http("localhost:8000", '/login'),
+  //       headers: <String, String>{
+  //         "Access-Control-Allow-Origin": "*",
+  //         'Content-Type': 'application/json',
+  //         'Accept': '*/*'
+  //       },
+  //       body:
+  //           jsonEncode(<String, String>{"email": email, "password": password}),
+  //     );
+  //     // print(response.body);
+  //     if (response.statusCode == 200) {
+  //       // ignore: use_build_context_synchronously
+  //       final jsonResponse = json.decode(response.body);
+  //       final String token = jsonResponse['accessToken'];
+
+  //       // Store the token securely (e.g., using secure_storage)
+  //       await secureStorage.write(key: 'auth_token', value: token);
+
+  //       if (token != null) {
+  //         // Log the token
+  //         print("Token: $token");
+  //         // Store the token securely
+  //         await secureStorage.write(key: 'auth_token', value: token);
+  //         // ignore: use_build_context_synchronously
+  //         _navigateToMainScreen(context);
+  //       } else {
+  //         // Handle the case where 'token' is null in the response
+  //         Get.snackbar(
+  //           'Error',
+  //           'Authentication failed. Please check your credentials.',
+  //           backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+  //         );
+  //       }
+  //       // ignore: use_build_context_synchronously
+  //       // _navigateToHomeScreen(context);
+  //     } else {
+  //       // Authentication failed
+  //       Get.snackbar(
+  //         'Error',
+  //         'Authentication failed. Please check your credentials.',
+  //         backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+  //         // snackPosition: SnackPosition.BOTTOM,
+  //       );
+  //       print("Sign ip has some mistake!!!");
+  //     }
+  //   } catch (e) {
+  //     // Error occurred during the API request
+  //     print('Error: $e');
+  //     Get.snackbar(
+  //       'Error',
+  //       'An error occurred while trying to log in. Please try again later.',
+  //       backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+  //     );
+  //   }
+  // }
+
+  // void onPressedLoginButton() {
+  //   final email = emailController.text;
+  //   final password = passwordController.text;
+
+  //   if (email.isNotEmpty && password.isNotEmpty) {
+  //     login(email, password);
+  //   } else {
+  //     if (email.isEmpty || password.isEmpty) {
+  //       Get.snackbar(
+  //         'Error',
+  //         'Both email and password are required',
+  //         backgroundColor: Color.fromARGB(255, 170, 215, 206),
+  //       );
+  //       return;
+  //     }
+  //   }
+  // }
   void onPressedLoginButton() {
     final email = emailController.text;
     final password = passwordController.text;
@@ -106,23 +179,17 @@ class _LoginscreenState extends State<LoginScreen> {
     if (email.isNotEmpty && password.isNotEmpty) {
       login(email, password);
     } else {
-      if (email.isEmpty || password.isEmpty) {
-        Get.snackbar(
-          'Error',
-          'Both email and password are required',
-          backgroundColor: Color.fromARGB(255, 170, 215, 206),
-        );
-        return;
-      }
+      showSnackbar('Both email and password are required');
     }
   }
 
   void _navigateToSignupScreen(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const Signup()),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const Signup()),
+    // );
     // Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+    Get.to(const Signup());
   }
 
   void _navigateToMainScreen(BuildContext context) {
@@ -130,16 +197,19 @@ class _LoginscreenState extends State<LoginScreen> {
     //   context,
     //   MaterialPageRoute(builder: (context) => const MainScreen()),
     // );
+    // Get.to(const MainScreen());
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const MainScreen()));
     // Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
   }
 
   void _navigateToForgotpasswordScreen(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const ForgotpasswordSreen()),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const ForgotpasswordSreen()),
+    // );
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const ForgotpasswordSreen()));
   }
 
   @override

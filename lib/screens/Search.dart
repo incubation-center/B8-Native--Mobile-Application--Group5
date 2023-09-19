@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
+import 'package:tukdak/config/services/search.dart';
 import 'package:tukdak/screens/mainScreen.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key});
-
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
@@ -58,6 +58,7 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   ];
 
+  String _searchQuery = "";
 // This list holds the data for the list view
   List<Map<String, dynamic>> _foundProducts = [];
   @override
@@ -84,6 +85,7 @@ class _SearchScreenState extends State<SearchScreen> {
     // Refresh the UI
     setState(() {
       _foundProducts = results;
+      _searchQuery = enteredKeyword;
     });
   }
 
@@ -98,6 +100,34 @@ class _SearchScreenState extends State<SearchScreen> {
         MaterialPageRoute(builder: (context) => const MainScreen()));
   }
 
+  void _onSearchButtonPressed() async {
+    print("Search Query: $_searchQuery"); // Print the search query
+
+    // Call the SearchData function to perform the search
+    try {
+      final List<Map<String, dynamic>>? searchResults =
+          await SearchData(_searchQuery);
+
+      if (searchResults != null) {
+        // Update the UI with the search results
+        setState(() {
+          _foundProducts = searchResults;
+        });
+        print("Search Results:");
+        for (var result in searchResults) {
+          print("ID: ${result['id']}");
+          print("Name: ${result['name']}");
+          // Add more fields as needed
+        }
+      } else {
+        print("No search results found.");
+      }
+    } catch (error) {
+      print("Error while searching: $error");
+      // Handle the error as needed
+    }
+  }
+
   Widget buildProductCard(Map<String, dynamic> product) {
     return GestureDetector(
       child: Container(
@@ -109,14 +139,13 @@ class _SearchScreenState extends State<SearchScreen> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ClipRRect(
-                    // borderRadius: BorderRadius.circular(12.0),
-                    child: FancyShimmerImage(
-                      imageUrl: product['url'],
-                      height: 90, // Adjust the height as needed
-                      width: 90, // Adjust the width as needed
-                    ),
-                  ),
+                  // ClipRRect(
+                  //   child: FancyShimmerImage(
+                  //     imageUrl: product['url'],
+                  //     height: 90,
+                  //     width: 90,
+                  //   ),
+                  // ),
                   const SizedBox(
                     width: 10,
                   ),
@@ -126,13 +155,13 @@ class _SearchScreenState extends State<SearchScreen> {
                         Row(
                           children: [
                             SizedBox(
-                              // width: 200, // Adjust the width as needed
                               child: Text(
                                 product['name'],
                                 style: const TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color.fromARGB(255, 81, 81, 81)),
+                                  fontSize: 25,
+                                  fontWeight: FontWeight.w700,
+                                  color: Color.fromARGB(255, 81, 81, 81),
+                                ),
                                 maxLines: 2,
                               ),
                             ),
@@ -151,8 +180,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        const Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Row(
                           children: [
                             Text(
                               "Expired on",
@@ -165,7 +193,9 @@ class _SearchScreenState extends State<SearchScreen> {
                               width: 10,
                             ),
                             Text(
-                              "13/03/2024",
+                              product['expired_at'] != null
+                                  ? product['expired_at'].toString()
+                                  : "N/A",
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 15,
@@ -236,14 +266,23 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {
-                        // Add your search logic here.
-                      },
+                      onPressed:
+                          _onSearchButtonPressed, // Call the function when the button is pressed
                       icon: const Icon(
                         Icons.search,
                         color: Colors.white,
                       ),
                     )
+
+                    // IconButton(
+                    //   onPressed: () {
+                    //     // Add your search logic here.
+                    //   },
+                    //   icon: const Icon(
+                    //     Icons.search,
+                    //     color: Colors.white,
+                    //   ),
+                    // )
                   ],
                 ),
               ),
