@@ -60,7 +60,8 @@ class _HomePageState extends State<HomePage> {
         //   print('Price: ${property['price']}');
         //   // Add more fields as needed
         // }
-        print("this is data $category['properties']");
+
+        print("this is data $category['properties']['name']");
       }
     } else {
       // Handle the case where there was an error or no token available.

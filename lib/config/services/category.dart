@@ -8,7 +8,6 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:get/get.dart';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 

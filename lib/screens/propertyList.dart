@@ -170,14 +170,15 @@ class _PropertyListState extends State<PropertyList> {
                                       background: Container(
                                         color: Colors.red,
                                         alignment: Alignment.centerRight,
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 20),
-                                        child: Icon(Icons.delete,
+                                        child: const Icon(Icons.delete,
                                             color: Colors.white),
                                       ),
                                       child: ListTile(
                                         contentPadding:
-                                            EdgeInsets.fromLTRB(20, 20, 40, 10),
+                                            const EdgeInsets.fromLTRB(
+                                                20, 20, 40, 10),
                                         title: Row(
                                           children: [
                                             Container(
@@ -191,7 +192,7 @@ class _PropertyListState extends State<PropertyList> {
                                                       BorderRadius.circular(
                                                           10)),
                                             ),
-                                            SizedBox(width: 8),
+                                            const SizedBox(width: 8),
                                             Expanded(
                                               child: Column(
                                                 crossAxisAlignment:
