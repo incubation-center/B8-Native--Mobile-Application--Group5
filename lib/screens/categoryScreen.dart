@@ -106,7 +106,7 @@ class _CategoryState extends State<Category> {
                         child: Container(
                           padding: const EdgeInsets.only(left: 15, top: 20),
                           child: ElevatedButton(
-                            child: Text(
+                            child:  Text(
                               "+ Category",
                               style: TextStyle(
                                 color: Color(0xFFAAC7D7),
@@ -176,12 +176,12 @@ class _CategoryState extends State<Category> {
                             background: Container(
                               color: Colors.red,
                               alignment: Alignment.centerRight,
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Icon(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: const Icon(
                                   Icons.delete, color: Colors.white),
                             ),
                             child: Container(
-                              margin: new EdgeInsets.only(top: 10),
+                              margin:  new EdgeInsets.only(top: 10),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -191,7 +191,7 @@ class _CategoryState extends State<Category> {
                                 },
                                 child: ListTile(
                                   contentPadding:
-                                  EdgeInsets.fromLTRB(20, 10, 10, 10),
+                                  const EdgeInsets.fromLTRB(20, 10, 10, 10),
                                   title: Row(
                                     children: [
                                       Expanded(

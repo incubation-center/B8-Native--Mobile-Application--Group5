@@ -6,9 +6,11 @@ import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:tukdak/config/services/allproducexpired.dart';
 import 'package:tukdak/config/services/userprofile.dart';
+import 'package:tukdak/screens/Search.dart';
 import 'package:tukdak/screens/addCategory.dart';
 
 import 'package:tukdak/screens/authscreen/loginscreen.dart';
+import 'package:tukdak/screens/categoryScreen.dart';
 import 'package:tukdak/screens/homePage.dart';
 import 'package:tukdak/screens/mainScreen.dart';
 import 'package:tukdak/screens/productAchive.dart';
@@ -30,8 +32,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     //   context,
     //   MaterialPageRoute(builder: (context) => const MainScreen()),
     // );
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const MainScreen()));
+
+    // Navigator.of(context).pushReplacement(
+    //     MaterialPageRoute(builder: (context) => const MainScreen()));
     // Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
     // Navigator.of(context).pushReplacementNamed('/');
   }
@@ -42,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     //   MaterialPageRoute(builder: (context) => const MainScreen()),
     // // );
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const addCategory()));
+        MaterialPageRoute(builder: (context) => const Category()));
   }
 
   void logout() async {
@@ -99,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   "Myprofile",
                   style: TextStyle(
                       color: Colors.black,
-                      fontSize: 25,
+                      fontSize: 35,
                       fontWeight: FontWeight.bold),
                 ),
                 const Divider(
@@ -113,8 +116,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     Center(
                       child: Container(
-                        width: 60,
-                        height: 60,
+                        width: 100,
+                        height: 100,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Theme.of(context).cardColor,
@@ -151,7 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 name,
                                 style: const TextStyle(
                                     color: Colors.black,
-                                    fontSize: 25,
+                                    fontSize: 35,
                                     fontWeight: FontWeight.bold),
                               ),
                               const SizedBox(
@@ -178,52 +181,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     function: () {
                       _navigateToAchiveproductScreen(context);
                     }),
-                CustomList(
-                    imagesPath: "assets/images/wishlist_svg.png",
-                    text: "All products",
-                    function: () {
-                      _navigateToaddCategory(context);
-                    }),
-                const SizedBox(
-                  height: 6,
-                ),
-                const Divider(
-                  thickness: 1,
-                ),
-                const SizedBox(
-                  height: 6,
-                ),
-                const Text(
-                  "Setting",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
+                // CustomList(
+                //     imagesPath: "assets/images/wishlist_svg.png",
+                //     text: "All products",
+                //     function: () {
+                //       Get.to(const SearchScreen());
+                //       // _navigateToaddCategory(context);
+                //     }),
+                // const SizedBox(
+                //   height: 6,
+                // ),
+                // const Divider(
+                //   thickness: 1,
+                // ),
+                // const SizedBox(
+                //   height: 6,
+                // ),
+                // const Text(
+                //   "Setting",
+                //   style: TextStyle(
+                //       color: Colors.black,
+                //       fontSize: 25,
+                //       fontWeight: FontWeight.bold),
+                // ),
+               
               ],
             ),
           ),
           Center(
-            child: ElevatedButton.icon(
+            child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blueGrey,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
               ),
               onPressed: () {
                 logout();
               },
-              icon: const Icon(
-                Icons.login,
-                color: Colors.white,
-              ),
-              label: const Text(
+              child: const Text(
                 "Logout",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
