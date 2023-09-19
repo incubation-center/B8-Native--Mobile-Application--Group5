@@ -3,6 +3,7 @@ import multer, { FileFilterCallback } from "multer";
 import multerS3 from "multer-s3";
 import { Request } from "express";
 import { v4 as uuidv4 } from "uuid";
+import { log } from "@tensorflow/tfjs-node";
 
 const s3Config = new S3Client({
   region: process.env.AWS_REGION,
@@ -13,7 +14,9 @@ const s3Config = new S3Client({
 });
 
 const isAllowedMimetype = (mime: string) =>
-  ["image/png", "image/jpg", "image/jpeg"].includes(mime.toString());
+  ["image/png", "image/jpg", "image/jpeg", "application/octet-stream"].includes(
+    mime.toString()
+  );
 const fileFilter = (
   req: Request,
   file: Express.Multer.File,
