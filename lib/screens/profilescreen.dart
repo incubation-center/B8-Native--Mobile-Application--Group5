@@ -30,7 +30,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     //   context,
     //   MaterialPageRoute(builder: (context) => const MainScreen()),
     // );
-    Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const MainScreen()));
+    // Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
     // Navigator.of(context).pushReplacementNamed('/');
   }
 
@@ -46,21 +48,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void logout() async {
     // Clear the authentication token
     await secureStorage.delete(key: 'auth_token');
+    // Get.to(const LoginScreen());
     // ignore: use_build_context_synchronously
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
-    );
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const LoginScreen()));
     // Navigate back to the login screen
-    // Navigator.of(context)
-    //     .pushReplacementNamed('/login'); // Replace with your login screen route
+    // ignore: use_build_context_synchronously
+    // Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   }
 
   void _navigateToAchiveproductScreen(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) =>  ProductAchivescreen()),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => ProductAchivescreen()),
+    // );
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => ProductAchivescreen()));
   }
 
   @override

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tukdak/components/profilebar.dart';
 import 'package:tukdak/config/services/allproducexpired.dart';
 import 'package:tukdak/config/services/category.dart';
+import 'package:tukdak/config/services/property.dart';
 
 class SlideData {
   final String section;
@@ -45,10 +46,22 @@ class _HomePageState extends State<HomePage> {
   // Function to handle the API call
   void _handleApiCall() async {
     // final responseData = await fetchDataWithToken();
-    final responseData = await getAllexpiredProducts();
+    // final responseData = await getAllexpiredProducts();
+    // fetchPropertyDataWithToken
+    final responseData = await fetchPropertyDataWithToken();
     if (responseData != null) {
       // Handle the response data here.
-      print('Response data: $responseData');
+      for (var category in responseData) {
+        // print('Category Name: ${category['name']}');
+
+        // Iterate through properties within each category
+        // for (var property in category['properties']) {
+        //   print('Property Name: ${property['name']}');
+        //   print('Price: ${property['price']}');
+        //   // Add more fields as needed
+        // }
+        print("this is data $category['properties']");
+      }
     } else {
       // Handle the case where there was an error or no token available.
       print('Error or no token available.');
