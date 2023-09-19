@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tukdak/config/services/property.dart';
-import 'package:tukdak/controller/dateController.dart';
 import 'package:tukdak/controller/propertryController.dart';
 import 'package:tukdak/screens/addProperty.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -14,7 +13,22 @@ import 'package:http/http.dart' as http;
 
 
 class PropertyInfo extends StatefulWidget {
-  const PropertyInfo({super.key});
+  final String? id;
+  final String? name;
+  final String? categoryId;
+  final String? price;
+  final String? expired_at;
+  final String? alert_at;
+
+  const PropertyInfo({
+    super.key,
+    this.id,
+    this.name,
+    this.categoryId,
+    this.price,
+    this.expired_at,
+    this.alert_at,
+  });
 
   @override
   State<PropertyInfo> createState() => _PropertyInfoState();
@@ -30,6 +44,7 @@ class _PropertyInfoState extends State<PropertyInfo> {
   final TextEditingController priceController = TextEditingController();
   final TextEditingController alertController = TextEditingController();
   final TextEditingController imageController = TextEditingController();
+  bool isEdit = false;
 
   List data = [];
   // int _value = 1;
@@ -41,8 +56,24 @@ class _PropertyInfoState extends State<PropertyInfo> {
   @override
   void initState(){
     super.initState();
-    dateController.text = "";
-    getData();
+    final propData = widget.name;
+    final categoryId = widget.categoryId;
+    final price = widget.price ?? "";
+    final expired_at = widget.expired_at ?? "";
+    final alert_at = widget.alert_at ?? "";
+    if (propData != null) {
+      isEdit = true;
+      final name = propData;
+      final category = categoryId;
+      final priceId = price;
+      final expireId = expired_at;
+      final alertId = alert_at;
+      propertyController.text = name;
+      dropdownvalue = category;
+      priceController.text = priceId;
+      dateController.text = expireId;
+      alertController.text = alertId;
+    }
   }
 
   Future getData() async {
@@ -146,10 +177,10 @@ class _PropertyInfoState extends State<PropertyInfo> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Container(
                               margin: new EdgeInsets.only(left: 40, top: 25),
@@ -167,7 +198,7 @@ class _PropertyInfoState extends State<PropertyInfo> {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Container(
                                   padding: const EdgeInsets.only(left: 40, top: 50),
