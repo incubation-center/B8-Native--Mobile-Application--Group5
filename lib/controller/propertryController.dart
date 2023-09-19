@@ -18,8 +18,4 @@ class AddPropertyController extends GetxController {
   void onInit() {
     super.onInit();
   }
-
-
-
-
 }

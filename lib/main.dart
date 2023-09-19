@@ -14,6 +14,7 @@ import 'package:tukdak/screens/Search.dart';
 import '/config/routes.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
   final String? token = await secureStorage.read(key: 'auth_token');
   Get.put(NavBarController());

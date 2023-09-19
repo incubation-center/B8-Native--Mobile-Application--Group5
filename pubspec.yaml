@@ -39,12 +39,13 @@ dependencies:
   get: ^4.6.5
   zoom_tap_animation: ^1.1.0
   flutter_iconly: ^1.0.2
-  camera: ^0.10.5+3
   intl: ^0.18.1
-  image_picker: ^1.0.4
+  camera: ^0.10.5+4
   fancy_shimmer_image: ^2.0.3
   flutter_secure_storage: ^9.0.0
   connectivity: ^3.0.6
+
+
 
 dev_dependencies:
   flutter_test:
