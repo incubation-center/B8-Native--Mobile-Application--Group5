@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:tukdak/config/services/property.dart';
 import 'package:tukdak/controller/NavController.dart';
-import 'package:tukdak/controller/propertryController.dart';
 import 'package:tukdak/screens/propertyInfo.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -74,7 +73,7 @@ class _PropertyListState extends State<PropertyList> {
     print("delete success.");
   }
 
-  void navigateToEditPage(String name, String id, String categoryId,
+  void navigateToEditPage(String id, String name, String categoryId,
       String price, String expired_at, String alert_at) {
     try {
       Navigator.of(context).push(
@@ -88,6 +87,13 @@ class _PropertyListState extends State<PropertyList> {
               alert_at: alert_at),
         ),
       );
+      print("id----------: $id");
+      print(id.runtimeType);
+      print("name----------: $name");
+      print("categoryId-------:$categoryId");
+      // print("price----------: $price");
+      print("expire_at------: $expired_at");
+      // print("alert_at----------: $alert_at");
     } catch (e) {
       print("Navigation error: $e");
     }
@@ -127,10 +133,9 @@ class _PropertyListState extends State<PropertyList> {
                         // itemCount: controller.propertyCount.value,
                         itemCount: responseData.length,
                         itemBuilder: ((context, index) {
-                          final expire = responseData[index]['expired_at'];
+                          final id = responseData[index]['id'];
                           final properties = responseData[index]['properties']
                               as List<dynamic>?;
-
                           if (properties != null) {
                             final filterdProperties = properties
                                 .where((property) =>
@@ -144,7 +149,7 @@ class _PropertyListState extends State<PropertyList> {
                             // final propertyNames = properties.map((property) => property['name'] as String).toList();
                             return GestureDetector(
                               onTap: () {
-                                Get.to(() => PropertyInfo());
+                                // Get.to(() => PropertyInfo());
                               },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,25 +238,37 @@ class _PropertyListState extends State<PropertyList> {
                                                   size: 20,
                                                 ),
                                                 onTap: () {
-                                                  final name = property['name'];
-                                                  final id = property['id'];
-                                                  final categoryId =
-                                                      property['categoryId'];
+                                                  if (property['name'] !=
+                                                          null &&
+                                                      id != null &&
+                                                      property['categoryId'] !=
+                                                          null &&
+                                                      property['price'] !=
+                                                          null &&
+                                                      property['expired_at'] !=
+                                                          null &&
+                                                      property['alert_at'] !=
+                                                          null) {
+                                                    navigateToEditPage(
+                                                        property['id'],
+                                                        property['name'],
+                                                        property['categoryId'],
+                                                        property['price']
+                                                            .toString(),
+                                                        DateFormat('yyyy-MM-dd')
+                                                            .format(DateTime
+                                                                .parse(property[
+                                                                    'expired_at'])),
+                                                        property['alert_at']
+                                                            .toString());
+                                                  } else {
+                                                    throw ('Cannot open a null value');
+                                                    print(
+                                                        "can't not navigate to edit page");
+                                                    // Handle the case where one or more values are null.
+                                                  }
 
-                                                  navigateToEditPage(
-                                                      property['name'],
-                                                      property['id'],
-                                                      property['categoryId'],
-                                                      property['price']
-                                                          as String,
-                                                      DateFormat('yyyy-MM-dd')
-                                                              .format(DateTime
-                                                                  .parse(property[
-                                                                      'expired_at']))
-                                                          as String,
-                                                      property[
-                                                          'alert_at']) as String;
-                                                  // print("property name------------------ $property['name']");
+                                                  fetchData();
                                                 },
                                               ),
                                             ),

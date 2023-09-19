@@ -11,6 +11,7 @@ import 'package:tukdak/screens/categoryScreen.dart';
 import 'package:tukdak/screens/addProperty.dart';
 import 'package:tukdak/models/notification_model.dart'; // Import the NotificationModel class
 
+
 class NavBar extends StatelessWidget {
   NavBar({Key? key}) : super(key: key);
 

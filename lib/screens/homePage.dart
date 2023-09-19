@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tukdak/components/profilebar.dart';
-import 'package:tukdak/config/services/allproducexpired.dart';
-import 'package:tukdak/config/services/category.dart';
 import 'package:tukdak/config/services/property.dart';
 
 class SlideData {
@@ -109,20 +107,7 @@ class _HomePageState extends State<HomePage> {
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-                    // testing api call
-                    ButtonBar(
-                      alignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        TextButton(
-                            child: const Text('Testing api call'),
-                            onPressed: () {
-                              _handleApiCall();
-                            }),
-                      ],
-                    ),
-
-                    // testing api call
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     Center(
                       child: Container(
                         padding:
