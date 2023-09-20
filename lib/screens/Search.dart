@@ -137,6 +137,18 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget buildProductCard(Map<String, dynamic> product) {
+    final imageUrl = product['image'];
+    final productName = product['name'];
+    String formatExpiredAt(String? expiredAt) {
+      if (expiredAt != null) {
+        return DateFormat('dd MMMM yyyy').format(DateTime.parse(expiredAt));
+      } else {
+        return 'N/A';
+      }
+    }
+
+    final formattedExpiredAt = formatExpiredAt(product['expired_at']);
+
     return GestureDetector(
       child: Container(
         color: Colors.white,
@@ -147,72 +159,64 @@ class _SearchScreenState extends State<SearchScreen> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // ClipRRect(
-                  //   child: FancyShimmerImage(
-                  //     imageUrl: product['url'],
-                  //     height: 90,
-                  //     width: 90,
-                  //   ),
-                  // ),
+                  Container(
+                    height: 90,
+                    width: 90,
+                    decoration: BoxDecoration(
+                      color: Colors
+                          .grey, // Set a background color for the container
+                      borderRadius: BorderRadius.circular(
+                          10), // Apply rounded corners if desired
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(
+                              0.3), // Apply a shadow to the container
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: imageUrl != null
+                          ? FancyShimmerImage(
+                              imageUrl: imageUrl, // Use the API image URL
+                              height:
+                                  60, // Adjust the height and width of the image as needed
+                              width: 60,
+                            )
+                          : Image.asset(
+                              'assets/images/dimg.png',
+                              height:
+                                  60, // Adjust the height and width of the default image as needed
+                              width: 60,
+                              fit: BoxFit
+                                  .contain, // Adjust the image fit as needed (e.g., BoxFit.cover)
+                            ),
+                    ),
+                  ),
                   const SizedBox(
                     width: 10,
                   ),
                   IntrinsicWidth(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            SizedBox(
-                              child: Text(
-                                product['name'],
-                                style: const TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color.fromARGB(255, 81, 81, 81),
-                                ),
-                                maxLines: 2,
-                              ),
-                            ),
-                            Column(
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    // Add your logic here for what should happen when the arrow button is clicked.
-                                  },
-                                  icon: const Icon(IconlyLight.arrowRight),
-                                ),
-                              ],
-                            ),
-                          ],
+                        Text(
+                          productName,
+                          style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w700,
+                            color: Color.fromARGB(255, 81, 81, 81),
+                          ),
                         ),
-                        const SizedBox(
-                          height: 10,
+                        Text(
+                          "Expired on $formattedExpiredAt",
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 15,
+                          ),
                         ),
-                        Row(
-                          children: [
-                            const Text(
-                              "Expired on",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 15,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              product['expired_at'] != null
-                                  ? DateFormat('dd MMMM yyyy').format(
-                                      DateTime.parse(product['expired_at']))
-                                  : 'N/A',
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 15,
-                              ),
-                            ),
-                            const Spacer(),
-                          ],
-                        )
                       ],
                     ),
                   )

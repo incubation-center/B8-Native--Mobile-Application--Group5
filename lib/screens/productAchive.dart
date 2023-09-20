@@ -1,3 +1,4 @@
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
@@ -85,6 +86,7 @@ class _ProductArchivescreenState extends State<ProductAchivescreen> {
                             final product = responseData[index];
                             final productName = product['name'] ?? 'No Name';
                             final expiredAt = product['expired_at'] ?? 'N/A';
+                            final imageUrl = product['image'];
                             final formattedExpiredAt = expiredAt != 'N/A'
                                 ? DateFormat('dd MMMM yyyy')
                                     .format(DateTime.parse(expiredAt))
@@ -95,55 +97,76 @@ class _ProductArchivescreenState extends State<ProductAchivescreen> {
                                 children: [
                                   Row(
                                     children: [
-                                      SizedBox(
-                                        child: Text(
-                                          productName,
-                                          style: const TextStyle(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.w700,
-                                            color:
-                                                Color.fromARGB(255, 81, 81, 81),
-                                          ),
-                                          maxLines: 2,
-                                        ),
+                                      ClipRRect(
+                                        child: imageUrl != null
+                                            ? FancyShimmerImage(
+                                                imageUrl:
+                                                    imageUrl, // Use the API image URL
+                                                height: 90,
+                                                width: 90,
+                                              )
+                                            : Container(
+                                                height: 90,
+                                                width: 90,
+                                                decoration: BoxDecoration(
+                                                  color: Colors
+                                                      .grey, // Set a background color for the container
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10), // Apply rounded corners if desired
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.black
+                                                          .withOpacity(
+                                                              0.3), // Apply a shadow to the container
+                                                      spreadRadius: 2,
+                                                      blurRadius: 4,
+                                                      offset: Offset(0, 2),
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: Center(
+                                                  child: Image.asset(
+                                                    'assets/images/dimg.png',
+                                                    height:
+                                                        60, // Adjust the height and width of the image as needed
+                                                    width: 60,
+                                                    fit: BoxFit
+                                                        .contain, // Adjust the image fit as needed (e.g., BoxFit.cover)
+                                                  ),
+                                                ),
+                                              ),
                                       ),
-                                      Column(
-                                        children: [
-                                          IconButton(
-                                            onPressed: () {
-                                              // Add your logic here for what should happen when the arrow button is clicked.
-                                            },
-                                            icon: const Icon(
-                                                IconlyLight.arrowRight),
-                                          ),
-                                        ],
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 15, vertical: 5),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              productName,
+                                              style: const TextStyle(
+                                                fontSize: 25,
+                                                fontWeight: FontWeight.w700,
+                                                color: Color.fromARGB(
+                                                    255, 81, 81, 81),
+                                              ),
+                                            ),
+                                            Text(
+                                              "Expired on $formattedExpiredAt",
+                                              style: const TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
                                   const SizedBox(
                                     height: 10,
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Text(
-                                        "Expired on",
-                                        style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        formattedExpiredAt,
-                                        style: const TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 15,
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                    ],
                                   ),
                                 ],
                               ),
