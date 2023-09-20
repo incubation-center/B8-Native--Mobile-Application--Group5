@@ -10,9 +10,15 @@ import {
   searchProperty,
   detectPropertyObject,
 } from "./controller";
+import { handleUploadMiddleware } from "../../config/s3UploadFileConfig";
 const router = express.Router();
 
-router.post("/", authenticateToken, createProperty);
+router.post(
+  "/",
+  authenticateToken,
+  handleUploadMiddleware.array("image", 1),
+  createProperty
+);
 router.get("/all", authenticateToken, getAllProperty);
 router.get("/:id", authenticateToken, getPropertyById);
 router.delete("/:id", authenticateToken, deletePropertyById);

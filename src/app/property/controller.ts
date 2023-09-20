@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { JwtPayload } from "jsonwebtoken";
-import UserModel from "../user/models";
 import PropertyModel from "../property/models";
 import CategoryModel from "../category/models";
 const { Op } = require("sequelize");
@@ -30,11 +29,17 @@ export const createProperty = async (
 ) => {
   try {
     const { name, price, expired_at, alert_at, categoryId } = req.body;
+    // define type of req.files
+    type MulterFile = Express.Multer.File & { location?: string };
+    const files = req.files as MulterFile[];
+    const image_url = files[0]?.location;
+
     const property = await PropertyModel.create({
       name,
       price,
       expired_at,
       alert_at,
+      image: image_url,
       categoryId,
       userId: req.user?.id,
     });
@@ -119,10 +124,10 @@ export const getAllProperty = async (
           isDeleted: false,
           [Op.or]: [
             { expired_at: null },
-            { expired_at: { [Op.gte]: new Date() } }
-          ]
-        }
-      });      
+            { expired_at: { [Op.gte]: new Date() } },
+          ],
+        },
+      });
       category[i].setDataValue("properties", property);
     }
     res.status(200).json(category);
@@ -142,14 +147,11 @@ export const getAllPropertyExpired = async (
       where: {
         userId: req.user?.id,
         isDeleted: false,
-        expired_at: { 
-          [Op.and]: [
-            { [Op.not]: null },
-            { [Op.lte]: currentDate }
-          ]
-        }
-      }
-    });    
+        expired_at: {
+          [Op.and]: [{ [Op.not]: null }, { [Op.lte]: currentDate }],
+        },
+      },
+    });
     res.status(200).json(property);
   } catch (error) {
     console.error("Error", error);
