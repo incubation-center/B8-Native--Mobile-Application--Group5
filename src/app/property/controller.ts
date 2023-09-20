@@ -224,8 +224,19 @@ export const detectPropertyObject = async (req: Request, res: Response) => {
         // ]
 
         // * Select the first prediction with the highest score and return its class name
+        if (!predictions) {
+          res.status(400).send({ error: "No object detected" });
+          return;
+        }
+
         const highestScorePrediction = predictions[0];
-        res.json({ object: highestScorePrediction.class });
+
+        if (!highestScorePrediction) {
+          res.status(400).send({ error: "No object detected" });
+          return;
+        }
+
+        res.status(200).send({ object: highestScorePrediction.class });
       });
     }
   );
