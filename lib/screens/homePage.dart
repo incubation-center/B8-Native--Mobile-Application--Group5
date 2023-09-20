@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tukdak/components/profilebar.dart';
-import 'package:tukdak/config/services/allproducexpired.dart';
-import 'package:tukdak/config/services/category.dart';
 import 'package:tukdak/config/services/property.dart';
 
 class SlideData {

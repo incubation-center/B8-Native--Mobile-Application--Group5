@@ -42,7 +42,8 @@ class _LoginscreenState extends State<LoginScreen> {
   Future<void> login(String email, String password) async {
     try {
       final response = await http.post(
-        Uri.http("localhost:8000", '/login'),
+        Uri.parse('http://18.140.59.77:8000/login'),
+        // Uri.parse('http://127.0.0.1:8000/login'),
         headers: <String, String>{
           "Access-Control-Allow-Origin": "*",
           'Content-Type': 'application/json',
@@ -215,195 +216,198 @@ class _LoginscreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Flexible(
-                child: Container(
-                  height: 250,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage("assets/images/img.png"),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                child: Text(
-                  "Welcome to, Name",
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                ),
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: Column(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
-                TextFormField(
-                  controller: emailController,
-                  decoration: const InputDecoration(
-                    hintText: "Enter Username Here",
-                    labelText: "Username",
-                    contentPadding: EdgeInsets.symmetric(vertical: 20),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextFormField(
-                  obscureText: !_passwordVisible,
-                  controller: passwordController,
-                  decoration: InputDecoration(
-                    hintText: "Enter password ",
-                    labelText: "Password",
-                    contentPadding: const EdgeInsets.symmetric(vertical: 20),
-                    suffixIcon: IconButton(
-                      iconSize: 20,
-                      icon: Icon(
-                        _passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
+                Flexible(
+                  child: Container(
+                    height: 250,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage("assets/images/img.png"),
+                        fit: BoxFit.cover,
                       ),
-                      onPressed: () {
-                        setState(() {
-                          _passwordVisible = !_passwordVisible;
-                        });
-                      },
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: _rememberMe,
-                      onChanged: (newValue) {
-                        setState(() {
-                          _rememberMe = newValue!;
-                        });
-                      },
-                    ),
-                    const Text("Remember Me"),
-                  ],
                 ),
               ],
             ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Center(
-            child: ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(118, 138, 149, 1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  minimumSize: const Size(300, 50)),
-              onPressed: () {
-                // login(emailController.text, passwordController.text);
-                onPressedLoginButton();
-                // _navigateToMainScreen(context);
-              },
-              icon: const Icon(
-                Icons.login,
-                color: Colors.white,
-              ),
-              label: const Text(
-                "Login",
-                style: TextStyle(color: Colors.white),
-              ),
+            const SizedBox(
+              height: 10,
             ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  _navigateToForgotpasswordScreen(
-                      context); // Navigate to signup screen
-                },
-                child: const Text(
-                  "Forgot password",
-                  style: TextStyle(
-                    color: Colors.blueGrey,
-                    fontWeight: FontWeight.bold,
+            const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Text(
+                    "Welcome to, Name",
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                   ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          const Center(
-            child: Text(
-              "OR",
-              style: TextStyle(
-                  color: Colors.blueGrey, fontWeight: FontWeight.bold),
+              ],
             ),
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.facebook,
-                color: Colors.blue,
-                size: 34,
-              ),
-              Image.asset(
-                'assets/images/google.png',
-                width: 34,
-                height: 34,
-              ),
-            ],
-          ),
-          const SizedBox(
-            height: 5,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Didn’t have an account ?"),
-              GestureDetector(
-                onTap: () {
-                  _navigateToSignupScreen(context); // Navigate to signup screen
-                },
-                child: const Text(
-                  " Sign up",
-                  style: TextStyle(
-                    color: Colors.blueGrey,
-                    fontWeight: FontWeight.bold,
-                    decorationThickness: 2.0,
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors.blueGrey,
-                    decorationStyle: TextDecorationStyle.solid,
+            Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: emailController,
+                    decoration: const InputDecoration(
+                      hintText: "Enter Username Here",
+                      labelText: "Username",
+                      contentPadding: EdgeInsets.symmetric(vertical: 20),
+                    ),
                   ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    obscureText: !_passwordVisible,
+                    controller: passwordController,
+                    decoration: InputDecoration(
+                      hintText: "Enter password ",
+                      labelText: "Password",
+                      contentPadding: const EdgeInsets.symmetric(vertical: 20),
+                      suffixIcon: IconButton(
+                        iconSize: 20,
+                        icon: Icon(
+                          _passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _passwordVisible = !_passwordVisible;
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: _rememberMe,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _rememberMe = newValue!;
+                          });
+                        },
+                      ),
+                      const Text("Remember Me"),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Center(
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromRGBO(118, 138, 149, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    minimumSize: const Size(300, 50)),
+                onPressed: () {
+                  // login(emailController.text, passwordController.text);
+                  onPressedLoginButton();
+                  // _navigateToMainScreen(context);
+                },
+                icon: const Icon(
+                  Icons.login,
+                  color: Colors.white,
+                ),
+                label: const Text(
+                  "Login",
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
-            ],
-          ),
-        ],
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    _navigateToForgotpasswordScreen(
+                        context); // Navigate to signup screen
+                  },
+                  child: const Text(
+                    "Forgot password",
+                    style: TextStyle(
+                      color: Colors.blueGrey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            const Center(
+              child: Text(
+                "OR",
+                style: TextStyle(
+                    color: Colors.blueGrey, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.facebook,
+                  color: Colors.blue,
+                  size: 34,
+                ),
+                Image.asset(
+                  'assets/images/google.png',
+                  width: 34,
+                  height: 34,
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Didn’t have an account ?"),
+                GestureDetector(
+                  onTap: () {
+                    _navigateToSignupScreen(
+                        context); // Navigate to signup screen
+                  },
+                  child: const Text(
+                    " Sign up",
+                    style: TextStyle(
+                      color: Colors.blueGrey,
+                      fontWeight: FontWeight.bold,
+                      decorationThickness: 2.0,
+                      decoration: TextDecoration.underline,
+                      decorationColor: Colors.blueGrey,
+                      decorationStyle: TextDecorationStyle.solid,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
