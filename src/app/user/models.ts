@@ -11,6 +11,7 @@ class UserModel extends Model {
   public role!: string;
   public verify!: boolean;
   public deviceToken!: string;
+  public pinCode!: string;
 }
 
 UserModel.init(
@@ -44,6 +45,10 @@ UserModel.init(
       defaultValue: false,
     },
     deviceToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    pinCode: {
       type: DataTypes.STRING,
       allowNull: true,
     }

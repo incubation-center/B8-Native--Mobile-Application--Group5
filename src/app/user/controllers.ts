@@ -150,6 +150,11 @@ export const forgotpassword = async (req: Request, res: Response) => {
     const user = await UserModel.findOne({ where: { email } });
     if (!user)
       return res.status(400).json({ error: "No user found with that email" });
+    const min = 1000;
+    const max = 9999; 
+    const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+    user.pinCode = randomNumber.toString();
+    await user.save()
     sendForgotPasswordEmail(user);
     res.status(200).json({ message: "Email sent" });
   } catch (error) {
@@ -174,9 +179,8 @@ export const verifyEmail = async (req: Request, res: Response) => {
 
 export const changepassword = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    const { password1, password2 } = req.body;
-    const user = await UserModel.findOne({ where: { id } });
+    const { password1, password2, email } = req.body;
+    const user = await UserModel.findOne({ where: { email : email } });
     if (!user) return res.status(400).json({ error: "Invalid Token" });
     if (!password1 || !password2)
       return res.status(400).json({ error: "Please provide password" });
@@ -268,5 +272,20 @@ export const googleRedirect = async (
     const accessToken = generateAccessToken(user);
     // redirect to frontend with token in query string
     res.redirect(`${redirectUri}?token=${accessToken}`);
+  }
+};
+
+
+export const verifyPin = async (req: Request, res: Response) => {
+  try{
+    const { email , pin } = req.body;
+    console.log(email, pin)
+    const user = await UserModel.findOne({ where: { email:email } });
+    if (user.pinCode == pin){
+      res.status(200).json({ message: "Pin Verified" })
+    } 
+    return res.status(400).json({ error: "Pin Invalid" });
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
   }
 };

@@ -36,7 +36,7 @@ export const sendForgotPasswordEmail = (to: any) => {
     from: "long.hakly19@kit.edu.kh",
     to: to.email,
     subject: "Forgot Password Email",
-    text: `Please click the following link to change your password: ${confirmationLink}`,
+    text: `Here is your PIN : ${to.pinCode}`,
   };
 
   transporter.sendMail(mailOptions, (error: any, info: any) => {
