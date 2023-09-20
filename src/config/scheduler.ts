@@ -20,7 +20,7 @@ cron.schedule('* 8 * * *', async () => {
         });
         for (const property of properties) {
             const user = await UserModel.findOne({ where: { id: property.userId } });
-            if (user) {
+            if (user && user.deviceToken !== null) {
                 sendNotification(user.deviceToken, 'Property Expired', `${property.name} has expired`);
                 property.isExpired = true;
                 await  property.save();
@@ -51,7 +51,7 @@ cron.schedule('* 8 * * *', async () => {
         
             if (future_expired > property.expired_at){
                 const user = await UserModel.findOne({ where: { id: property.userId } });
-                if (user) {
+                if (user && user.deviceToken !== null) {
                     const remaindingDays = Math.floor((property.expired_at.getTime() - currentDate.getTime()) / (1000 * 3600 * 24));
                     sendNotification(user.deviceToken, 'Property Expired Soon', `${property.name} will expire in ${remaindingDays} days`);
                     await NotificationModel.create({ userId: user.id, propertyId: property , title: 'Property Expired Soon', description: `${property.name} will expire in ${remaindingDays} days` });
