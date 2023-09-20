@@ -6,7 +6,7 @@ import NotificationModel from '../app/notification/model';
 const { Op } = require('sequelize');
 
 //run every 8AM
-cron.schedule('* * * * *', async () => {
+cron.schedule('* 8 * * *', async () => {
     //send notification for expired products to user
     try {
         console.log("called")
