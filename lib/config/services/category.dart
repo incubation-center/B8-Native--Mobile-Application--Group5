@@ -1,6 +1,6 @@
 // class Config {
 //   static const String appName = "Tukdak App";
-//   static const String apiURL = 'http://18.140.59.77'; //PROD_URL
+//   static const String apiURL = 'http://18.143.209.45'; //PROD_URL
 //   static const loginAPI = "/login";
 //   static const registerAPI = "/user";
 //   // static const userProfileAPI = "/users/user-Profile";
@@ -16,8 +16,8 @@ const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 //get
 Future<List<Map<String, dynamic>>?> fetchDataWithToken() async {
   final token = await secureStorage.read(key: 'auth_token');
-  final url = Uri.parse('http://18.140.59.77/category/all');
-  // final url = Uri.parse('http://18.140.59.77/category/all');
+  final url = Uri.parse('http://18.143.209.45/category/all');
+  // final url = Uri.parse('http://18.143.209.45/category/all');
 
   final response = await http.get(
     url,
@@ -43,9 +43,9 @@ Future<Map<String, dynamic>?> postCategoryDataWithToken(
     Map<String, dynamic> data) async {
   final token = await secureStorage.read(key: 'auth_token');
   final url = Uri.parse(
-      'http://18.140.59.77/category');
+      'http://18.143.209.45/category');
   // final url = Uri.parse(
-  //     'http://18.140.59.77/category'); // Change the endpoint URL as needed.
+  //     'http://18.143.209.45/category'); // Change the endpoint URL as needed.
 
   final response = await http.post(
     url,
@@ -72,9 +72,9 @@ Future<Map<String, dynamic>?> postCategoryDataWithToken(
 Future<Map<String, dynamic>?> deleteCategoryDataWithToken(String id) async {
   final token = await secureStorage.read(key: 'auth_token');
   final url = Uri.parse(
-      'http://18.140.59.77/category/$id');
+      'http://18.143.209.45/category/$id');
   // final url = Uri.parse(
-  //     'http://18.140.59.77/category/$id'); // Use the provided ID in the URL.
+  //     'http://18.143.209.45/category/$id'); // Use the provided ID in the URL.
 
   final response = await http.delete(
     url,
@@ -100,7 +100,7 @@ Future<Map<String, dynamic>?> putCategoryDataWithToken(
     String id, Map<String, dynamic> data) async {
   final token = await secureStorage.read(key: 'auth_token');
   final url = Uri.parse(
-      'http://18.140.59.77/category/$id');
+      'http://18.143.209.45/category/$id');
   final response = await http.put(
     url,
     headers: {

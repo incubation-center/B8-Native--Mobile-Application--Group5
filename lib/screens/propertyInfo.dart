@@ -1,7 +1,4 @@
 import 'dart:io';
-import 'dart:math';
-import 'dart:typed_data';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -111,7 +108,7 @@ class _PropertyInfoState extends State<PropertyInfo> {
 
   Future getData() async {
     final token = await secureStorage.read(key: 'auth_token');
-    final url = Uri.parse('http://18.140.59.77/category/all');
+    final url = Uri.parse('http://18.143.209.45/category/all');
 
     final response = await http.get(
       url,
@@ -240,51 +237,29 @@ class _PropertyInfoState extends State<PropertyInfo> {
                   child: Center(
                     child: Container(
                       color: Colors.white,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if(isEdit == true)
-                              Container(
-                                margin: new EdgeInsets.only(left: 40, top: 25),
-                                width: 80,
-                                height: 110,
-                                child: imageUrlStirng != null
-                                    ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  // child: Image(
-                                  //   // image: FileImage(controller.imageFile!),
-                                  //   image: FileImage(downloadedImage),
-                                  //   fit: BoxFit.cover,
-                                  // )
-                                  child: Image.network(imageUrlStirng),
-                                )
-                                    : const Center(
-                                  child: Text(
-                                    'No Image', // Display a message when image is empty
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                ),
-                            ),
-                              if(isEdit == false)
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if(isEdit == true)
                                 Container(
                                   margin: new EdgeInsets.only(left: 40, top: 25),
                                   width: 80,
                                   height: 110,
-                                  child: controller.imageFile
-                                      != null
+                                  child: imageUrlStirng != null
                                       ? ClipRRect(
                                     borderRadius: BorderRadius.circular(10),
-                                    child: Image(
-                                      image: FileImage(controller.imageFile!),
-                                      // image: FileImage(downloadedImage),
-                                      fit: BoxFit.cover,
-                                    )
-                                    // child: Image.network(imageUrlStirng),
+                                    // child: Image(
+                                    //   // image: FileImage(controller.imageFile!),
+                                    //   image: FileImage(downloadedImage),
+                                    //   fit: BoxFit.cover,
+                                    // )
+                                    child: Image.network(imageUrlStirng),
                                   )
                                       : const Center(
                                     child: Text(
@@ -292,269 +267,293 @@ class _PropertyInfoState extends State<PropertyInfo> {
                                       style: TextStyle(color: Colors.black),
                                     ),
                                   ),
-                                ),
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
+                              ),
+                                if(isEdit == false)
                                   Container(
-                                    padding: const EdgeInsets.only(left: 40, top: 50),
-                                    child: const Text(
-                                      "Name",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF768A95),
-                                        fontSize: 16,
+                                    margin: new EdgeInsets.only(left: 40, top: 25),
+                                    width: 80,
+                                    height: 110,
+                                    child: controller.imageFile
+                                        != null
+                                        ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image(
+                                        image: FileImage(controller.imageFile!),
+                                        // image: FileImage(downloadedImage),
+                                        fit: BoxFit.cover,
+                                      )
+                                      // child: Image.network(imageUrlStirng),
+                                    )
+                                        : const Center(
+                                      child: Text(
+                                        'No Image', // Display a message when image is empty
+                                        style: TextStyle(color: Colors.black),
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                      width: 200,
-                                      padding: const EdgeInsets.only(left:40),
-                                      child:
-                                      TextField(
-                                        // controller: controller.propertyNameTextEditingController,
-                                        controller: propertyController,
-                                        decoration: const InputDecoration(
-                                            focusColor: Color(0xFF768A95),
-                                            hintText: 'Enter name',
-                                            hintStyle: TextStyle(
-                                                color: Color(0xFFC6D0D6)
-                                            )
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      padding: const EdgeInsets.only(left: 40, top: 50),
+                                      child: const Text(
+                                        "Name",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF768A95),
+                                          fontSize: 16,
                                         ),
                                       ),
                                     ),
-                                ],
-                              ),
-                          ],
-                          ),
-
-                          Container(
-                            padding: const EdgeInsets.only(left:40,top: 20),
-                            child: const Text(
-                              "Category",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF768A95),
-                                fontSize: 16,
-                              ),
+                                    Container(
+                                        width: 200,
+                                        padding: const EdgeInsets.only(left:40),
+                                        child:
+                                        TextField(
+                                          // controller: controller.propertyNameTextEditingController,
+                                          controller: propertyController,
+                                          decoration: const InputDecoration(
+                                              focusColor: Color(0xFF768A95),
+                                              hintText: 'Enter name',
+                                              hintStyle: TextStyle(
+                                                  color: Color(0xFFC6D0D6)
+                                              )
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                            ],
                             ),
-                          ),
-                          Container(
-                              width: 300,
-                              padding: const EdgeInsets.only(left:40),
-                              child: DropdownButton(
-                                value: dropdownvalue,
-                                items: categoryItemlist.map((item) {
-                                  return DropdownMenuItem(
-                                    value: item['id'].toString(),
-                                    child: Text(item['name'].toString()),
-                                  );
-                                }).toList(),
-                                onChanged: ( newValue) {
-                                  setState(() {
-                                    dropdownvalue = newValue;
-                                  });
-                                  print("category list----------- $dropdownvalue");
-                                },
-                              ),
 
-                              ),
-                          Container(
-                            padding: const EdgeInsets.only(left:40,top: 20),
-                            child: const Text(
-                              "Price",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF768A95),
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 300,
-                            padding: const EdgeInsets.only(left:40),
-                            child:
-                            TextField(
-                              // controller: controller.categoryNameTextEditingController,
-                              controller: priceController,
-                              decoration: const InputDecoration(
-                                  focusColor: Color(0xFF768A95),
-                                  hintText: 'Enter the price worth',
-                                  hintStyle: TextStyle(
-                                      color: Color(0xFFC6D0D6)
-                                  )
-                              ),
-                            ),
-                          ),
-
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.only(left:40),
-                                child: const Text(
-                                  "Expired",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF768A95),
-                                    fontSize: 16,
-                                  ),
+                            Container(
+                              padding: const EdgeInsets.only(left:40,top: 20),
+                              child: const Text(
+                                "Category",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF768A95),
+                                  fontSize: 16,
                                 ),
                               ),
-                              Container(
-                                padding: const EdgeInsets.only(left:40),
-                                child: Transform.scale(
-                                  scale: 0.7,
-                                  child: Checkbox(
-                                    activeColor: Color(0xFF768A95),
-                                    value: isEdit ? true : this.expire,
-                                    onChanged: (bool? value) {
-                                      if (isEdit) {
-                                        this.expire = true;
-                                      } else {
-                                        this.expire = value!;
-                                      }
-                                    },
-                                    ),
-                                ),
-                                ),
-
-                                ],
-                              ),
-                        if(expire || isEdit)
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.max,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
+                            ),
+                            Container(
                                 width: 300,
                                 padding: const EdgeInsets.only(left:40),
-                                child: TextField(
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      // color: Color(0xFFC6D0D6)
-                                    ),
-                                    controller: dateController,
-                                    decoration: const InputDecoration(//icon of text field
-                                      hintText: "Enter Date" ,
-                                      hintStyle: TextStyle(
-                                          color: Color(0xFFC6D0D6)
-                                      ),
-                                      suffixIcon: Icon(Icons.calendar_today),
-                                      //label text of field
-                                    ),
-                                    readOnly: true,  // when true user cannot edit text
-                                    onTap: () async {
-                                      DateTime? pickedDate = await showDatePicker(
-                                        context: context,
-                                        initialDate: DateTime.now(), //get today's date
-                                        firstDate:DateTime(2000), //DateTime.now() - not to allow to choose before today.
-                                        lastDate: DateTime(2101),
-                                        builder: (BuildContext context, Widget? child) {
-                                          return Theme(
-                                            data: ThemeData.light().copyWith( // Customize the theme here
-                                              primaryColor: Color(0xFF768A95), // Change the header color
-                                              hintColor: Color(0xFF768A95),  // Change the selected date color
-                                              buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary), // Change the button text color
-                                            ),
-                                            child: child!,
-                                          );
-                                        },
-                                      );
-                                      if(pickedDate != null ){
-                                        print(pickedDate);  //get the picked date in the format => 2022-07-04 00:00:00.000
-                                        String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
-                                        print(formattedDate); //formatted date output using intl package =>  2022-07-04
-                                        //You can format date as per your need
+                                child: DropdownButton(
+                                  value: dropdownvalue,
+                                  items: categoryItemlist.map((item) {
+                                    return DropdownMenuItem(
+                                      value: item['id'].toString(),
+                                      child: Text(item['name'].toString()),
+                                    );
+                                  }).toList(),
+                                  onChanged: ( newValue) {
+                                    setState(() {
+                                      dropdownvalue = newValue;
+                                    });
+                                    print("category list----------- $dropdownvalue");
+                                  },
+                                ),
 
-                                        setState(() {
-                                          dateController.text = formattedDate; //set foratted date to TextField value.
-                                        });
-                                      }else{
-                                        print("Date is not selected");
-                                      }
-                                    }
+                                ),
+                            Container(
+                              padding: const EdgeInsets.only(left:40,top: 20),
+                              child: const Text(
+                                "Price",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF768A95),
+                                  fontSize: 16,
                                 ),
                               ),
-                              Container(
-                                padding: const EdgeInsets.only(left:40,top: 20),
-                                child: const Text(
-                                  "Alert",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFF768A95),
-                                    fontSize: 16,
-                                  ),
+                            ),
+                            Container(
+                              width: 300,
+                              padding: const EdgeInsets.only(left:40),
+                              child:
+                              TextField(
+                                // controller: controller.categoryNameTextEditingController,
+                                controller: priceController,
+                                decoration: const InputDecoration(
+                                    focusColor: Color(0xFF768A95),
+                                    hintText: 'Enter the price worth',
+                                    hintStyle: TextStyle(
+                                        color: Color(0xFFC6D0D6)
+                                    )
                                 ),
                               ),
-                              Row(
-                                // mainAxisSize: MainAxisSize.min,
-                                children:[
+                            ),
+
+                            Row(
+                              children: [
                                 Container(
-                                  width: 200,
                                   padding: const EdgeInsets.only(left:40),
-                                    child: TextField(
-                                      controller: alertController,
-                                      keyboardType: TextInputType.number, // Set numeric keyboard
-                                      inputFormatters: <TextInputFormatter>[
-                                        FilteringTextInputFormatter.digitsOnly // Allow only digits
-                                      ],
-                                      decoration: const InputDecoration(
-                                          focusColor: Color(0xFF768A95),
-                                          hintText: 'Enter duration',
-                                          hintStyle: TextStyle(
-                                              color: Color(0xFFC6D0D6)
-                                          ),
-                                      ),
-                                    ),
-                                ),
-                                  const Text(
-                                    "Day(s) before",
+                                  child: const Text(
+                                    "Expired",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Color(0xFF768A95),
                                       fontSize: 16,
                                     ),
                                   ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Center(
-                            child: Container(
-                              width: 320,
-                              padding: const EdgeInsets.only(top: 20, bottom: 40),
-                              child:
-                              ZoomTapAnimation(
-                                child: ElevatedButton(
-                                  child: Text(
-                                    "Save",
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.only(left:40),
+                                  child: Transform.scale(
+                                    scale: 0.7,
+                                    child: Checkbox(
+                                      activeColor: Color(0xFF768A95),
+                                      value: isEdit ? true : this.expire,
+                                      onChanged: (bool? value) {
+                                        if (isEdit) {
+                                          this.expire = true;
+                                        } else {
+                                          this.expire = value!;
+                                        }
+                                      },
+                                      ),
+                                  ),
+                                  ),
+
+                                  ],
+                                ),
+                          if(expire || isEdit)
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 300,
+                                  padding: const EdgeInsets.only(left:40),
+                                  child: TextField(
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        // color: Color(0xFFC6D0D6)
+                                      ),
+                                      controller: dateController,
+                                      decoration: const InputDecoration(//icon of text field
+                                        hintText: "Enter Date" ,
+                                        hintStyle: TextStyle(
+                                            color: Color(0xFFC6D0D6)
+                                        ),
+                                        suffixIcon: Icon(Icons.calendar_today),
+                                        //label text of field
+                                      ),
+                                      readOnly: true,  // when true user cannot edit text
+                                      onTap: () async {
+                                        DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(), //get today's date
+                                          firstDate:DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                                          lastDate: DateTime(2101),
+                                          builder: (BuildContext context, Widget? child) {
+                                            return Theme(
+                                              data: ThemeData.light().copyWith( // Customize the theme here
+                                                primaryColor: Color(0xFF768A95), // Change the header color
+                                                hintColor: Color(0xFF768A95),  // Change the selected date color
+                                                buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.primary), // Change the button text color
+                                              ),
+                                              child: child!,
+                                            );
+                                          },
+                                        );
+                                        if(pickedDate != null ){
+                                          print(pickedDate);  //get the picked date in the format => 2022-07-04 00:00:00.000
+                                          String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                                          print(formattedDate); //formatted date output using intl package =>  2022-07-04
+                                          //You can format date as per your need
+
+                                          setState(() {
+                                            dateController.text = formattedDate; //set foratted date to TextField value.
+                                          });
+                                        }else{
+                                          print("Date is not selected");
+                                        }
+                                      }
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.only(left:40,top: 20),
+                                  child: const Text(
+                                    "Alert",
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xFF768A95),
+                                      fontSize: 16,
                                     ),
                                   ),
-                                  onPressed: () {
-                                    setState(() {
-                                      onSubmitData();
-                                      Get.back();
-                                    });
-                                  },
-                                  style: ButtonStyle(
-                                    elevation: MaterialStateProperty.all(0),
-                                    backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF768A95)),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10.0),
-                                        )
+                                ),
+                                Row(
+                                  // mainAxisSize: MainAxisSize.min,
+                                  children:[
+                                  Container(
+                                    width: 200,
+                                    padding: const EdgeInsets.only(left:40),
+                                      child: TextField(
+                                        controller: alertController,
+                                        keyboardType: TextInputType.number, // Set numeric keyboard
+                                        inputFormatters: <TextInputFormatter>[
+                                          FilteringTextInputFormatter.digitsOnly // Allow only digits
+                                        ],
+                                        decoration: const InputDecoration(
+                                            focusColor: Color(0xFF768A95),
+                                            hintText: 'Enter duration',
+                                            hintStyle: TextStyle(
+                                                color: Color(0xFFC6D0D6)
+                                            ),
+                                        ),
+                                      ),
+                                  ),
+                                    const Text(
+                                      "Day(s) before",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFF768A95),
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            Center(
+                              child: Container(
+                                width: 320,
+                                padding: const EdgeInsets.only(top: 20, bottom: 40),
+                                child:
+                                ZoomTapAnimation(
+                                  child: ElevatedButton(
+                                    child: Text(
+                                      "Save",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        onSubmitData();
+                                        Get.back();
+                                      });
+                                    },
+                                    style: ButtonStyle(
+                                      elevation: MaterialStateProperty.all(0),
+                                      backgroundColor: MaterialStateProperty.all<Color>(Color(0xFF768A95)),
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          )
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
