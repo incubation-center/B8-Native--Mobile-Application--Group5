@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:tukdak/config/services/objectDetection.dart';
 import 'package:tukdak/controller/NavController.dart';
 import 'package:tukdak/controller/propertryController.dart';
 import 'package:tukdak/screens/homePage.dart';
@@ -11,14 +12,16 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import 'package:get/get.dart';
 
 class AddProperty extends StatefulWidget {
-  const AddProperty({super.key});
+  final List <CameraDescription> cameras;
+  const AddProperty({
+    super.key,
+  required this.cameras});
 
   @override
   State<AddProperty> createState() => _AddPropertyState();
 }
 
 class _AddPropertyState extends State<AddProperty> {
-  late List<CameraDescription> cameras;
   late CameraController cameraController;
   // XFile? pictureFile;
   final NavBarController controller = Get.put(NavBarController());
@@ -31,9 +34,8 @@ class _AddPropertyState extends State<AddProperty> {
   }
 
   void startCamera() async {
-    cameras = await availableCameras();
     cameraController = CameraController(
-      cameras[0],
+      widget.cameras[0],
       ResolutionPreset.high,
     );
     await cameraController.initialize().then((value) {
@@ -58,6 +60,7 @@ class _AddPropertyState extends State<AddProperty> {
       MaterialPageRoute(builder: (context) => const MainScreen()),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {

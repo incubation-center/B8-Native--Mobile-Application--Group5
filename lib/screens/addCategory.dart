@@ -43,11 +43,19 @@ class _addCategoryState extends State<addCategory> {
       if (response != null) {
         categoryController.text = '';
         // Handle the response from the server here
-        showSuccessMessage('Creation Success');
+        Get.snackbar(
+          'Success',
+          'Category has been created',
+          backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+        );
         print("Response from server: $response");
       }
     } catch (e) {
-      showErrorMessage('Creation Failed');
+      Get.snackbar(
+        'Fail',
+        ' Creation Failed',
+        backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+      );;
       // Handle any errors that may occur during the request
       print("Error sending data to server: $e");
     }

@@ -166,9 +166,9 @@ class _SearchScreenState extends State<SearchScreen> {
                               child: Text(
                                 product['name'],
                                 style: const TextStyle(
-                                  fontSize: 25,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.w700,
-                                  color: Color.fromARGB(255, 81, 81, 81),
+                                  color: Color(0xFF768A95),
                                 ),
                                 maxLines: 2,
                               ),
@@ -179,6 +179,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                   onPressed: () {
                                     // Add your logic here for what should happen when the arrow button is clicked.
                                   },
+                                  iconSize: 16,
+                                  color: Color(0xFF768A95),
                                   icon: const Icon(IconlyLight.arrowRight),
                                 ),
                               ],
@@ -194,7 +196,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               "Expired on",
                               style: TextStyle(
                                 color: Colors.grey,
-                                fontSize: 15,
+                                fontSize: 14,
                               ),
                             ),
                             const SizedBox(
@@ -207,7 +209,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                   : 'N/A',
                               style: const TextStyle(
                                 color: Colors.grey,
-                                fontSize: 15,
+                                fontSize: 14,
                               ),
                             ),
                             const Spacer(),

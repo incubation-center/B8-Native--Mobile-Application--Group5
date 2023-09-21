@@ -2,7 +2,7 @@
 // import 'package:http/http.dart' as http;
 
 // class AuthController extends GetxController {
-//   final String apiUrl = 'http://127.0.0.1:8000';
+//   final String apiUrl = 'http://18.140.59.77';
 //   final String loginEndpoint = '/login';
 
 //   Future<bool> login(String email, String password) async {

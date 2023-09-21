@@ -40,7 +40,7 @@ class Profilebar extends StatelessWidget {
                     Text(
                       name  ??  "Name not available",
                       style: const TextStyle(
-                        color: Colors.black,
+                        color: Color(0xFF44576D),
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
