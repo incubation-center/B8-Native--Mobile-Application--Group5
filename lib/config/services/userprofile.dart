@@ -7,7 +7,7 @@ const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
 // Future<String?> getUserprofile() async {
 //   final token = await secureStorage.read(key: 'auth_token');
-//   final url = Uri.parse('http://127.0.0.1:8000/user');
+//   final url = Uri.parse('http://18.143.209.45/user');
 
 //   final response = await http.get(
 //     url,

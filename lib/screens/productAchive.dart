@@ -97,76 +97,57 @@ class _ProductArchivescreenState extends State<ProductAchivescreen> {
                                 children: [
                                   Row(
                                     children: [
-                                      ClipRRect(
-                                        child: imageUrl != null
-                                            ? FancyShimmerImage(
-                                                imageUrl:
-                                                    imageUrl, // Use the API image URL
-                                                height: 90,
-                                                width: 90,
-                                              )
-                                            : Container(
-                                                height: 90,
-                                                width: 90,
-                                                decoration: BoxDecoration(
-                                                  color: Colors
-                                                      .grey, // Set a background color for the container
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10), // Apply rounded corners if desired
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.black
-                                                          .withOpacity(
-                                                              0.3), // Apply a shadow to the container
-                                                      spreadRadius: 2,
-                                                      blurRadius: 4,
-                                                      offset: Offset(0, 2),
-                                                    ),
-                                                  ],
-                                                ),
-                                                child: Center(
-                                                  child: Image.asset(
-                                                    'assets/images/dimg.png',
-                                                    height:
-                                                        60, // Adjust the height and width of the image as needed
-                                                    width: 60,
-                                                    fit: BoxFit
-                                                        .contain, // Adjust the image fit as needed (e.g., BoxFit.cover)
-                                                  ),
-                                                ),
-                                              ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 15, vertical: 5),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              productName,
-                                              style: const TextStyle(
-                                                fontSize: 25,
-                                                fontWeight: FontWeight.w700,
-                                                color: Color.fromARGB(
-                                                    255, 81, 81, 81),
-                                              ),
-                                            ),
-                                            Text(
-                                              "Expired on $formattedExpiredAt",
-                                              style: const TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 15,
-                                              ),
-                                            ),
-                                          ],
+                                      SizedBox(
+                                        child: Text(
+                                          productName,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w700,
+                                            color:
+                                            Color(0xFF768A95),
+                                          ),
+                                          maxLines: 2,
                                         ),
+                                      ),
+                                      Column(
+                                        children: [
+                                          IconButton(
+                                            onPressed: () {
+                                              // Add your logic here for what should happen when the arrow button is clicked.
+                                            },
+                                            icon: const Icon(
+                                                IconlyLight.arrowRight,
+                                            color: Color(0xFF768A95),),
+                                            iconSize: 16,
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
                                   const SizedBox(
                                     height: 10,
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Text(
+                                        "Expired on",
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        formattedExpiredAt,
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      const Spacer(),
+                                    ],
                                   ),
                                 ],
                               ),

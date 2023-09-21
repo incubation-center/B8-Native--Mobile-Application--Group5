@@ -8,7 +8,6 @@ import 'package:tukdak/config/services/category.dart';
 Future<List<Map<String, dynamic>>?> SearchData(String name) async {
   final token = await secureStorage.read(key: 'auth_token');
   final url = Uri.parse('http://18.143.209.45/property/search/$name');
-
   final response = await http.get(
     url,
     headers: {

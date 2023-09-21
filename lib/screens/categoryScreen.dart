@@ -35,26 +35,30 @@ class _CategoryState extends State<Category> {
   }
 
   Future<void> deleteById(String id) async {
+    // print('id of item: $id')
     try {
       await deleteCategoryDataWithToken(id);
-      // Item successfully deleted, you can perform any necessary UI updates here.
-      // showSuccessMessage('Deletion Success');
+      print('id to delete: $id');
       print('Item with ID $id deleted successfully.');
     } catch (e) {
-      // showErrorMessage('Deletion Failed');
-      // Handle any errors that may occur during the delete operation.
       print('Error deleting item: $e');
     }
   }
 
-  void onDeleteButtonPressed(String id, String name, List<Map<String, dynamic>> properties) async {
+  void onDeleteButtonPressed(String name) async {
+    try {
+      deleteById(name);
+      fetchData();
       Get.snackbar(
-        'Error',
-        'Category cannot be deleted',
+        'Failed',
+        // 'Category is Deleted',
+        'Cannot delete category with associated properties',
         backgroundColor: const Color.fromARGB(255, 170, 215, 206),
       );
       print("Cannot delete category with associated properties.");
-
+    } catch (e){
+      print('category cannot delete $e');
+    }
   }
 
   //navigate to add page
@@ -164,14 +168,16 @@ class _CategoryState extends State<Category> {
                               .toList()
                               : <Map<String, dynamic>>[];
                           return Dismissible(
-                            key: Key(name),
+                            key: Key(id),
                             direction: DismissDirection.endToStart,
                             onDismissed: (direction) {
                               setState(() {
-                                  onDeleteButtonPressed(id, name, properties);
+                                  onDeleteButtonPressed(name);
                                   responseData.removeAt(index);
                                   fetchData();
                               });
+                              print("category id: $id");
+                              print("category id type: ${id.runtimeType}");
                             },
                             background: Container(
                               color: Colors.red,
@@ -187,7 +193,10 @@ class _CategoryState extends State<Category> {
                               ),
                               child: GestureDetector(
                                 onTap: () {
-                                  Get.to(() => PropertyList(selectedCategory: id));
+                                  final String categorySelected = id.toString();
+                                  print("id: $id");
+                                  print("id: ${id.runtimeType}");
+                                  Get.to(() => PropertyList(selectedCategory: id ?? ""));
                                 },
                                 child: ListTile(
                                   contentPadding:

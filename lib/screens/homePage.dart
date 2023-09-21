@@ -67,6 +67,8 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,12 +88,12 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     if (userGuideSlides[index].icon != null)
-                      Icon(userGuideSlides[index].icon, size: 64),
-                    const SizedBox(height: 16),
+                      Icon(userGuideSlides[index].icon, size: 64, color: Color(0xFF44576D),),
+                    SizedBox(height: 16),
                     Text(
                       userGuideSlides[index].section,
                       style:
-                          const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF44576D)),
                     ),
                     // testing api call
                     // ButtonBar(
@@ -125,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                             const SizedBox(height: 10),
                             Text(
                               userGuideSlides[index].text,
-                              style: const TextStyle(fontSize: 14, height: 1.5),
+                              style: TextStyle(fontSize: 14, height: 1.5, color: Color(0xFF44576D)),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 10),
@@ -165,6 +167,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+
   @override
   void dispose() {
     _pageController.dispose();
@@ -177,3 +180,4 @@ void main() {
     home: HomePage(),
   ));
 }
+

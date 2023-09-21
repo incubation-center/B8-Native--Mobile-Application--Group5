@@ -8,7 +8,7 @@ import 'package:tukdak/config/services/category.dart';
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 // getAllexpiredProducts
-// http://127.0.0.1:8000/property/all/expired
+// http://18.143.209.45/property/all/expired
 
 Future<List<Map<String, dynamic>>> getAllexpiredProducts() async {
   final token = await secureStorage.read(key: 'auth_token');

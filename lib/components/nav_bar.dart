@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:tukdak/screens/propertyList.dart';
@@ -18,12 +19,16 @@ class NavBar extends StatelessWidget {
   final NavBarController controller = Get.put(NavBarController());
   final FlutterSecureStorage secureStorage = const FlutterSecureStorage();
 
+  Future<List<CameraDescription>> initializeCameras() async {
+    return await availableCameras();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: ClipRRect(
-          borderRadius: const BorderRadius.only(topRight: Radius.circular(25)),
+          // borderRadius: const BorderRadius.only(topRight: Radius.circular(25)),
           child: PageView(
             onPageChanged: controller.animateToTab,
             controller: controller.pageController,
@@ -31,7 +36,23 @@ class NavBar extends StatelessWidget {
             children: [
               HomePage(),
               Category(),
-              AddProperty(),
+            FutureBuilder<List<CameraDescription>>(
+              future: initializeCameras(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  final cameras = snapshot.data;
+                  if (cameras != null) {
+                    return AddProperty(cameras: cameras); // Pass the cameras list to AddProperty
+                  } else {
+                    return Center(
+                      child: Text('Error: Unable to initialize cameras.'),
+                    );
+                  }
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
               SearchScreen(),
               // PropertyList(),
               NotifyAlert(notifications: [

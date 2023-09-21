@@ -39,7 +39,7 @@ GoRouter router = GoRouter(
     ),
     GoRoute(
       path: '/addproperty',
-      builder: (context, state) => const AddProperty(),
+      builder: (context, state) => const AddProperty(cameras: [],),
     ),
     GoRoute(
       path: '/addcategory',
