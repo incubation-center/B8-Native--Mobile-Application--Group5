@@ -582,12 +582,6 @@ class _PropertyInfoState extends State<PropertyInfo> {
                               child:
                               ZoomTapAnimation(
                                 child: ElevatedButton(
-                                  child: Text(
-                                    "Save",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                    ),
-                                  ),
                                   onPressed: () {
                                     setState(() {
                                       onSubmitData();
@@ -601,6 +595,12 @@ class _PropertyInfoState extends State<PropertyInfo> {
                                         RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(10.0),
                                         )
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    "Save",
+                                    style: TextStyle(
+                                      color: Colors.white,
                                     ),
                                   ),
                                 ),

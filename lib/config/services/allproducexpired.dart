@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:get/get.dart';
-
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:tukdak/config/services/category.dart';
@@ -12,7 +12,7 @@ const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
 Future<List<Map<String, dynamic>>> getAllexpiredProducts() async {
   final token = await secureStorage.read(key: 'auth_token');
-  final url = Uri.parse('http://127.0.0.1:8000/property/all/expired');
+  final url = Uri.parse('http://18.143.209.45/property/all/expired');
 
   final response = await http.get(
     url,

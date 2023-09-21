@@ -16,7 +16,7 @@ const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 //get
 Future<List<Map<String, dynamic>>?> fetchDataWithToken() async {
   final token = await secureStorage.read(key: 'auth_token');
-  final url = Uri.parse('http://18.140.59.77:8000/category/all');
+  final url = Uri.parse('http://18.143.209.45/category/all');
   // final url = Uri.parse('http://127.0.0.1:8000/category/all');
 
   final response = await http.get(
@@ -42,8 +42,7 @@ Future<List<Map<String, dynamic>>?> fetchDataWithToken() async {
 Future<Map<String, dynamic>?> postCategoryDataWithToken(
     Map<String, dynamic> data) async {
   final token = await secureStorage.read(key: 'auth_token');
-  final url = Uri.parse(
-      'http://18.140.59.77:8000/category');
+  final url = Uri.parse('http://18.143.209.45/category');
   // final url = Uri.parse(
   //     'http://127.0.0.1:8000/category'); // Change the endpoint URL as needed.
 
@@ -71,8 +70,7 @@ Future<Map<String, dynamic>?> postCategoryDataWithToken(
 //delete
 Future<Map<String, dynamic>?> deleteCategoryDataWithToken(String id) async {
   final token = await secureStorage.read(key: 'auth_token');
-  final url = Uri.parse(
-      'http://18.140.59.77:8000/category/$id');
+  final url = Uri.parse('http://18.143.209.45/category/$id');
   // final url = Uri.parse(
   //     'http://127.0.0.1:8000/category/$id'); // Use the provided ID in the URL.
 
@@ -99,8 +97,7 @@ Future<Map<String, dynamic>?> deleteCategoryDataWithToken(String id) async {
 Future<Map<String, dynamic>?> putCategoryDataWithToken(
     String id, Map<String, dynamic> data) async {
   final token = await secureStorage.read(key: 'auth_token');
-  final url = Uri.parse(
-      'http://18.140.59.77:8000/category/$id');
+  final url = Uri.parse('http://18.143.209.45/category/$id');
   // final url = Uri.parse(
   //     'http://127.0.0.1:8000/category/$id'); // Use the appropriate URL with the item ID.
 

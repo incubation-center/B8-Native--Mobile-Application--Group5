@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tukdak/screens/authscreen/loginscreen.dart';
+import 'package:tukdak/screens/authscreen/pincode.dart';
 
 class ForgotpasswordSreen extends StatefulWidget {
   const ForgotpasswordSreen({super.key});
@@ -12,9 +13,13 @@ class _ForgotpasswordSreenState extends State<ForgotpasswordSreen> {
   bool _rememberMe = false;
   bool _passwordVisible = false;
   void _navigateToSignupScreen(BuildContext context) {
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const LoginScreen()),
+    // );
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
+      MaterialPageRoute(builder: (context) => PinCodeScreen()),
     );
   }
 
@@ -112,7 +117,6 @@ class _ForgotpasswordSreenState extends State<ForgotpasswordSreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              
               GestureDetector(
                 onTap: () {
                   _navigateToSignupScreen(context); // Navigate to signup screen

@@ -8,7 +8,7 @@ const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
 Future<List<Map<String, dynamic>>?> fetchPropertyDataWithToken() async {
   final token = await secureStorage.read(key: 'auth_token');
-  final url = Uri.parse('http://18.140.59.77:8000/property/all');
+  final url = Uri.parse('http://18.143.209.45/property/all');
   // final url = Uri.parse('http://127.0.0.1:8000/property/all');
 
   final response = await http.get(
@@ -31,9 +31,10 @@ Future<List<Map<String, dynamic>>?> fetchPropertyDataWithToken() async {
 }
 
 //post
-Future<Map<String, dynamic>?> postPropertyDataWithToken(Map<String, dynamic> data) async {
+Future<Map<String, dynamic>?> postPropertyDataWithToken(
+    Map<String, dynamic> data) async {
   final token = await secureStorage.read(key: 'auth_token');
-  final url = Uri.parse('http://18.140.59.77:8000/property');
+  final url = Uri.parse('http://18.143.209.45/property');
 
   final request = http.MultipartRequest('POST', url);
 
@@ -53,8 +54,11 @@ Future<Map<String, dynamic>?> postPropertyDataWithToken(Map<String, dynamic> dat
   // Add the file to the request
   final fileStream = http.ByteStream(imageFile.openRead());
   final length = imageFile.lengthSync();
-  final multipartFile = http.MultipartFile(fieldName, fileStream, length,
-      filename: imageFile.path.split('/').last,
+  final multipartFile = http.MultipartFile(
+    fieldName,
+    fileStream,
+    length,
+    filename: imageFile.path.split('/').last,
   );
 
   print(fileStream);
@@ -90,8 +94,7 @@ Future<Map<String, dynamic>?> postPropertyDataWithToken(Map<String, dynamic> dat
 //delete
 Future<Map<String, dynamic>?> deletePropertyDataWithToken(String id) async {
   final token = await secureStorage.read(key: 'auth_token');
-  final url = Uri.parse(
-      'http://18.140.59.77:8000/property/$id');
+  final url = Uri.parse('http://18.143.209.45/property/$id');
   // final url = Uri.parse(
   //     'http://127.0.0.1:8000/property/$id'); // Use the provided ID in the URL.
 

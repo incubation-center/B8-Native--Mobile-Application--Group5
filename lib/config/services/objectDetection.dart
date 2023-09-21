@@ -13,11 +13,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:tukdak/config/services/category.dart';
 
-
 Future<String?> postObjectionPrediction(Map<String, dynamic> data) async {
   final token = await secureStorage.read(key: 'auth_token');
-  final url = Uri.parse(
-      'http://18.140.59.77:8000/object-detection');
+  final url = Uri.parse('http://18.143.209.45/object-detection');
   // final url = Uri.parse(
   //     'http://127.0.0.1:8000/property/object-detection'); // Change the endpoint URL as needed.
 

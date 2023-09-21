@@ -7,6 +7,7 @@ import 'package:tukdak/config/services/property.dart';
 import 'package:tukdak/config/services/search.dart';
 import 'package:tukdak/controller/NavController.dart';
 import 'package:tukdak/screens/mainScreen.dart';
+import 'package:tukdak/screens/productbyid.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key});
@@ -50,6 +51,8 @@ class _SearchScreenState extends State<SearchScreen> {
             return {
               "id": property['id'],
               "name": property['name'],
+              "price": property['price'],
+              "createdAt": property['createdAt'],
               "expired_at": property['expired_at'],
               "alert_at": property['alert_at'],
               "image": property['image']
@@ -136,10 +139,30 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+  void navigateToEditPage(String id, String name, int price, String image,
+      String createdAt, String expired_at) {
+    try {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => Eachproductscreen(
+              id: id,
+              name: name,
+              price: price.toString(),
+              image: image,
+              createdAt: createdAt,
+              expired_at: expired_at),
+        ),
+      );
+    } catch (e) {
+      print("Navigation error: $e");
+    }
+  }
+
   Widget buildProductCard(Map<String, dynamic> product) {
     final imageUrl = product['image'];
     final productName = product['name'];
-    String formatExpiredAt(String? expiredAt) {
+    // final productPrice = product['price'];
+    String formatCreatedAt(String? expiredAt) {
       if (expiredAt != null) {
         return DateFormat('dd MMMM yyyy').format(DateTime.parse(expiredAt));
       } else {
@@ -147,15 +170,38 @@ class _SearchScreenState extends State<SearchScreen> {
       }
     }
 
-    final formattedExpiredAt = formatExpiredAt(product['expired_at']);
+    print(product);
 
-    return GestureDetector(
-      child: Container(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(28.0),
-          child: Expanded(
-            child: IntrinsicWidth(
+    final formattedCreatedAt = formatCreatedAt(product['createdAt']);
+
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(28.0),
+        child: Expanded(
+          child: IntrinsicWidth(
+            child: GestureDetector(
+              onTap: () {
+                navigateToEditPage(
+                    product['id'],
+                    product['name'],
+                    // product['categoryId'],
+                    product['price'],
+                    // ignore: prefer_if_null_operators
+                    product['image'] != null
+                        ? product['image']
+                        : "https://pixsector.com/cache/517d8be6/av5c8336583e291842624.png",
+                    DateFormat('yyyy-MM-dd')
+                        .format(DateTime.parse(product['createdAt'])),
+
+                    // ignore: prefer_if_null_operators
+                    product['expired_at'] != null
+                        ? DateFormat('yyyy-MM-dd')
+                            .format(DateTime.parse(product['expired_at']))
+                        : "Not Yet Expired"
+                    // product['alert_at']
+                    );
+              },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -210,13 +256,23 @@ class _SearchScreenState extends State<SearchScreen> {
                             color: Color.fromARGB(255, 81, 81, 81),
                           ),
                         ),
+                        const SizedBox(
+                          height: 5,
+                        ),
                         Text(
-                          "Expired on $formattedExpiredAt",
+                          "Created at $formattedCreatedAt",
                           style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 15,
                           ),
                         ),
+                        // Text(
+                        //   productPrice,
+                        //   style: const TextStyle(
+                        //     color: Colors.grey,
+                        //     fontSize: 15,
+                        //   ),
+                        // ),
                       ],
                     ),
                   )
