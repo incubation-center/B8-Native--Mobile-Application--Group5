@@ -42,8 +42,8 @@ class _LoginscreenState extends State<LoginScreen> {
   Future<void> login(String email, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('http://18.140.59.77/login'),
-        // Uri.parse('http://18.140.59.77/login'),
+        Uri.parse('http://18.143.209.45/login'),
+        // Uri.parse('http://18.143.209.45/login'),
         headers: <String, String>{
           "Access-Control-Allow-Origin": "*",
           'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ class _LoginscreenState extends State<LoginScreen> {
   //     // ignore: avoid_print
   //     print("Password: $password");
   //     final response = await http.post(
-  //       // Uri.parse('http://18.140.59.77/user'),
+  //       // Uri.parse('http://18.143.209.45/user'),
   //       Uri.http("localhost:8000", '/login'),
   //       headers: <String, String>{
   //         "Access-Control-Allow-Origin": "*",

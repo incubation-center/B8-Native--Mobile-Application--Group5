@@ -99,10 +99,10 @@ class _ProductArchivescreenState extends State<ProductAchivescreen> {
                                         child: Text(
                                           productName,
                                           style: const TextStyle(
-                                            fontSize: 25,
+                                            fontSize: 18,
                                             fontWeight: FontWeight.w700,
                                             color:
-                                                Color.fromARGB(255, 81, 81, 81),
+                                            Color(0xFF768A95),
                                           ),
                                           maxLines: 2,
                                         ),
@@ -114,7 +114,9 @@ class _ProductArchivescreenState extends State<ProductAchivescreen> {
                                               // Add your logic here for what should happen when the arrow button is clicked.
                                             },
                                             icon: const Icon(
-                                                IconlyLight.arrowRight),
+                                                IconlyLight.arrowRight,
+                                            color: Color(0xFF768A95),),
+                                            iconSize: 16,
                                           ),
                                         ],
                                       ),
@@ -129,7 +131,7 @@ class _ProductArchivescreenState extends State<ProductAchivescreen> {
                                         "Expired on",
                                         style: TextStyle(
                                           color: Colors.grey,
-                                          fontSize: 15,
+                                          fontSize: 14,
                                         ),
                                       ),
                                       const SizedBox(

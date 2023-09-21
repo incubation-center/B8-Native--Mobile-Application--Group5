@@ -8,8 +8,8 @@ const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
 Future<List<Map<String, dynamic>>?> fetchPropertyDataWithToken() async {
   final token = await secureStorage.read(key: 'auth_token');
-  final url = Uri.parse('http://18.140.59.77/property/all');
-  // final url = Uri.parse('http://18.140.59.77/property/all');
+  final url = Uri.parse('http://18.143.209.45/property/all');
+  // final url = Uri.parse('http://18.143.209.45/property/all');
 
   final response = await http.get(
     url,
@@ -33,7 +33,7 @@ Future<List<Map<String, dynamic>>?> fetchPropertyDataWithToken() async {
 //post
 Future<Map<String, dynamic>?> postPropertyDataWithToken(Map<String, dynamic> data) async {
   final token = await secureStorage.read(key: 'auth_token');
-  final url = Uri.parse('http://18.140.59.77/property');
+  final url = Uri.parse('http://18.143.209.45/property');
 
   final request = http.MultipartRequest('POST', url);
 
@@ -91,7 +91,7 @@ Future<Map<String, dynamic>?> postPropertyDataWithToken(Map<String, dynamic> dat
 Future<Map<String, dynamic>?> deletePropertyDataWithToken(String id) async {
   final token = await secureStorage.read(key: 'auth_token');
   final url = Uri.parse(
-      'http://18.140.59.77/property/$id');
+      'http://18.143.209.45/property/$id');
   final response = await http.delete(
     url,
     headers: {

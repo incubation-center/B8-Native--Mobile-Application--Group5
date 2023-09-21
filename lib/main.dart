@@ -1,4 +1,3 @@
-import 'dart:ui_web';
 import 'package:camera/camera.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';

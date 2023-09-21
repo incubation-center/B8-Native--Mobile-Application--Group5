@@ -1,6 +1,6 @@
 // class Config {
 //   static const String appName = "Tukdak App";
-//   static const String apiURL = 'http://18.140.59.77'; //PROD_URL
+//   static const String apiURL = 'http://18.143.209.45'; //PROD_URL
 //   static const loginAPI = "/login";
 //   static const registerAPI = "/user";
 //   // static const userProfileAPI = "/users/user-Profile";
@@ -17,7 +17,7 @@ import 'package:tukdak/config/services/category.dart';
 
 Future<String?> postDetectionImage(Map<String, dynamic> data) async {
   final token = await secureStorage.read(key: 'auth_token');
-  final url = Uri.parse('http://18.140.59.77/property/object-detection');
+  final url = Uri.parse('http://18.143.209.45/property/object-detection');
 
   final request = http.MultipartRequest('POST', url);
 
