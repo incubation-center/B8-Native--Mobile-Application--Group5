@@ -8,8 +8,8 @@ const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
 Future<List<Map<String, dynamic>>?> fetchPropertyDataWithToken() async {
   final token = await secureStorage.read(key: 'auth_token');
-  final url = Uri.parse('http://18.140.59.77:8000/property/all');
-  // final url = Uri.parse('http://127.0.0.1:8000/property/all');
+  final url = Uri.parse('http://18.140.59.77/property/all');
+  // final url = Uri.parse('http://18.140.59.77/property/all');
 
   final response = await http.get(
     url,
@@ -33,7 +33,7 @@ Future<List<Map<String, dynamic>>?> fetchPropertyDataWithToken() async {
 //post
 Future<Map<String, dynamic>?> postPropertyDataWithToken(Map<String, dynamic> data) async {
   final token = await secureStorage.read(key: 'auth_token');
-  final url = Uri.parse('http://18.140.59.77:8000/property');
+  final url = Uri.parse('http://18.140.59.77/property');
 
   final request = http.MultipartRequest('POST', url);
 
@@ -91,10 +91,7 @@ Future<Map<String, dynamic>?> postPropertyDataWithToken(Map<String, dynamic> dat
 Future<Map<String, dynamic>?> deletePropertyDataWithToken(String id) async {
   final token = await secureStorage.read(key: 'auth_token');
   final url = Uri.parse(
-      'http://18.140.59.77:8000/property/$id');
-  // final url = Uri.parse(
-  //     'http://127.0.0.1:8000/property/$id'); // Use the provided ID in the URL.
-
+      'http://18.140.59.77/property/$id');
   final response = await http.delete(
     url,
     headers: {
@@ -104,7 +101,6 @@ Future<Map<String, dynamic>?> deletePropertyDataWithToken(String id) async {
   );
   print("------status code: ${response.statusCode}");
   if (response.statusCode == 200) {
-    // If the server returns a 204 No Content response, it indicates a successful deletion.
     return null; // No response body for a successful deletion.
   } else {
     print(

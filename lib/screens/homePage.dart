@@ -67,25 +67,13 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFAAC7D7),
-        // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        // elevation: 0,
-
-        // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        // elevation: 0,
-
-        // leading: IconButton(
-        //   onPressed: () {
-        //     _navigateToMainScreen(context);
-        //   },
-        //   icon: const Icon(Icons.arrow_back_ios),
-        //   color: Colors.black,
-        // ),
-
         title: const Profilebar(),
       ),
       body: Column(
@@ -100,12 +88,12 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     if (userGuideSlides[index].icon != null)
-                      Icon(userGuideSlides[index].icon, size: 64),
+                      Icon(userGuideSlides[index].icon, size: 64, color: Color(0xFF44576D),),
                     SizedBox(height: 16),
                     Text(
                       userGuideSlides[index].section,
                       style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF44576D)),
                     ),
                     SizedBox(height: 20),
                     Center(
@@ -126,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                             SizedBox(height: 10),
                             Text(
                               userGuideSlides[index].text,
-                              style: TextStyle(fontSize: 14, height: 1.5),
+                              style: TextStyle(fontSize: 14, height: 1.5, color: Color(0xFF44576D)),
                               textAlign: TextAlign.center,
                             ),
                             SizedBox(height: 10),
@@ -166,6 +154,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+
   @override
   void dispose() {
     _pageController.dispose();
@@ -178,3 +167,4 @@ void main() {
     home: HomePage(),
   ));
 }
+

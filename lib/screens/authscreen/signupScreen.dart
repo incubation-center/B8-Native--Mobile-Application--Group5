@@ -73,8 +73,8 @@ class _SignupState extends State<Signup> {
       print("Password1: $password1");
       print("Password2: $password2");
       final response = await http.post(
-        Uri.parse('http://18.140.59.77:8000/user'),
-        // Uri.parse("http://127.0.0.1:8000/user"),
+        Uri.parse('http://18.140.59.77/user'),
+        // Uri.parse("http://18.140.59.77/user"),
         headers: <String, String>{
           "Access-Control-Allow-Origin": "*",
           'Content-Type': 'application/json',

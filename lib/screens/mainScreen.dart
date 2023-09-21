@@ -36,12 +36,6 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
       ),
-      // bottomNavigationBar: navBar(),
-      // body: const SafeArea(
-      //   child: Center(
-      //     child: Text('Home'),
-      //   ),
-      // ),
     );
   }
 }
