@@ -576,4 +576,3 @@ class _PropertyInfoState extends State<PropertyInfo> {
 //   return menuItems;
 // }
 }
-

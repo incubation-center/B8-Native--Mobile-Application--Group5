@@ -1,3 +1,4 @@
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:get/get.dart';
@@ -85,6 +86,7 @@ class _ProductArchivescreenState extends State<ProductAchivescreen> {
                             final product = responseData[index];
                             final productName = product['name'] ?? 'No Name';
                             final expiredAt = product['expired_at'] ?? 'N/A';
+                            final imageUrl = product['image'];
                             final formattedExpiredAt = expiredAt != 'N/A'
                                 ? DateFormat('dd MMMM yyyy')
                                     .format(DateTime.parse(expiredAt))

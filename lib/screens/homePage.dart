@@ -95,29 +95,42 @@ class _HomePageState extends State<HomePage> {
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xFF44576D)),
                     ),
-                    SizedBox(height: 20),
+                    // testing api call
+                    // ButtonBar(
+                    //   alignment: MainAxisAlignment.spaceEvenly,
+                    //   children: <Widget>[
+                    //     TextButton(
+                    //         child: const Text('Testing api call'),
+                    //         onPressed: () {
+                    //           _handleApiCall();
+                    //         }),
+                    //   ],
+                    // ),
+
+                    // testing api call
+                    const SizedBox(height: 20),
                     Center(
                       child: Container(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                        margin: EdgeInsets.symmetric(
+                            const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                        margin:  EdgeInsets.symmetric(
                             horizontal:
                                 50), // Add margin for spacing around the background
                         decoration: BoxDecoration(
-                          color: Color(0xFFAAC7D7),
+                          color:  Color(0xFFAAC7D7),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment
                               .start, // Align text to the left
                           children: [
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Text(
                               userGuideSlides[index].text,
                               style: TextStyle(fontSize: 14, height: 1.5, color: Color(0xFF44576D)),
                               textAlign: TextAlign.center,
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                           ],
                         ),
                       ),
@@ -127,21 +140,21 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Center(
             child: Padding(
-              padding: EdgeInsets.only(bottom: 100),
+              padding: const EdgeInsets.only(bottom: 100),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(userGuideSlides.length, (index) {
                   return Container(
                     width: 15,
                     height: 10,
-                    margin: EdgeInsets.symmetric(horizontal: 4),
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: _currentPage == index
-                          ? Color(0xFFAAC7D7)
+                          ? const Color(0xFFAAC7D7)
                           : Colors.grey,
                     ),
                   );

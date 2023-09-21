@@ -73,8 +73,9 @@ class _SignupState extends State<Signup> {
       print("Password1: $password1");
       print("Password2: $password2");
       final response = await http.post(
+        // http://18.143.209.45/
         Uri.parse('http://18.143.209.45/user'),
-        // Uri.parse("http://18.143.209.45/user"),
+        // Uri.parse("http://127.0.0.1:8000/user"),
         headers: <String, String>{
           "Access-Control-Allow-Origin": "*",
           'Content-Type': 'application/json',
@@ -314,7 +315,8 @@ class _SignupState extends State<Signup> {
                 const Text("Already have an account ?"),
                 GestureDetector(
                   onTap: () {
-                    _navigateToLoginScreen(context); // Navigate to signup screen
+                    _navigateToLoginScreen(
+                        context); // Navigate to signup screen
                   },
                   child: const Text(
                     " Sign in",

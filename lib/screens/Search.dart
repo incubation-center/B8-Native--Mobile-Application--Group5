@@ -7,6 +7,7 @@ import 'package:tukdak/config/services/property.dart';
 import 'package:tukdak/config/services/search.dart';
 import 'package:tukdak/controller/NavController.dart';
 import 'package:tukdak/screens/mainScreen.dart';
+import 'package:tukdak/screens/productbyid.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key});
@@ -50,6 +51,8 @@ class _SearchScreenState extends State<SearchScreen> {
             return {
               "id": property['id'],
               "name": property['name'],
+              "price": property['price'],
+              "createdAt": property['createdAt'],
               "expired_at": property['expired_at'],
               "alert_at": property['alert_at'],
               "image": property['image']
@@ -136,85 +139,140 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+  void navigateToEditPage(String id, String name, int price, String image,
+      String createdAt, String expired_at) {
+    try {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => Eachproductscreen(
+              id: id,
+              name: name,
+              price: price.toString(),
+              image: image,
+              createdAt: createdAt,
+              expired_at: expired_at),
+        ),
+      );
+    } catch (e) {
+      print("Navigation error: $e");
+    }
+  }
+
   Widget buildProductCard(Map<String, dynamic> product) {
-    return GestureDetector(
-      child: Container(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(28.0),
-          child: Expanded(
-            child: IntrinsicWidth(
+    final imageUrl = product['image'];
+    final productName = product['name'];
+    // final productPrice = product['price'];
+    String formatCreatedAt(String? expiredAt) {
+      if (expiredAt != null) {
+        return DateFormat('dd MMMM yyyy').format(DateTime.parse(expiredAt));
+      } else {
+        return 'N/A';
+      }
+    }
+
+    print(product);
+
+    final formattedCreatedAt = formatCreatedAt(product['createdAt']);
+
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(28.0),
+        child: Expanded(
+          child: IntrinsicWidth(
+            child: GestureDetector(
+              onTap: () {
+                navigateToEditPage(
+                    product['id'],
+                    product['name'],
+                    // product['categoryId'],
+                    product['price'],
+                    // ignore: prefer_if_null_operators
+                    product['image'] != null
+                        ? product['image']
+                        : "https://pixsector.com/cache/517d8be6/av5c8336583e291842624.png",
+                    DateFormat('yyyy-MM-dd')
+                        .format(DateTime.parse(product['createdAt'])),
+
+                    // ignore: prefer_if_null_operators
+                    product['expired_at'] != null
+                        ? DateFormat('yyyy-MM-dd')
+                            .format(DateTime.parse(product['expired_at']))
+                        : "Not Yet Expired"
+                    // product['alert_at']
+                    );
+              },
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // ClipRRect(
-                  //   child: FancyShimmerImage(
-                  //     imageUrl: product['url'],
-                  //     height: 90,
-                  //     width: 90,
-                  //   ),
-                  // ),
+                  Container(
+                    height: 90,
+                    width: 90,
+                    decoration: BoxDecoration(
+                      color: Colors
+                          .grey, // Set a background color for the container
+                      borderRadius: BorderRadius.circular(
+                          10), // Apply rounded corners if desired
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(
+                              0.3), // Apply a shadow to the container
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: imageUrl != null
+                          ? FancyShimmerImage(
+                              imageUrl: imageUrl, // Use the API image URL
+                              height:
+                                  60, // Adjust the height and width of the image as needed
+                              width: 60,
+                            )
+                          : Image.asset(
+                              'assets/images/dimg.png',
+                              height:
+                                  60, // Adjust the height and width of the default image as needed
+                              width: 60,
+                              fit: BoxFit
+                                  .contain, // Adjust the image fit as needed (e.g., BoxFit.cover)
+                            ),
+                    ),
+                  ),
                   const SizedBox(
                     width: 10,
                   ),
                   IntrinsicWidth(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            SizedBox(
-                              child: Text(
-                                product['name'],
-                                style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xFF768A95),
-                                ),
-                                maxLines: 2,
-                              ),
-                            ),
-                            Column(
-                              children: [
-                                IconButton(
-                                  onPressed: () {
-                                    // Add your logic here for what should happen when the arrow button is clicked.
-                                  },
-                                  iconSize: 16,
-                                  color: Color(0xFF768A95),
-                                  icon: const Icon(IconlyLight.arrowRight),
-                                ),
-                              ],
-                            ),
-                          ],
+                        Text(
+                          productName,
+                          style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w700,
+                            color: Color.fromARGB(255, 81, 81, 81),
+                          ),
                         ),
                         const SizedBox(
-                          height: 10,
+                          height: 5,
                         ),
-                        Row(
-                          children: [
-                            const Text(
-                              "Expired on",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              product['expired_at'] != null
-                                  ? DateFormat('dd MMMM yyyy').format(
-                                      DateTime.parse(product['expired_at']))
-                                  : 'N/A',
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 14,
-                              ),
-                            ),
-                            const Spacer(),
-                          ],
-                        )
+                        Text(
+                          "Created at $formattedCreatedAt",
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 15,
+                          ),
+                        ),
+                        // Text(
+                        //   productPrice,
+                        //   style: const TextStyle(
+                        //     color: Colors.grey,
+                        //     fontSize: 15,
+                        //   ),
+                        // ),
                       ],
                     ),
                   )
