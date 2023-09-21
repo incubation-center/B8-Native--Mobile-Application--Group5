@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -8,11 +7,12 @@ import 'package:http/http.dart' as http;
 import 'package:tukdak/screens/authscreen/forgotpassword.dart';
 import 'package:tukdak/screens/authscreen/signupScreen.dart';
 import 'package:tukdak/screens/mainScreen.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
   @override
-  // ignore: library_private_types_in_public_api
   _LoginscreenState createState() => _LoginscreenState();
 }
 
@@ -24,52 +24,68 @@ class _LoginscreenState extends State<LoginScreen> {
   // Getting value from TextField widget.
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    checkTokenAndNavigate();
-  }
-
-  Future<void> checkTokenAndNavigate() async {
-    final String? token = await secureStorage.read(key: 'auth_token');
-    if (token != null) {
-      // ignore: use_build_context_synchronously
-      _navigateToMainScreen(context);
+  void login(String email, password) async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      Get.snackbar(
+        'Error',
+        'No internet connection. Please check your network settings',
+        backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+      );
+      return;
     }
-  }
 
-  Future<void> login(String email, String password) async {
     try {
+      // Log the input values
+      print("Email: $email");
+      print("Password: $password");
       final response = await http.post(
         Uri.parse('http://18.143.209.45/login'),
-        // Uri.parse('http://18.143.209.45/login'),
         headers: <String, String>{
           "Access-Control-Allow-Origin": "*",
           'Content-Type': 'application/json',
           'Accept': '*/*',
         },
-        body: jsonEncode({"email": email, "password": password}),
+        body: jsonEncode(<String, String>{"email": email, "password": password}),
       );
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
         final String token = jsonResponse['accessToken'];
 
-        await secureStorage.write(key: 'auth_token', value: token);
-
         if (token != null) {
+          print("Token: $token");
+
+          // Store the token securely
+          await secureStorage.write(key: 'auth_token', value: token);
+
+          // Now, send the device token and access token to the server
+          String? deviceToken = await FirebaseMessaging.instance.getToken();
+          await sendDeviceToken(deviceToken!, token);
+
           _navigateToMainScreen(context);
         } else {
-          showSnackbar('Authentication failed. Please check your credentials.');
+          Get.snackbar(
+            'Error',
+            'Authentication failed. Please check your credentials.',
+            backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+          );
         }
       } else {
-        showSnackbar('Authentication failed. Please check your credentials.');
+        Get.snackbar(
+          'Error',
+          'Authentication failed. Please check your credentials.',
+          backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+        );
+        print("Sign ip has some mistake!!!");
       }
     } catch (e) {
       print('Error: $e');
-      showSnackbar(
-          'An error occurred while trying to log in. Please try again later.');
+      Get.snackbar(
+        'Error',
+        'An error occurred while trying to log in. Please try again later.',
+        backgroundColor: const Color.fromARGB(255, 170, 215, 206),
+      );
     }
   }
 
@@ -115,64 +131,29 @@ class _LoginscreenState extends State<LoginScreen> {
   //       final jsonResponse = json.decode(response.body);
   //       final String token = jsonResponse['accessToken'];
 
-  //       // Store the token securely (e.g., using secure_storage)
-  //       await secureStorage.write(key: 'auth_token', value: token);
+  Future<void> sendDeviceToken(String deviceToken, String accessToken) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://18.143.209.45/user/update-device-token'),
+        headers: <String, String>{
+          "Authorization": "Bearer $accessToken", // Add the access token
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(<String, String>{"device_token": deviceToken}),
+      );
 
-  //       if (token != null) {
-  //         // Log the token
-  //         print("Token: $token");
-  //         // Store the token securely
-  //         await secureStorage.write(key: 'auth_token', value: token);
-  //         // ignore: use_build_context_synchronously
-  //         _navigateToMainScreen(context);
-  //       } else {
-  //         // Handle the case where 'token' is null in the response
-  //         Get.snackbar(
-  //           'Error',
-  //           'Authentication failed. Please check your credentials.',
-  //           backgroundColor: const Color.fromARGB(255, 170, 215, 206),
-  //         );
-  //       }
-  //       // ignore: use_build_context_synchronously
-  //       // _navigateToHomeScreen(context);
-  //     } else {
-  //       // Authentication failed
-  //       Get.snackbar(
-  //         'Error',
-  //         'Authentication failed. Please check your credentials.',
-  //         backgroundColor: const Color.fromARGB(255, 170, 215, 206),
-  //         // snackPosition: SnackPosition.BOTTOM,
-  //       );
-  //       print("Sign ip has some mistake!!!");
-  //     }
-  //   } catch (e) {
-  //     // Error occurred during the API request
-  //     print('Error: $e');
-  //     Get.snackbar(
-  //       'Error',
-  //       'An error occurred while trying to log in. Please try again later.',
-  //       backgroundColor: const Color.fromARGB(255, 170, 215, 206),
-  //     );
-  //   }
-  // }
+      if (response.statusCode == 200) {
+        print('Device Token sent successfully');
+      } else {
+        print('Failed to send Device Token');
+      }
+    } catch (e) {
+      print('Error sending Device Token: $e');
+    }
+  }
 
-  // void onPressedLoginButton() {
-  //   final email = emailController.text;
-  //   final password = passwordController.text;
 
-  //   if (email.isNotEmpty && password.isNotEmpty) {
-  //     login(email, password);
-  //   } else {
-  //     if (email.isEmpty || password.isEmpty) {
-  //       Get.snackbar(
-  //         'Error',
-  //         'Both email and password are required',
-  //         backgroundColor: Color.fromARGB(255, 170, 215, 206),
-  //       );
-  //       return;
-  //     }
-  //   }
-  // }
   void onPressedLoginButton() {
     final email = emailController.text;
     final password = passwordController.text;
@@ -180,17 +161,23 @@ class _LoginscreenState extends State<LoginScreen> {
     if (email.isNotEmpty && password.isNotEmpty) {
       login(email, password);
     } else {
-      showSnackbar('Both email and password are required');
+      if (email.isEmpty || password.isEmpty) {
+        Get.snackbar(
+          'Error',
+          'Both email and password are required',
+          backgroundColor: Color.fromARGB(255, 170, 215, 206),
+        );
+        return;
+      }
     }
   }
 
   void _navigateToSignupScreen(BuildContext context) {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const Signup()),
-    // );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const Signup()),
+    );
     // Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
-    Get.to(const Signup());
   }
 
   void _navigateToMainScreen(BuildContext context) {
@@ -198,19 +185,16 @@ class _LoginscreenState extends State<LoginScreen> {
     //   context,
     //   MaterialPageRoute(builder: (context) => const MainScreen()),
     // );
-    // Get.to(const MainScreen());
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const MainScreen()));
     // Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
   }
 
   void _navigateToForgotpasswordScreen(BuildContext context) {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const ForgotpasswordSreen()),
-    // );
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const ForgotpasswordSreen()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ForgotpasswordSreen()),
+    );
   }
 
   @override
@@ -227,7 +211,7 @@ class _LoginscreenState extends State<LoginScreen> {
                     height: 250,
                     decoration: const BoxDecoration(
                       image: DecorationImage(
-                        image: NetworkImage("assets/images/img.png"),
+                        image: AssetImage("assets/images/img.png"),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -389,8 +373,7 @@ class _LoginscreenState extends State<LoginScreen> {
                 const Text("Didn’t have an account ?"),
                 GestureDetector(
                   onTap: () {
-                    _navigateToSignupScreen(
-                        context); // Navigate to signup screen
+                    _navigateToSignupScreen(context); // Navigate to signup screen
                   },
                   child: const Text(
                     " Sign up",
