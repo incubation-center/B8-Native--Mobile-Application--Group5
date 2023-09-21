@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:tukdak/config/services/objectDetection.dart';
 import 'package:tukdak/controller/NavController.dart';
 import 'package:tukdak/controller/propertryController.dart';
 import 'package:tukdak/screens/homePage.dart';
@@ -11,14 +12,16 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import 'package:get/get.dart';
 
 class AddProperty extends StatefulWidget {
-  const AddProperty({super.key});
+  final List <CameraDescription> cameras;
+  const AddProperty({
+    super.key,
+  required this.cameras});
 
   @override
   State<AddProperty> createState() => _AddPropertyState();
 }
 
 class _AddPropertyState extends State<AddProperty> {
-  late List<CameraDescription> cameras;
   late CameraController cameraController;
   // XFile? pictureFile;
   final NavBarController controller = Get.put(NavBarController());
@@ -31,11 +34,9 @@ class _AddPropertyState extends State<AddProperty> {
   }
 
   void startCamera() async {
-    cameras = await availableCameras();
     cameraController = CameraController(
-      cameras[0],
+      widget.cameras[0],
       ResolutionPreset.high,
-      enableAudio: false,
     );
     await cameraController.initialize().then((value) {
       if(!mounted) {
@@ -59,6 +60,7 @@ class _AddPropertyState extends State<AddProperty> {
       MaterialPageRoute(builder: (context) => const MainScreen()),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -88,61 +90,55 @@ class _AddPropertyState extends State<AddProperty> {
                 ),
               ),
               Container(
-              height: 470,
-              child: Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Stack(
-                  children: [
-                    CameraPreview(cameraController),
-                    // Align(
-                    //   alignment: Alignment.bottomCenter,
-                    //   child: Container(
-                    //     height: 120,
-                    //     decoration: BoxDecoration(
-                    //       shape: BoxShape.circle,
-                    //       color: Colors.white,
-                    //     ),
-                    //   ),
-                    // )
-                  ],
+                height: 470,
+                child: Padding(
+                  padding: EdgeInsets.only(top: 10),
+                  child: Stack(
+                    children: [
+                      CameraPreview(cameraController),
+                    ],
+                  ),
                 ),
               ),
-            ),
               Center(
                 child: Container(
                   width: 320,
                   padding: const EdgeInsets.only(top: 20),
                   child:
                   ZoomTapAnimation(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundColor: Color(0xFFAAC7D7),
-                          child: IconButton(
-                              color: Colors.white,
-                              onPressed: () async {
-                                // propController.imageFile = await cameraController.takePicture();
-                                try {
-                                  final XFile xFile = await cameraController.takePicture();
-                                  final File file = File(xFile.path); // Convert XFile to File
-                                  propController.setImageFile(file);
-                                  Get.to(() => PropertyInfo()); // Navigate to PropertyInfo
-                                } catch (e) {
-                                  print("Error taking picture: $e");
-                                }
-                              },
-                              iconSize: 30,
-                              icon: const Icon(Icons.camera_alt_rounded)
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundColor: Color(0xFFAAC7D7),
+                            child: IconButton(
+                                color: Colors.white,
+                                onPressed: () async {
+                                  // propController.imageFile = await cameraController.takePicture();
+                                  try {
+                                    final XFile xFile = await cameraController.takePicture();
+                                    final File file = File(xFile.path); // Convert XFile to File
+                                    propController.setImageFile(file);
+                                    Get.to(() => PropertyInfo()); //
+                                    if (file != null){
+                                      print('object+++++++++++++++++++++++++');
+                                    }
+                                    // print('object+++++++++++++++++++++++++');// igate to PropertyInfo
+                                  } catch (e) {
+                                    print("Error taking picture: $e");
+                                  }
+                                },
+                                iconSize: 30,
+                                icon: const Icon(Icons.camera_alt_rounded)
+                            ),
                           ),
-                        ),
-                      ],
-                    )
+                        ],
+                      )
                   ),
                 ),
               ),
-          ],
+            ],
           ),
         ),
       );

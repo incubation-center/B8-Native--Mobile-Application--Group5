@@ -1,68 +1,82 @@
 import 'package:flutter/material.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:tukdak/config/services/property.dart';
+import 'package:tukdak/config/services/search.dart';
+import 'package:tukdak/controller/NavController.dart';
+import 'package:tukdak/screens/mainScreen.dart';
+import 'package:tukdak/screens/productbyid.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key});
-
   @override
   State<SearchScreen> createState() => _SearchScreenState();
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final List<Map<String, dynamic>> _allProducts = [
-    {
-      "id": 1,
-      "name": "Shoes",
-      "url": "https://i.ibb.co/8r1Ny2n/20-Nike-Air-Force-1-07.png"
-    },
-    {
-      "id": 2,
-      "name": "Tie",
-      "url": "https://m.media-amazon.com/images/I/81AneYFANBL._AC_UY1100_.jpg"
-    },
-    {
-      "id": 3,
-      "name": "Shirt",
-      "url": "https://m.media-amazon.com/images/I/71+hAYAGnQL._AC_UY1100_.jpg"
-    },
-    {
-      "id": 4,
-      "name": "Pant",
-      "url":
-          "https://res.cloudinary.com/outlandusa/image/upload/q_auto,g_auto/w_800,c_limit/fl_force_strip.progressive/c_pad,h_650,w_800/a68ad625b14363d28786edfd8ae72c9a.jpg"
-    },
-    {
-      "id": 5,
-      "name": "Sneaker",
-      "url": "https://i.ebayimg.com/images/g/rIYAAOSwe21iJZDy/s-l1200.jpg"
-    },
-    {
-      "id": 6,
-      "name": "Shoes Soccer",
-      "url":
-          "https://s.yimg.com/uu/api/res/1.2/Ba_5XykWvyps7ud3ATjTBw--~B/aD05MDA7dz0xNjAwO2FwcGlkPXl0YWNoeW9u/https://o.aolcdn.com/hss/storage/midas/fb17f61178099f434d4db930420ef6ce/204121737/nikemagista2lede.jpg.cf.jpg"
-    },
-    {
-      "id": 7,
-      "name": "Sock",
-      "url": "https://m.media-amazon.com/images/I/61wVL6FvJLL._AC_SX425_.jpg"
-    },
-    {
-      "id": 8,
-      "name": "Glove",
-      "url":
-          "https://badworkwear.com.au/cdn/shop/products/bad-stealth-nitrile-grip-safe-insulated-work-gloves-690605.jpg"
-    }
-  ];
+  final List<Map<String, dynamic>> _allProducts = [];
 
+  String _searchQuery = "";
 // This list holds the data for the list view
   List<Map<String, dynamic>> _foundProducts = [];
+  bool _isLoading = false;
   @override
   initState() {
     // at the beginning, all users are shown
     _foundProducts = _allProducts;
+    _fetchProperties();
     super.initState();
+  }
+
+  Future<void> _fetchProperties() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      // Replace 'YOUR_API_ENDPOINT' with the actual API endpoint URL
+      final response = await fetchPropertyDataWithToken();
+
+      if (response != null) {
+        // Create a list to store all properties
+        List<Map<String, dynamic>> allProperties = [];
+
+        // Iterate through the categories and collect properties
+        for (var category in response) {
+          List<dynamic> propertiesData = category['properties'];
+
+          // Map the properties to the desired format and add them to the list
+          allProperties.addAll(propertiesData.map((property) {
+            return {
+              "id": property['id'],
+              "name": property['name'],
+              "price": property['price'],
+              "createdAt": property['createdAt'],
+              "expired_at": property['expired_at'],
+              "alert_at": property['alert_at'],
+              "image": property['image']
+              // Add more fields as needed
+            };
+          }).toList());
+        }
+
+        setState(() {
+          _allProducts.addAll(allProperties);
+          _isLoading = false;
+        });
+      } else {
+        // Handle the case where there was an error or no token available.
+        print('Error or no token available.');
+        _isLoading = false;
+      }
+    } catch (error) {
+      print("Error while fetching properties: $error");
+      // Handle the error as needed
+      setState(() {
+        _isLoading = false; // Hide loading indicator
+      });
+    }
   }
 
   // This function is called whenever the text field changes
@@ -82,6 +96,7 @@ class _SearchScreenState extends State<SearchScreen> {
     // Refresh the UI
     setState(() {
       _foundProducts = results;
+      _searchQuery = enteredKeyword;
     });
   }
 
@@ -90,91 +105,180 @@ class _SearchScreenState extends State<SearchScreen> {
     //   context,
     //   MaterialPageRoute(builder: (context) => const MainScreen()),
     // );
-    Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
-    // Navigator.of(context).pushReplacementNamed('/');
+    // Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+    Navigator.of(context).pushReplacementNamed('/');
+    // Navigator.of(context).pushReplacement(
+    //     MaterialPageRoute(builder: (context) => const MainScreen()));
+  }
+
+  void _onSearchButtonPressed() async {
+    print("Search Query: $_searchQuery"); // Print the search query
+
+    // Call the SearchData function to perform the search
+    try {
+      final List<Map<String, dynamic>>? searchResults =
+          await SearchData(_searchQuery);
+
+      if (searchResults != null) {
+        // Update the UI with the search results
+        setState(() {
+          _foundProducts = searchResults;
+        });
+        print("Search Results:");
+        for (var result in searchResults) {
+          print("ID: ${result['id']}");
+          print("Name: ${result['name']}");
+          // Add more fields as needed
+        }
+      } else {
+        print("No search results found.");
+      }
+    } catch (error) {
+      print("Error while searching: $error");
+      // Handle the error as needed
+    }
+  }
+
+  void navigateToEditPage(String id, String name, int price, String image,
+      String createdAt, String expired_at) {
+    try {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => Eachproductscreen(
+              id: id,
+              name: name,
+              price: price.toString(),
+              image: image,
+              createdAt: createdAt,
+              expired_at: expired_at),
+        ),
+      );
+    } catch (e) {
+      print("Navigation error: $e");
+    }
   }
 
   Widget buildProductCard(Map<String, dynamic> product) {
-    return GestureDetector(
-      onTap: () {
-        _navigateToMainScreen(context);
-        // Add your logic r what should happen when a product is clicked.
-      },
-      child: Container(
-        color: Colors.white,
-        child: IntrinsicWidth(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12.0),
-                child: FancyShimmerImage(
-                  imageUrl: product['url'],
-                  height: 100, // Adjust the height as needed
-                  width: 100, // Adjust the width as needed
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              IntrinsicWidth(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 200, // Adjust the width as needed
-                          child: Text(
-                            product['name'],
-                            style: const TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w700,
-                                color: Color.fromARGB(255, 81, 81, 81)),
-                            maxLines: 2,
-                          ),
+    final imageUrl = product['image'];
+    final productName = product['name'];
+    // final productPrice = product['price'];
+    String formatCreatedAt(String? expiredAt) {
+      if (expiredAt != null) {
+        return DateFormat('dd MMMM yyyy').format(DateTime.parse(expiredAt));
+      } else {
+        return 'N/A';
+      }
+    }
+
+    print(product);
+
+    final formattedCreatedAt = formatCreatedAt(product['createdAt']);
+
+    return Container(
+      color: Colors.white,
+      child: Padding(
+        padding: const EdgeInsets.all(28.0),
+        child: Expanded(
+          child: IntrinsicWidth(
+            child: GestureDetector(
+              onTap: () {
+                navigateToEditPage(
+                    product['id'],
+                    product['name'],
+                    // product['categoryId'],
+                    product['price'],
+                    // ignore: prefer_if_null_operators
+                    product['image'] != null
+                        ? product['image']
+                        : "https://pixsector.com/cache/517d8be6/av5c8336583e291842624.png",
+                    DateFormat('yyyy-MM-dd')
+                        .format(DateTime.parse(product['createdAt'])),
+
+                    // ignore: prefer_if_null_operators
+                    product['expired_at'] != null
+                        ? DateFormat('yyyy-MM-dd')
+                            .format(DateTime.parse(product['expired_at']))
+                        : "Not Yet Expired"
+                    // product['alert_at']
+                    );
+              },
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 90,
+                    width: 90,
+                    decoration: BoxDecoration(
+                      color: Colors
+                          .grey, // Set a background color for the container
+                      borderRadius: BorderRadius.circular(
+                          10), // Apply rounded corners if desired
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(
+                              0.3), // Apply a shadow to the container
+                          spreadRadius: 2,
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
                         ),
-                        Column(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                // Add your logic here for what should happen when the arrow button is clicked.
-                              },
-                              icon: const Icon(IconlyLight.arrowRight),
+                      ],
+                    ),
+                    child: Center(
+                      child: imageUrl != null
+                          ? FancyShimmerImage(
+                              imageUrl: imageUrl, // Use the API image URL
+                              height:
+                                  60, // Adjust the height and width of the image as needed
+                              width: 60,
+                            )
+                          : Image.asset(
+                              'assets/images/dimg.png',
+                              height:
+                                  60, // Adjust the height and width of the default image as needed
+                              width: 60,
+                              fit: BoxFit
+                                  .contain, // Adjust the image fit as needed (e.g., BoxFit.cover)
                             ),
-                          ],
-                        ),
-                      ],
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  IntrinsicWidth(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Expired on",
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 20,
+                          productName,
+                          style: const TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w700,
+                            color: Color.fromARGB(255, 81, 81, 81),
                           ),
                         ),
-                        SizedBox(
-                          width: 10,
+                        const SizedBox(
+                          height: 5,
                         ),
                         Text(
-                          "13/03/2024",
-                          style: TextStyle(
+                          "Created at $formattedCreatedAt",
+                          style: const TextStyle(
                             color: Colors.grey,
-                            fontSize: 20,
+                            fontSize: 15,
                           ),
                         ),
-                        Spacer(),
+                        // Text(
+                        //   productPrice,
+                        //   style: const TextStyle(
+                        //     color: Colors.grey,
+                        //     fontSize: 15,
+                        //   ),
+                        // ),
                       ],
-                    )
-                  ],
-                ),
-              )
-            ],
+                    ),
+                  )
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -184,82 +288,103 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-            onTap: () {
-              _navigateToMainScreen(context);
-            },
-            child: const Icon(IconlyLight.arrowLeft)),
-        backgroundColor: const Color(0xFFAAC7D7),
-        elevation: 0,
-      ),
+      // appBar: AppBar(
+      //   leading: GestureDetector(
+      //       onTap: () {
+      //         // Get.back();
+      //         // Go back to the '/' route
+
+      //         // Get.to(const MainScreen());
+      //         // _navigateToMainScreen(context);
+      //       },
+      //       child: const Icon(IconlyLight.arrowLeft)),
+      //   backgroundColor: const Color(0xFFAAC7D7),
+      //   elevation: 0,
+      // ),
       body: Container(
-        color: const Color(0xFFAAC7D7),
-        child: Column(
-          children: [
-            Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(28.0),
-                    child: TextField(
-                      onChanged: _runFilter,
-                      style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                        labelText: 'Search',
-                        labelStyle: TextStyle(color: Colors.white),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 2.0, // Adjust the width as needed
-                            color: Colors.white,
-                            // Adjust the color as needed
-                          ),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 1.0, // Adjust the width as needed
-                            color:
-                                Colors.white, // Set the default color to white
+          color: const Color(0xFFAAC7D7),
+          child: Column(
+            children: [
+              Container(
+                color: const Color(0xFFAAC7D7),
+                child: Row(
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(28.0),
+                        child: TextField(
+                          onChanged: _runFilter,
+                          style: const TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            labelText: 'Search',
+                            labelStyle: TextStyle(color: Colors.white),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 2.0, // Adjust the width as needed
+                                color: Colors.white,
+                                // Adjust the color as needed
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 1.0, // Adjust the width as needed
+                                color: Colors
+                                    .white, // Set the default color to white
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
+                    IconButton(
+                      onPressed:
+                          _onSearchButtonPressed, // Call the function when the button is pressed
+                      icon: const Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
+                    )
+
+                    // IconButton(
+                    //   onPressed: () {
+                    //     // Add your search logic here.
+                    //   },
+                    //   icon: const Icon(
+                    //     Icons.search,
+                    //     color: Colors.white,
+                    //   ),
+                    // )
+                  ],
                 ),
-                IconButton(
-                  onPressed: () {
-                    // Add your search logic here.
-                  },
-                  icon: const Icon(
-                    Icons.search,
-                    color: Colors.white,
-                  ),
-                )
-              ],
-            ),
-            _foundProducts.isEmpty
-                ? const Center(
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                      child: Text(
-                        'No results found',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  )
-                : Expanded(
-                    child: ListView.builder(
-                      itemCount: _foundProducts.length,
-                      itemBuilder: (context, index) {
-                        final product = _foundProducts[index];
-                        return buildProductCard(product);
-                      },
-                    ),
-                  ),
-          ],
-        ),
-      ),
+              ),
+              _isLoading // Show loading indicator if _isLoading is true
+                  ? const CircularProgressIndicator()
+                  : _foundProducts.isEmpty
+                      ? const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          child: Text(
+                            'No results found',
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        )
+                      : Expanded(
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(35)),
+                            child: ListView.builder(
+                              itemCount: _foundProducts.length,
+                              itemBuilder: (context, index) {
+                                final product = _foundProducts[index];
+                                return buildProductCard(product);
+                              },
+                            ),
+                          ),
+                        ),
+            ],
+          )),
     );
   }
 }

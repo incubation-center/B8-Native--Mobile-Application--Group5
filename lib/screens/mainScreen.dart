@@ -12,6 +12,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  final NavBarController navControll = Get.put(NavBarController());
 
   // final NavBarController navBarController = Get.find();
 
@@ -35,12 +36,6 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
       ),
-      // bottomNavigationBar: navBar(),
-      // body: const SafeArea(
-      //   child: Center(
-      //     child: Text('Home'),
-      //   ),
-      // ),
     );
   }
 }

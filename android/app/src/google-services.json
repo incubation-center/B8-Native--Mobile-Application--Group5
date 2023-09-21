@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "646681759036",
+    "project_id": "pushnotification-27f63",
+    "storage_bucket": "pushnotification-27f63.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:646681759036:android:886deda3f349fc50b86239",
+        "android_client_info": {
+          "package_name": "com.example.tukdak.tukdak"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_RFFu12To8V_gOKmorh-VWCbL7zr5Clc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
