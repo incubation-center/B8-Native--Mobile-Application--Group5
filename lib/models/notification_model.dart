@@ -4,15 +4,13 @@ import 'package:flutter/material.dart';
 class NotificationModel {
   final String title;
   final String body;
-  final IconData icon;
+  final String imageUrl; // Add this property
   final DateTime time;
-  // bool isRead; // Add this property
 
   NotificationModel({
     required this.title,
     required this.body,
-    required this.icon,
+    required this.imageUrl, // Update the constructor
     required this.time,
-    // this.isRead = false, // Default value is false, indicating not read
   });
 }

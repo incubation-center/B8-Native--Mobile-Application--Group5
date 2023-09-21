@@ -55,59 +55,7 @@ class NavBar extends StatelessWidget {
             ),
               SearchScreen(),
               // PropertyList(),
-              NotifyAlert(notifications: [
-                NotificationModel(
-                  icon: Icons.notification_important,
-                  title: "Reminder",
-                  body:
-                      "Hey, heads-up! Your Coca-Cola is nearing expiration. Savour it soon!",
-                  time: DateTime.parse(
-                      "2023-09-01 09:00:00"), // Replace with the actual time
-                ),
-                NotificationModel(
-                  icon: Icons.notification_important,
-                  title: "Friendly reminder",
-                  body:
-                      "Your chicken's expiry date is coming up. Time for a tasty meal!",
-                  time: DateTime.parse(
-                      "2023-09-01 09:00:00"), // Replace with the actual time
-                ),
-                NotificationModel(
-                  icon: Icons.notification_important,
-                  title: "Reminder",
-                  body:
-                      "Hey! Your veggies are almost expired. Perfect time for a healthy meal.",
-                  time: DateTime.parse(
-                      "2023-09-01 09:00:00"), // Replace with the actual time
-                ),
-                NotificationModel(
-                  icon: Icons.notification_important,
-                  title: "Reminder",
-                  body:
-                      "Your chicken's expiry date is coming up. Time for a tasty meal!",
-                  time: DateTime.parse("2023-09-01 09:00:00"),
-                ),
-                NotificationModel(
-                  icon: Icons.notification_important,
-                  title: "Password reset",
-                  body: "Your password has been restored successfully.",
-                  time: DateTime.parse("2023-09-01 09:00:00"),
-                ),
-                NotificationModel(
-                  icon: Icons.notification_important,
-                  title: "Hello",
-                  body:
-                      "Hey! You have successfully logged into the property management. Please enjoy your experience with our app.",
-                  time: DateTime.parse("2023-09-01 09:00:00"),
-                ),
-                NotificationModel(
-                  icon: Icons.notification_important,
-                  title: "Hello",
-                  body:
-                      "You have successfully created an account with Property Management.",
-                  time: DateTime.parse("2023-09-01 09:00:00"),
-                ),
-              ]),
+              NotifyAlert(notifications: []),
             ],
           ),
         ),
